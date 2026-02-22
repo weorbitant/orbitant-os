@@ -73,7 +73,7 @@ Use the `/v1/skills` endpoint. See [Skills API docs](https://docs.claude.com/en/
 
 | Plugin | Status | Skills |
 |--------|--------|--------|
-| **orbitant-marketing** | v1.0.0 | `orbitant-blog-post-review` |
+| **orbitant-marketing** | v1.1.0 | `orbitant-blog-post-review`, `orbitant-brand-guidelines` |
 
 ## Repo Structure
 

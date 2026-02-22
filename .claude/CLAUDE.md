@@ -131,7 +131,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 
 | Plugin | Version | Status | Skills |
 |--------|---------|--------|--------|
-| orbitant-marketing | 1.0.0 | Active | `orbitant-blog-post-review` |
+| orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-brand-guidelines` |
 
 ## Language
 
