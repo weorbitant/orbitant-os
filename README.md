@@ -25,7 +25,7 @@ Orbitant's plugin marketplace — skills, agents, and commands organized by vert
 
 | Plugin | Version | Skills | Commands |
 |--------|---------|--------|----------|
-| **orbitant-marketing** | v1.1.0 | `blog-post-review`, `blog-post-create`, `blog-post-translate`, `tone` | — |
+| **orbitant-marketing** | v1.1.0 | `blog-post-review`, `blog-post-create`, `blog-post-translate`, `tone`, `brand-guidelines` | — |
 | **orbitant-chief-of-staff** | v1.3.2 | `graceful-degradation`, `goal-alignment`, `voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
 | **orbitant-business** | v0.2.0 | — | `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/preflight` |
 
