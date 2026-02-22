@@ -1,0 +1,45 @@
+name: Label Orchestrator
+
+on:
+  pull_request_target:
+    types: [labeled]
+
+jobs:
+  orchestrate:
+    name: Handle Review Labels
+    if: github.event.label.name == 'review-requested'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Add review labels and remove trigger
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            console.log(`Adding review labels to PR #${issue_number}`);
+
+            // Add all review labels
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number,
+              labels: ['review-security', 'review-quality', 'review-semver']
+            });
+
+            console.log('✅ Added review-security, review-quality, and review-semver labels');
+
+            // Remove the trigger label
+            try {
+              await github.rest.issues.removeLabel({
+                owner,
+                repo,
+                issue_number,
+                name: 'review-requested'
+              });
+              console.log('✅ Removed review-requested label');
+            } catch (e) {
+              console.log('Label already removed or not found');
+            }

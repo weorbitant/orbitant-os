@@ -1,0 +1,71 @@
+name: Security Review
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'plugins/**'
+  pull_request_target:
+    types: [labeled]
+  workflow_dispatch:
+
+jobs:
+  security:
+    name: Security Scan
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request_target' && github.event.label.name == 'review-security')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 2
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Setup skills for scanning
+        run: |
+          mkdir -p ~/.claude/skills
+          # Symlink all skills to ~/.claude/skills/ where mcp-scan expects them
+          for skill_dir in plugins/*/skills/*/; do
+            skill_name=$(basename "$skill_dir")
+            ln -s "$(pwd)/$skill_dir" ~/.claude/skills/"$skill_name"
+          done
+          echo "Linked skills:"
+          ls -la ~/.claude/skills/
+
+      - name: Run Snyk mcp-scan
+        run: |
+          # Run scan and capture output
+          uvx mcp-scan@latest --skills --json > /tmp/scan-results.json 2>&1 || true
+
+          # Display results
+          uvx mcp-scan@latest --skills
+
+          # Check for security issues in results
+          if grep -q '"issues": \[.\+\]' /tmp/scan-results.json; then
+            echo "::error::Security issues found by mcp-scan"
+            cat /tmp/scan-results.json | jq '.[] | select(.issues | length > 0)'
+            exit 1
+          fi
+
+          echo "✅ No security issues found by mcp-scan"
+
+      - name: Claude Security Review
+        uses: anthropics/claude-code-security-review@main
+        with:
+          claude-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          comment-pr: ${{ github.event_name != 'workflow_dispatch' }}
+          claude-model: claude-sonnet-4-20250514
+
+      - name: Remove review-security label
+        if: always() && github.event.label.name == 'review-security'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "review-security" || true

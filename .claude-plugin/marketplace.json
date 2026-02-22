@@ -1,0 +1,16 @@
+{
+  "name": "orbitant-os",
+  "description": "Orbitant's Claude Code plugin marketplace",
+  "owner": {
+    "name": "Orbitant",
+    "url": "https://github.com/weorbitant"
+  },
+  "plugins": [
+    {
+      "name": "orbitant-marketing",
+      "source": "./plugins/orbitant-marketing",
+      "description": "Marketing team skills for content creation and review",
+      "version": "1.0.0"
+    }
+  ]
+}

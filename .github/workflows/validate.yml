@@ -1,0 +1,35 @@
+name: Validate Plugins
+
+on:
+  push:
+    branches: [main, plugin-setup]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Lint & Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint Markdown
+        run: npm run lint
+
+      - name: Validate marketplace.json
+        run: npm run validate:marketplace
+
+      - name: Validate plugin.json files
+        run: npm run validate:plugins
+
+      - name: Validate SKILL.md frontmatter
+        run: npm run validate:skills

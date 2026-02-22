@@ -1,0 +1,230 @@
+name: Semver Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'plugins/**'
+      - '.claude-plugin/marketplace.json'
+  pull_request_target:
+    types: [labeled]
+  workflow_dispatch:
+
+jobs:
+  semver-check:
+    name: Validate Semver
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request_target' && github.event.label.name == 'review-semver')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check semver compliance
+        id: semver
+        run: |
+          set +e  # Don't exit on error
+
+          BASE_REF="${{ github.event.pull_request.base.ref }}"
+          ERRORS=""
+
+          # Get changed files
+          CHANGED_FILES=$(git diff --name-only origin/$BASE_REF...HEAD)
+
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+          echo ""
+
+          # Track which plugins were modified
+          declare -A MODIFIED_PLUGINS
+          declare -A NEW_SKILLS
+          declare -A MODIFIED_SKILLS
+          declare -A DELETED_SKILLS
+
+          # Analyze changes
+          for file in $CHANGED_FILES; do
+            if [[ "$file" =~ ^plugins/([^/]+)/skills/([^/]+)/ ]]; then
+              plugin="${BASH_REMATCH[1]}"
+              skill="${BASH_REMATCH[2]}"
+              MODIFIED_PLUGINS[$plugin]=1
+
+              # Check if skill is new, modified, or deleted
+              if ! git show origin/$BASE_REF:"$file" &>/dev/null; then
+                NEW_SKILLS["$plugin:$skill"]=1
+                echo "📦 New skill detected: $plugin/$skill"
+              elif ! [ -f "$file" ]; then
+                DELETED_SKILLS["$plugin:$skill"]=1
+                echo "🗑️ Deleted skill detected: $plugin/$skill"
+              else
+                MODIFIED_SKILLS["$plugin:$skill"]=1
+                echo "✏️ Modified skill detected: $plugin/$skill"
+              fi
+            elif [[ "$file" =~ ^plugins/([^/]+)/.claude-plugin/plugin.json ]]; then
+              plugin="${BASH_REMATCH[1]}"
+              MODIFIED_PLUGINS[$plugin]=1
+            fi
+          done
+
+          echo ""
+
+          # Check each modified plugin
+          for plugin in "${!MODIFIED_PLUGINS[@]}"; do
+            PLUGIN_JSON="plugins/$plugin/.claude-plugin/plugin.json"
+
+            if [ ! -f "$PLUGIN_JSON" ]; then
+              ERRORS+="❌ **$plugin**: Missing plugin.json at \`$PLUGIN_JSON\`\n"
+              continue
+            fi
+
+            # Get current and previous versions
+            CURRENT_VERSION=$(jq -r '.version' "$PLUGIN_JSON" 2>/dev/null)
+            PREVIOUS_VERSION=$(git show origin/$BASE_REF:"$PLUGIN_JSON" 2>/dev/null | jq -r '.version' 2>/dev/null || echo "0.0.0")
+
+            if [ "$CURRENT_VERSION" == "null" ] || [ -z "$CURRENT_VERSION" ]; then
+              ERRORS+="❌ **$plugin**: Missing version in plugin.json\n"
+              continue
+            fi
+
+            echo "Plugin $plugin: $PREVIOUS_VERSION -> $CURRENT_VERSION"
+
+            # Parse versions
+            IFS='.' read -r PREV_MAJOR PREV_MINOR PREV_PATCH <<< "$PREVIOUS_VERSION"
+            IFS='.' read -r CURR_MAJOR CURR_MINOR CURR_PATCH <<< "$CURRENT_VERSION"
+
+            # Check if version was bumped
+            if [ "$CURRENT_VERSION" == "$PREVIOUS_VERSION" ]; then
+              # Check what kind of changes were made
+              HAS_NEW_SKILL=false
+              HAS_MODIFIED_SKILL=false
+              HAS_DELETED_SKILL=false
+
+              for key in "${!NEW_SKILLS[@]}"; do
+                if [[ "$key" == "$plugin:"* ]]; then
+                  HAS_NEW_SKILL=true
+                fi
+              done
+
+              for key in "${!MODIFIED_SKILLS[@]}"; do
+                if [[ "$key" == "$plugin:"* ]]; then
+                  HAS_MODIFIED_SKILL=true
+                fi
+              done
+
+              for key in "${!DELETED_SKILLS[@]}"; do
+                if [[ "$key" == "$plugin:"* ]]; then
+                  HAS_DELETED_SKILL=true
+                fi
+              done
+
+              if [ "$HAS_NEW_SKILL" = true ]; then
+                ERRORS+="❌ **$plugin**: New skill added but version not bumped. Bump MINOR version ($PREV_MAJOR.$((PREV_MINOR + 1)).0)\n"
+              elif [ "$HAS_DELETED_SKILL" = true ]; then
+                ERRORS+="❌ **$plugin**: Skill deleted but version not bumped. Consider MAJOR bump if breaking ($((PREV_MAJOR + 1)).0.0)\n"
+              elif [ "$HAS_MODIFIED_SKILL" = true ]; then
+                ERRORS+="❌ **$plugin**: Skill modified but version not bumped. Bump PATCH version ($PREV_MAJOR.$PREV_MINOR.$((PREV_PATCH + 1)))\n"
+              fi
+            fi
+
+            # Check marketplace.json consistency
+            MARKETPLACE_VERSION=$(jq -r --arg p "$plugin" '.plugins[] | select(.name == $p) | .version' .claude-plugin/marketplace.json 2>/dev/null)
+
+            if [ "$MARKETPLACE_VERSION" != "$CURRENT_VERSION" ]; then
+              ERRORS+="⚠️ **$plugin**: Version mismatch - plugin.json has \`$CURRENT_VERSION\` but marketplace.json has \`$MARKETPLACE_VERSION\`\n"
+            fi
+          done
+
+          # Check for new skills not in marketplace
+          for key in "${!NEW_SKILLS[@]}"; do
+            plugin="${key%%:*}"
+            skill="${key##*:}"
+            SKILL_PATH="./skills/$skill"
+
+            SKILL_IN_MARKETPLACE=$(jq -r --arg p "$plugin" --arg s "$SKILL_PATH" '.plugins[] | select(.name == $p) | .skills[]? | select(. == $s)' .claude-plugin/marketplace.json 2>/dev/null)
+
+            # Note: marketplace.json skill paths may need verification based on actual format
+          done
+
+          # Output results
+          if [ -n "$ERRORS" ]; then
+            echo "has_errors=true" >> $GITHUB_OUTPUT
+            # Escape for multiline
+            ERRORS="${ERRORS//'%'/'%25'}"
+            ERRORS="${ERRORS//$'\n'/'%0A'}"
+            ERRORS="${ERRORS//$'\r'/'%0D'}"
+            echo "errors=$ERRORS" >> $GITHUB_OUTPUT
+            echo ""
+            echo "❌ Semver issues found:"
+            echo -e "$ERRORS"
+            exit 1
+          else
+            echo "has_errors=false" >> $GITHUB_OUTPUT
+            echo "✅ Semver validation passed"
+          fi
+
+      - name: Comment on PR (errors only)
+        if: failure() && steps.semver.outputs.has_errors == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const errors = `${{ steps.semver.outputs.errors }}`.replace(/%0A/g, '\n').replace(/%0D/g, '\r').replace(/%25/g, '%');
+
+            const body = `## 🔢 Semver Validation Failed
+
+            The following issues were found with version management:
+
+            ${errors}
+
+            ### Semver Rules
+            - **MAJOR** (x.0.0): Breaking changes to skill behavior or output format
+            - **MINOR** (0.x.0): New skills, agents, or commands added
+            - **PATCH** (0.0.x): Bug fixes, wording improvements, documentation
+
+            ### Files to update
+            1. \`plugins/{plugin}/.claude-plugin/plugin.json\` - bump version
+            2. \`.claude-plugin/marketplace.json\` - match the plugin version
+            `;
+
+            // Check for existing comment to update
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Semver Validation Failed')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
+
+      - name: Remove review-semver label
+        if: always() && github.event.label.name == 'review-semver'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "review-semver" || true
+

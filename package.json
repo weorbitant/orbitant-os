@@ -1,0 +1,32 @@
+{
+  "name": "orbitant-os",
+  "version": "1.0.0",
+  "description": "Orbitant's Claude Code plugin marketplace",
+  "private": true,
+  "scripts": {
+    "lint": "markdownlint-cli2 '**/*.md' '#node_modules'",
+    "lint:fix": "markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+    "validate": "npm run validate:marketplace && npm run validate:plugins && npm run validate:skills && npm run validate:forks",
+    "validate:marketplace": "ajv validate -s .github/schemas/marketplace.schema.json -d .claude-plugin/marketplace.json",
+    "validate:plugins": "node scripts/validate-plugins.js",
+    "validate:skills": "node scripts/validate-skills.js",
+    "validate:forks": "node scripts/validate-forks.js",
+    "check": "npm run lint && npm run validate",
+    "check:upstream": "node scripts/check-upstream.js",
+    "ci": "npm run check"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-cli": "^5.0.0",
+    "js-yaml": "^4.1.0",
+    "markdownlint-cli2": "^0.21.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weorbitant/orbitant-os.git"
+  },
+  "license": "MIT"
+}
