@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Fork Metadata",
+  "description": "Tracks upstream source for forked skills",
+  "type": "object",
+  "required": ["upstream", "forked_at", "customizations"],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "upstream": {
+      "type": "object",
+      "required": ["repo", "commit", "files"],
+      "properties": {
+        "repo": {
+          "type": "string",
+          "description": "GitHub repository URL",
+          "pattern": "^https://github.com/"
+        },
+        "commit": {
+          "type": "string",
+          "description": "Git commit SHA at time of fork",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "branch": {
+          "type": "string",
+          "description": "Branch name (default: main)",
+          "default": "main"
+        },
+        "files": {
+          "type": "array",
+          "description": "List of files forked from upstream",
+          "items": {
+            "type": "object",
+            "required": ["source", "target"],
+            "properties": {
+              "source": {
+                "type": "string",
+                "description": "Path in upstream repo"
+              },
+              "target": {
+                "type": "string",
+                "description": "Path in local skill folder"
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "forked_at": {
+      "type": "string",
+      "description": "Date when the skill was forked (YYYY-MM-DD)",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "customizations": {
+      "type": "array",
+      "description": "List of changes made to the forked skill",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    }
+  }
+}

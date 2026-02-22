@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/weorbitant/orbitant-os/skill-frontmatter.schema.json",
+  "title": "Claude Code Skill Frontmatter",
+  "description": "Schema for SKILL.md YAML frontmatter in orbitant-os",
+  "type": "object",
+  "required": ["name", "description"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^orbitant-[a-z0-9-]+$",
+      "maxLength": 64,
+      "description": "Skill name, must start with 'orbitant-' and use lowercase letters, numbers, hyphens only"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1024,
+      "minLength": 10,
+      "description": "Comprehensive description of what the skill does and when to activate it"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version"
+    },
+    "license": {
+      "type": "string",
+      "description": "License identifier"
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "author": { "type": "string" },
+        "tags": { "type": "string" }
+      },
+      "description": "Additional metadata"
+    },
+    "disable-model-invocation": {
+      "type": "boolean",
+      "default": false,
+      "description": "Set to true to prevent Claude from auto-invoking this skill"
+    },
+    "user-invocable": {
+      "type": "boolean",
+      "default": true,
+      "description": "Set to false to hide from slash command menu"
+    },
+    "allowed-tools": {
+      "type": ["string", "array"],
+      "description": "Tools Claude can use without permission when skill is active"
+    },
+    "argument-hint": {
+      "type": "string",
+      "description": "Hint for autocomplete (e.g., [issue-number])"
+    }
+  },
+  "additionalProperties": true
+}

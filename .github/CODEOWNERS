@@ -1,0 +1,23 @@
+# CODEOWNERS - Defines code owners for PR reviews
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything
+* @weorbitant/orbitant-os
+
+# Plugin marketplace configuration
+.claude-plugin/ @weorbitant/orbitant-os
+.claude/ @weorbitant/orbitant-os
+
+# CI/CD and repo infrastructure
+.github/ @weorbitant/orbitant-os
+
+# Marketing vertical - owned by marketing team
+plugins/orbitant-marketing/ @weorbitant/marketing
+
+# Future verticals (uncomment when created)
+# plugins/orbitant-engineering/ @weorbitant/engineering
+# plugins/orbitant-hr/ @weorbitant/hr
+# plugins/orbitant-infra/ @weorbitant/infra
+
+# Documentation - anyone on the team
+*.md @weorbitant/orbitant-os

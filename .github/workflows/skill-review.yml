@@ -1,0 +1,72 @@
+name: Skill Quality Review
+
+on:
+  pull_request:
+    paths:
+      - 'plugins/**/skills/**/SKILL.md'
+  pull_request_target:
+    types: [labeled]
+  workflow_dispatch:
+
+jobs:
+  review:
+    name: AI Skill Review
+    if: >-
+      github.event_name == 'pull_request' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request_target' && github.event.label.name == 'review-quality')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+
+      - name: Get changed skills
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # On manual run, review all skills
+            files=$(find plugins -name "SKILL.md" -type f | tr '\n' ' ')
+          else
+            # On PR, only review changed skills
+            BASE_REF="${{ github.event.pull_request.base.ref }}"
+            files=$(git diff --name-only origin/$BASE_REF...HEAD | grep 'SKILL.md' || true)
+          fi
+
+          if [ -n "$files" ]; then
+            echo "files<<EOF" >> $GITHUB_OUTPUT
+            echo "$files" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            echo "has_skills=true" >> $GITHUB_OUTPUT
+            echo "Found skills to review:"
+            echo "$files"
+          else
+            echo "has_skills=false" >> $GITHUB_OUTPUT
+            echo "No SKILL.md files changed"
+          fi
+
+      - name: Review skills with Claude
+        if: steps.changed.outputs.has_skills == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          prompt: |
+            Use /skill-reviewer to review each of these SKILL.md files:
+            ${{ steps.changed.outputs.files }}
+
+            After reviewing all skills, post a summary comment on the PR using gh pr comment.
+            If all skills score 7+ with no issues, add: "All skills pass quality review"
+            If any skill scores below 7 or has issues, add: "Some skills need attention before merging"
+          claude_args: "--max-turns 15 --allowedTools Skill,Read,Glob,Grep,Bash"
+
+      - name: Remove review-quality label
+        if: always() && github.event.label.name == 'review-quality'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr edit "${{ github.event.pull_request.number }}" --remove-label "review-quality" || true

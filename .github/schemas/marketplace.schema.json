@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/weorbitant/orbitant-os/marketplace.schema.json",
+  "title": "Claude Code Plugin Marketplace",
+  "description": "Schema for marketplace.json in orbitant-os",
+  "type": "object",
+  "required": ["name", "plugins"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Marketplace name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the marketplace"
+    },
+    "owner": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "url": { "type": "string" }
+      }
+    },
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "source"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^orbitant-[a-z0-9-]+$",
+            "description": "Plugin name, must start with 'orbitant-'"
+          },
+          "source": {
+            "type": "string",
+            "pattern": "^\\.\\/plugins\\/orbitant-[a-z0-9-]+$",
+            "description": "Path to plugin directory"
+          },
+          "description": {
+            "type": "string",
+            "description": "Brief description of the plugin"
+          },
+          "version": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+\\.\\d+$",
+            "description": "Current plugin version"
+          }
+        }
+      },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": true
+}

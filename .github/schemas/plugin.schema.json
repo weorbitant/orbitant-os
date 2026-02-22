@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/weorbitant/orbitant-os/plugin.schema.json",
+  "title": "Claude Code Plugin",
+  "description": "Schema for plugin.json files in orbitant-os plugins",
+  "type": "object",
+  "required": ["name", "version"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^orbitant-[a-z0-9-]+$",
+      "description": "Plugin name, must start with 'orbitant-'"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version (MAJOR.MINOR.PATCH)"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Brief description of the plugin"
+    },
+    "author": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "url": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "license": {
+      "type": "string",
+      "description": "License identifier (e.g., MIT, Apache-2.0)"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^\\.\\/skills\\/[a-z0-9-]+$"
+      },
+      "description": "List of skill paths relative to plugin root"
+    },
+    "agents": {
+      "type": ["string", "array"],
+      "description": "Agent directory path or list of agent paths"
+    },
+    "commands": {
+      "type": ["string", "array"],
+      "description": "Command directory path or list of command paths"
+    }
+  },
+  "additionalProperties": true
+}
