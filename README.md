@@ -71,9 +71,10 @@ Use the `/v1/skills` endpoint. See [Skills API docs](https://docs.claude.com/en/
 
 ## Available Plugins
 
-| Plugin | Status | Skills |
-|--------|--------|--------|
-| **orbitant-marketing** | v1.0.0 | `orbitant-blog-post-review` |
+| Plugin | Status | Skills | Commands |
+|--------|--------|--------|----------|
+| **orbitant-marketing** | v1.0.0 | `orbitant-blog-post-review` | — |
+| **orbitant-chief-of-staff** | v1.1.0 | `orbitant-graceful-degradation`, `orbitant-goal-alignment` | `/preflight`, `/status` |
 
 ## Repo Structure
 
@@ -84,12 +85,19 @@ orbitant-os/
 ├── .claude-plugin/
 │   └── marketplace.json            <- marketplace manifest
 ├── plugins/
-│   └── orbitant-marketing/
+│   ├── orbitant-marketing/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   └── skills/
+│   │       └── blog-post-review/
+│   │           └── SKILL.md
+│   └── orbitant-chief-of-staff/
 │       ├── .claude-plugin/
 │       │   └── plugin.json
-│       └── skills/
-│           └── blog-post-review/
-│               └── SKILL.md
+│       ├── skills/
+│       ├── commands/
+│       ├── crm/
+│       └── references/
 ├── .github/
 │   ├── assets/                     <- images and screenshots
 │   ├── schemas/                    <- JSON schemas for validation

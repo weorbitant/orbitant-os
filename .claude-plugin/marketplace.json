@@ -15,8 +15,8 @@
     {
       "name": "orbitant-chief-of-staff",
       "source": "./plugins/orbitant-chief-of-staff",
-      "description": "Chief of staff capabilities to support daily grinding",
-      "version": "1.0.0"
+      "description": "AI-powered chief of staff for managing priorities, communications, and goal alignment",
+      "version": "1.1.0"
     }
   ]
 }
