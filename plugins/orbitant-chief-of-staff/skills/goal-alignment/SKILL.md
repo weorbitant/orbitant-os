@@ -1,15 +1,8 @@
 ---
 name: orbitant-goal-alignment
 description: |
-  Scores and prioritizes any item — emails, tasks, meetings, calendar blocks, decisions,
-  opportunities — against the user's quarterly rocks defined in rocks.yaml. Activates during
-  email triage, task ranking, meeting prep, weekly planning, daily briefings, and scheduling
-  decisions. Use this skill whenever prioritization is needed, whenever something must be
-  ranked or compared against strategic objectives, or whenever the user is deciding how to
-  spend their time — even if they don't explicitly mention "goals" or "rocks". Also activates
-  when detecting drift: if the user's calendar or task list is misaligned with their stated
-  priorities, proactively flag it. Even if the user just asks "should I take this meeting?"
-  or "is this worth my time?", apply goal alignment scoring.
+  Scores items against quarterly rocks from rocks.yaml. Activates during triage, task ranking,
+  meeting prep, and scheduling. Flags drift when time allocation mismatches stated priorities.
 version: "1.0.0"
 license: MIT
 user-invocable: false

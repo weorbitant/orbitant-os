@@ -1,10 +1,6 @@
 ---
 name: triage-agent
-description: |
-  Specialized sub-agent for scanning a single communication channel (Gmail or Slack).
-  Dispatched by the /triage command. Scans unread messages, assigns priority tiers
-  based on sender importance and goal alignment, and drafts responses in the user's
-  voice. Returns a sorted, actionable list to the calling command.
+description: Scans one channel (Gmail or Slack), assigns priority tiers, drafts responses. Dispatched by /triage.
 allowed-tools: Read, Glob, Grep
 ---
 

@@ -1,11 +1,6 @@
 ---
 name: status
-description: |
-  Operational health dashboard for the chief-of-staff plugin. Shows system
-  state including stale contacts, overdue tasks, goal progress, calendar
-  alignment, and recent activity across connected services. Run daily or
-  as needed to stay on top of your operating rhythm. Unlike /preflight
-  (setup validation), /status shows ongoing operational health.
+description: Operational health dashboard — goal progress, stale contacts, calendar load, overdue tasks.
 ---
 
 ## Overview

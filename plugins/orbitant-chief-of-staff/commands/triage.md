@@ -1,11 +1,6 @@
 ---
 name: triage
-description: |
-  Inbox management for the chief-of-staff plugin. Scans Gmail and Slack for
-  unread messages, prioritizes them into three tiers based on sender importance
-  and goal alignment, and drafts responses in the user's voice. Dispatches the
-  triage-agent for per-channel scanning. Supports channel flags: --email,
-  --slack. All draft responses require explicit user confirmation before sending.
+description: Inbox triage — scans Gmail/Slack, prioritizes by tier and goal alignment, drafts responses. Flags --email, --slack.
 ---
 
 ## Overview

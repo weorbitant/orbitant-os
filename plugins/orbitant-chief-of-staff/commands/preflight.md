@@ -1,11 +1,6 @@
 ---
 name: preflight
-description: |
-  System readiness check for the chief-of-staff plugin. Tests all MCP server
-  connections (Gmail, Calendar, Slack, Asana), validates config files exist
-  and parse correctly, checks directory structure, and reports a pass/fail
-  checklist with fix instructions for each failure. Run this once during
-  initial setup and after any configuration change.
+description: System readiness check — tests MCP connections, validates config files, reports pass/fail with fix instructions.
 ---
 
 ## Overview

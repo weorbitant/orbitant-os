@@ -1,14 +1,8 @@
 ---
 name: orbitant-voice-drafting
 description: |
-  Cross-cutting drafting skill for the chief-of-staff plugin. Writes emails, Slack
-  messages, meeting follow-ups, and other communications in the user's personal voice
-  and style. Reads voice.md for tone, formality levels, length preferences, and
-  signature. Activates whenever a chief-of-staff command generates a draft — during
-  /triage (response drafts), /crm (outreach messages), or ad-hoc requests like
-  "draft an email to..." or "write a Slack message for...". Even if the user doesn't
-  mention "voice" or "style", apply their voice profile to every draft. Never send
-  anything without explicit user confirmation.
+  Writes drafts in the user's voice using voice.md for tone and style. Activates during
+  /triage, /crm, or any "draft an email/message" request. Never sends without confirmation.
 version: "1.0.0"
 license: MIT
 user-invocable: false

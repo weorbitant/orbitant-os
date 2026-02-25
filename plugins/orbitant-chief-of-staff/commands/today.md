@@ -1,11 +1,6 @@
 ---
 name: today
-description: |
-  Morning briefing for the chief-of-staff plugin. Pulls together today's
-  calendar, prioritized tasks, urgent messages, and strategic signals into
-  a single dashboard. Run this before opening your inbox to start the day
-  with clarity. Supports partial runs with flags: --calendar-only,
-  --tasks-only, --messages-only.
+description: Morning briefing — calendar, tasks, urgent messages, strategic signals. Flags --calendar-only, --tasks-only, --messages-only.
 ---
 
 ## Overview

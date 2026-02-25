@@ -1,14 +1,8 @@
 ---
 name: orbitant-graceful-degradation
 description: |
-  Cross-cutting availability check for all chief-of-staff commands. Auto-activates before
-  running /preflight, /today, /triage, /week, /prep, /crm, or /status to verify which MCP
-  servers (Gmail, Calendar, Slack, Asana) and config files (rocks.yaml, voice.md,
-  constraints.yaml, contacts/) are reachable. Produces an availability report and ensures
-  no command ever hard-fails — it always proceeds with whatever sources are available. Use
-  this skill whenever a chief-of-staff command is about to execute, even if the user does
-  not mention availability or configuration — and even if you believe all services are up.
-  Always run this check first. Never skip it.
+  Checks MCP servers and config files before any chief-of-staff command. Ensures no command
+  hard-fails — always proceeds with available sources. Auto-activates on every command.
 version: "1.0.0"
 license: MIT
 user-invocable: false
