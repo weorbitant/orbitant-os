@@ -1,6 +1,6 @@
 {
   "name": "orbitant-chief-of-staff",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Chief of staff capabilities to support daily grinding",
   "author": {
     "name": "Orbitant"
@@ -15,9 +15,13 @@
     "./commands/preflight",
     "./commands/status",
     "./commands/today",
-    "./commands/triage"
+    "./commands/triage",
+    "./commands/prep",
+    "./commands/week",
+    "./commands/crm"
   ],
   "agents": [
-    "./agents/triage-agent"
+    "./agents/triage-agent",
+    "./agents/enrichment-agent"
   ]
 }
