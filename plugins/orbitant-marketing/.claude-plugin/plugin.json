@@ -6,5 +6,5 @@
     "name": "Orbitant"
   },
   "license": "MIT",
-  "skills": ["./skills/blog-post-review", "./skills/blog-post-create", "./skills/blog-post-translate"]
+  "skills": ["./skills/blog-post-review", "./skills/blog-post-create", "./skills/blog-post-translate", "./skills/tone"]
 }
