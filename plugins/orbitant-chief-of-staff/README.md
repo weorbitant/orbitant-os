@@ -33,9 +33,9 @@ mkdir -p .claude/contacts
 | `/orbitant-chief-of-staff:status` | Operational health dashboard | Available |
 | `/orbitant-chief-of-staff:today` | Morning briefing | Available |
 | `/orbitant-chief-of-staff:triage` | Inbox management | Available |
-| `/orbitant-chief-of-staff:week` | Weekly planning | Coming soon |
-| `/orbitant-chief-of-staff:prep` | Meeting preparation | Coming soon |
-| `/orbitant-chief-of-staff:crm` | Contact management | Coming soon |
+| `/orbitant-chief-of-staff:week` | Weekly planning | Available |
+| `/orbitant-chief-of-staff:prep` | Meeting preparation | Available |
+| `/orbitant-chief-of-staff:crm` | Contact management | Available |
 
 ## Skills
 
@@ -70,14 +70,6 @@ The `/preflight` and `/status` commands work without any MCP connections. They r
 ## Cowork Compatibility
 
 The `/preflight` and `/status` commands work in Cowork sessions. Commands that depend on MCP servers (Gmail, Calendar, Slack, Asana) require those servers to be configured in the Cowork environment, which may not always be available. The auto-triggered skills (graceful-degradation, goal-alignment) work in any context since they only read local config files.
-
-## Roadmap
-
-**Phase 2 -- Daily Operations:** ✅ `/today` morning briefing, `/triage` inbox management with rock-aligned scoring, voice-matched draft replies.
-
-**Phase 3 -- Planning and Prep:** `/week` weekly planning against rocks, `/prep` meeting preparation with context pulls, `/crm` contact relationship management.
-
-**Phase 4 -- Intelligence:** Cross-channel pattern detection, proactive alerts, relationship health scoring, automated follow-up tracking.
 
 ## Links
 
