@@ -18,18 +18,22 @@ orbitant-os/
 ├── .claude-plugin/
 │   └── marketplace.json            <- THE marketplace manifest (lists all plugins)
 ├── plugins/
-│   └── orbitant-marketing/         <- v1.1.0 — blog-post-review, blog-post-create, blog-post-translate
+│   ├── orbitant-marketing/         <- v1.1.0 — blog-post-review, blog-post-create, blog-post-translate, tone
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   └── skills/
+│   │       ├── blog-post-review/
+│   │       ├── blog-post-create/
+│   │       ├── blog-post-translate/
+│   │       └── tone/
+│   └── orbitant-chief-of-staff/    <- v1.3.1 — graceful-degradation, goal-alignment, voice-drafting
 │       ├── .claude-plugin/
 │       │   └── plugin.json
-│       └── skills/
-│           ├── blog-post-review/
-│           │   └── SKILL.md
-│           ├── blog-post-create/
-│           │   └── SKILL.md
-│           ├── blog-post-translate/
-│           │   └── SKILL.md
-│           └── tone/
-│               └── SKILL.md
+│       ├── skills/
+│       ├── commands/
+│       ├── agents/
+│       ├── crm/
+│       └── references/
 ├── .github/
 │   ├── assets/                     <- images and screenshots
 │   ├── schemas/                    <- JSON schemas for validation
@@ -135,9 +139,10 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 
 ## Current State
 
-| Plugin | Version | Status | Skills |
-|--------|---------|--------|--------|
-| orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone` |
+| Plugin | Version | Status | Skills | Commands |
+|--------|---------|--------|--------|----------|
+| orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone` | — |
+| orbitant-chief-of-staff | 1.3.1 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
 
 ## Language
 

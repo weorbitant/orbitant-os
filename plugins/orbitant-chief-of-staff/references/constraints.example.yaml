@@ -1,0 +1,106 @@
+# =============================================================================
+# Scheduling Constraints — Configuration Template
+# =============================================================================
+#
+# This file defines your personal scheduling boundaries. The chief-of-staff
+# skill uses it to make scheduling recommendations, flag over-scheduled days,
+# and respect your non-negotiable time blocks.
+#
+# SETUP
+# -----
+# Option A (project-level):
+#   Copy this file to your project root:
+#     cp constraints.example.yaml ./constraints.yaml
+#
+# Option B (global):
+#   Copy to your Claude config directory so it applies across all projects:
+#     cp constraints.example.yaml ~/.claude/constraints.yaml
+#
+# Then edit the values below to match your actual schedule and preferences.
+#
+# COWORK USERS
+# ------------
+# If you use Cowork (cowork.ai), you can paste the contents of your final
+# constraints.yaml into your project context, or store it as a page in Notion
+# and link it via the Notion MCP integration. The chief-of-staff skill will
+# pick it up from either location.
+#
+# =============================================================================
+
+# Your primary timezone (IANA format)
+timezone: America/New_York
+
+# -----------------------------------------------------------------------------
+# Work Hours
+# -----------------------------------------------------------------------------
+# The window during which meetings and focused work can be scheduled.
+work_hours:
+  start: "09:00"
+  end: "18:00"
+
+# -----------------------------------------------------------------------------
+# Hard Stops
+# -----------------------------------------------------------------------------
+# Non-negotiable time blocks that must NEVER be scheduled over.
+# The skill will flag any calendar conflicts with these entries.
+hard_stops:
+  - name: School pickup
+    days: [monday, tuesday, wednesday, thursday, friday]
+    time: "15:30"
+    duration_minutes: 30
+    note: Leave by 15:25 — no exceptions
+
+  - name: Family dinner
+    days: [monday, tuesday, wednesday, thursday, friday]
+    time: "19:00"
+    duration_minutes: 60
+
+  - name: Saturday morning run
+    days: [saturday]
+    time: "07:00"
+    duration_minutes: 90
+
+# -----------------------------------------------------------------------------
+# Energy Patterns
+# -----------------------------------------------------------------------------
+# How your energy and focus fluctuate throughout the day. The skill uses this
+# to recommend optimal time slots for deep work vs. meetings vs. admin tasks.
+#
+# Levels: high | medium | low
+energy_patterns:
+  morning:      # 09:00–12:00
+    level: high
+    best_for: deep work, writing, strategic thinking
+  midday:       # 12:00–14:00
+    level: medium
+    best_for: 1-on-1s, light collaboration, lunch meetings
+  afternoon:    # 14:00–17:00
+    level: low
+    best_for: admin tasks, emails, async reviews
+  evening:      # 17:00–18:00
+    level: medium
+    best_for: planning next day, wrapping up loose ends
+
+# -----------------------------------------------------------------------------
+# Meeting Preferences
+# -----------------------------------------------------------------------------
+# Controls how the skill evaluates your calendar density and suggests
+# rescheduling when limits are exceeded.
+meetings:
+  preferred_duration: 30          # minutes — default length for new meetings
+  max_per_day: 5                  # flag the day as over-scheduled above this
+  buffer_between: 15              # minutes of breathing room between meetings
+  preferred_days:                 # days you prefer to cluster meetings on
+    - tuesday
+    - wednesday
+    - thursday
+
+# -----------------------------------------------------------------------------
+# Quiet Hours
+# -----------------------------------------------------------------------------
+# Time ranges where the skill should avoid suggesting any scheduled activity
+# and should flag intrusions.
+quiet_hours:
+  start: "20:00"
+  end: "08:00"
+  weekends: true                  # treat all of Saturday and Sunday as quiet

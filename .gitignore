@@ -3,6 +3,9 @@
 .claude/plans/
 .claude/todos/
 
+# Design docs and plans (local only)
+docs/
+
 # OS files
 .DS_Store
 Thumbs.db
