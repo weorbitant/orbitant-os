@@ -6,5 +6,8 @@
     "name": "Orbitant"
   },
   "license": "MIT",
-  "skills": []
+  "skills": [
+    "./skills/graceful-degradation",
+    "./skills/goal-alignment"
+  ]
 }
