@@ -13,6 +13,10 @@
   ],
   "commands": [
     "./commands/preflight",
-    "./commands/status"
+    "./commands/status",
+    "./commands/today"
+  ],
+  "agents": [
+    "./agents/triage-agent"
   ]
 }
