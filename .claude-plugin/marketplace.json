@@ -16,7 +16,7 @@
       "name": "orbitant-chief-of-staff",
       "source": "./plugins/orbitant-chief-of-staff",
       "description": "AI-powered chief of staff for managing priorities, communications, and goal alignment",
-      "version": "1.3.0"
+      "version": "1.3.1"
     }
   ]
 }

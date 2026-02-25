@@ -108,8 +108,11 @@ Warning: Sprint review runs into "School pickup" hard stop buffer
 [LOW  0.15] Clean up Jira backlog
 
 ## Urgent Messages
-Tier 1 | jane.smith@acmecorp.io -- "Re: Contract terms" (Gmail, 2h ago)
-Tier 2 | @carlos.vega -- "Deployment issue in staging" (Slack, 45m ago)
+
+| Tier | Source | Sender | Subject | Time |
+|------|--------|--------|---------|------|
+| 1 | Gmail | jane.smith@acmecorp.io | Re: Contract terms | 2h ago |
+| 2 | Slack | @carlos.vega | Deployment issue in staging | 45m ago |
 
 ## Strategic Signals
 [■■■■■■■□□□] Revenue Acceleration (37%) -- on track

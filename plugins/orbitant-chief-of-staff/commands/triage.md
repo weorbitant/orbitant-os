@@ -81,48 +81,38 @@ Present these as a compact action bar below each Tier 1 and Tier 2 item. For Tie
 ```
 # Inbox Triage -- N unread items
 
-## Tier 1 -- Respond NOW (N items)
+| # | Tier | Source | Sender | Subject | Alignment | Time |
+|---|------|--------|--------|---------|-----------|------|
+| 1 | 1 | Gmail | jane.smith@acmecorp.io | Re: Contract terms | HIGH 0.85 -- Revenue Acceleration | 2h ago |
+| 2 | 1 | Slack | @board.member | Q1 board deck feedback | HIGH 0.78 -- Revenue Acceleration | 30m ago |
+| 3 | 2 | Gmail | carlos@partner.io | Integration timeline | MED 0.52 -- Strategic Partnerships | 5h ago |
+| 4 | 3 | Gmail | newsletter@techdigest.com | Weekly roundup | -- | 8h ago |
+| 5 | 3 | Gmail | notifications@github.com | PR #142 merged | -- | 12h ago |
 
-1. jane.smith@acmecorp.io -- "Re: Contract terms" (Gmail, 2h ago)
-   Alignment: HIGH (0.85) -- Revenue Acceleration
-   [DRAFT]
-   Hi Jane, thanks for the updated terms. I've reviewed the platform license
-   option and it looks good. Let me loop in our legal team for final sign-off
-   -- expect a response by end of day.
-   Best, Alex
+## Drafts & Actions
 
+1. [DRAFT] Hi Jane, thanks for the updated terms. I've reviewed the platform
+   license option and it looks good. Let me loop in our legal team for final
+   sign-off -- expect a response by end of day. Best, Alex
    -> [send] [edit] [defer] [delegate] [archive]
 
-2. @board.member -- "Q1 board deck feedback" (Slack, 30m ago)
-   Alignment: HIGH (0.78) -- Revenue Acceleration
-   [DRAFT]
-   Thanks for the feedback. I'll incorporate the updated projections and
-   reshare by Thursday.
-
+2. [DRAFT] Thanks for the feedback. I'll incorporate the updated projections
+   and reshare by Thursday.
    -> [send] [edit] [defer] [delegate] [archive]
 
-## Tier 2 -- Handle Today (N items)
-
-3. carlos@partner.io -- "Integration timeline" (Gmail, 5h ago)
-   Alignment: MED (0.52) -- Strategic Partnerships
-   [DRAFT]
-   Carlos, let me check on the timeline with the engineering team and
-   get back to you by end of day.
-
+3. [DRAFT] Carlos, let me check on the timeline with the engineering team
+   and get back to you by end of day.
    -> [send] [edit] [defer] [delegate] [archive]
 
-## Tier 3 -- FYI / Archive (N items)
-
-4. newsletter@techdigest.com -- "Weekly roundup" -> archive
-5. notifications@github.com -- "PR #142 merged" -> archive
-(N more...)
+4. Summary: Tech industry news digest. -> [archive] [defer]
+5. Summary: CI notification. -> [archive] [defer]
 
 ---
 Processed: N Gmail + N Slack | Time window: 24h
 Run /orbitant-chief-of-staff:today for your full briefing
 ```
 
-Number each item sequentially across tiers so the user can reference them easily ("send 1", "defer 3"). Collapse Tier 3 items by default -- show the first two and a count of the rest. Expand the full list if the user asks.
+Number each item sequentially so the user can reference them easily ("send 1", "defer 3"). Draft numbers match the `#` column in the table. Tier 3 items get only archive and defer actions.
 
 ## Quiet Hours
 

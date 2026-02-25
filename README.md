@@ -74,7 +74,7 @@ Use the `/v1/skills` endpoint. See [Skills API docs](https://docs.claude.com/en/
 | Plugin | Status | Skills | Commands |
 |--------|--------|--------|----------|
 | **orbitant-marketing** | v1.0.0 | `orbitant-blog-post-review` | — |
-| **orbitant-chief-of-staff** | v1.3.0 | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
+| **orbitant-chief-of-staff** | v1.3.1 | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
 
 ## Repo Structure
 

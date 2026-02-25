@@ -74,22 +74,22 @@ Return to the calling command using this structure:
 ```
 ### Gmail Results (5 unread, 24h window)
 
-Tier 1 | jane.smith@acmecorp.io -- "Re: Contract terms"
-   Alignment: HIGH (0.85) -- Revenue Acceleration
-   [DRAFT] "Hi Jane, thanks for sending the updated terms..."
+| # | Tier | Sender | Subject | Alignment | Time |
+|---|------|--------|---------|-----------|------|
+| 1 | 1 | jane.smith@acmecorp.io | Re: Contract terms | HIGH 0.85 -- Revenue Acceleration | 2h ago |
+| 2 | 2 | carlos@partner.io | Integration timeline | MED 0.52 -- Strategic Partnerships | 5h ago |
+| 3 | 3 | newsletter@techdigest.com | Weekly roundup | -- | 8h ago |
+| 4 | 3 | notifications@github.com | PR #142 merged | -- | 12h ago |
 
-Tier 2 | carlos@partner.io -- "Integration timeline"
-   Alignment: MED (0.52) -- Strategic Partnerships
-   [DRAFT] "Carlos, let me check on the timeline..."
+### Drafts
 
-Tier 3 | newsletter@techdigest.com -- "Weekly roundup"
-   Summary: Tech industry news digest. No action needed.
-
-Tier 3 | notifications@github.com -- "PR #142 merged"
-   Summary: CI notification. Archive.
+1. [DRAFT] "Hi Jane, thanks for sending the updated terms..."
+2. [DRAFT] "Carlos, let me check on the timeline..."
+3. Summary: Tech industry news digest. No action needed.
+4. Summary: CI notification. Archive.
 ```
 
-For Slack results, use the same structure with `### Slack Results` as the header and channel names in place of email addresses.
+For Slack results, use the same table structure with `### Slack Results` as the header and channel names in place of email addresses. Draft numbers must match the `#` column in the table.
 
 ## Key Rules
 
