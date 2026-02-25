@@ -69,6 +69,20 @@ This is useful when:
 
 Use the `/v1/skills` endpoint. See [Skills API docs](https://docs.claude.com/en/api/skills).
 
+## MCP Setup
+
+Some plugins require MCP servers (e.g., Gmail, Calendar, Slack). Run the setup script to configure them:
+
+```bash
+# Community users — interactive plugin selection
+./install.sh
+
+# Orbitant team members — sets up everything
+./install.sh --team
+```
+
+The script checks prerequisites, registers MCP servers via `claude mcp add`, and guides you through OAuth authentication for each service.
+
 ## Available Plugins
 
 | Plugin | Status | Skills | Commands |
