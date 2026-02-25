@@ -36,6 +36,8 @@ mkdir -p .claude/contacts
 | `/orbitant-chief-of-staff:week` | Weekly planning | Available |
 | `/orbitant-chief-of-staff:prep` | Meeting preparation | Available |
 | `/orbitant-chief-of-staff:crm` | Contact management | Available |
+| `/orbitant-chief-of-staff:cob` | Close of business | Coming soon |
+| `/orbitant-chief-of-staff:audit` | Performance and time tracking | Coming soon |
 
 ## Skills
 
