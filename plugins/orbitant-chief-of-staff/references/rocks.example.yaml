@@ -1,0 +1,126 @@
+# =============================================================================
+# rocks.yaml — Quarterly Objectives Configuration
+# =============================================================================
+#
+# This file is the strategic backbone of the orbitant-chief-of-staff plugin.
+# Every command references it for scoring, prioritization, and alignment checks.
+#
+# SETUP
+# -----
+# 1. Copy this file to one of these locations:
+#      cp rocks.example.yaml ./rocks.yaml            # project-level (recommended)
+#      cp rocks.example.yaml ~/.claude/rocks.yaml     # global (shared across projects)
+#
+# 2. Replace the demo data below with your actual quarterly rocks.
+#
+# COWORK ADAPTATION
+# -----------------
+# If you use Cowork (cowork.ai) instead of Claude Code CLI:
+#   - Paste the contents of your rocks.yaml into your project context, OR
+#   - Store it in a Notion page and connect it via the Notion MCP integration
+#   - The chief-of-staff skills will reference it the same way
+#
+# RULES
+# -----
+# - Weights across all rocks MUST sum to 1.0
+# - Each rock should have exactly 3 key results (KRs)
+# - KR progress is tracked as a float between 0.0 and 1.0
+# - Use the "status" field to flag rocks as on_track, at_risk, or off_track
+#
+# =============================================================================
+
+# Metadata
+quarter: "Q2-2026"
+company: "Meridian Cloud Services"       # Replace with your company name
+owner: "Alex Rivera, COO"               # Replace with the rocks owner
+last_updated: "2026-04-01"
+
+# -----------------------------------------------------------------------------
+# Rocks — Quarterly Objectives
+# -----------------------------------------------------------------------------
+# Each rock has:
+#   - name:        Short, memorable label
+#   - description: One-liner explaining the objective
+#   - weight:      Relative importance (all weights must sum to 1.0)
+#   - status:      on_track | at_risk | off_track
+#   - key_results: Exactly 3 measurable outcomes per rock
+#
+# Key result fields:
+#   - description: What you are measuring
+#   - target:      The goal (numeric or descriptive)
+#   - current:     Where you are now
+#   - progress:    Float 0.0–1.0 representing completion
+# -----------------------------------------------------------------------------
+
+rocks:
+  - name: "Revenue Acceleration"
+    description: "Hit $2.4M ARR by closing enterprise pipeline and expanding existing accounts"
+    weight: 0.35
+    status: on_track
+    key_results:
+      - description: "Close 8 new enterprise contracts ($50K+ ACV)"
+        target: 8
+        current: 3
+        progress: 0.375
+      - description: "Expand NRR to 125% across existing book of business"
+        target: "125%"
+        current: "112%"
+        progress: 0.55
+      - description: "Reduce average sales cycle from 62 days to 45 days"
+        target: 45
+        current: 54
+        progress: 0.47
+
+  - name: "Platform GA Launch"
+    description: "Ship v2.0 of the analytics platform to general availability with 99.9% uptime"
+    weight: 0.30
+    status: at_risk
+    key_results:
+      - description: "Complete all 14 GA-blocking features on the roadmap"
+        target: 14
+        current: 9
+        progress: 0.64
+      - description: "Achieve 99.9% uptime over a rolling 30-day window"
+        target: "99.9%"
+        current: "99.7%"
+        progress: 0.80
+      - description: "Onboard 3 design partners onto the beta and collect NPS > 50"
+        target: 3
+        current: 2
+        progress: 0.67
+
+  - name: "Team & Culture"
+    description: "Hire key roles, reduce attrition, and establish the engineering career ladder"
+    weight: 0.20
+    status: on_track
+    key_results:
+      - description: "Hire 4 senior engineers and 1 VP of Engineering"
+        target: 5
+        current: 2
+        progress: 0.40
+      - description: "Reduce voluntary attrition to below 8% annualized"
+        target: "8%"
+        current: "10%"
+        progress: 0.60
+      - description: "Publish and roll out engineering career ladder across all levels"
+        target: "published"
+        current: "draft in review"
+        progress: 0.70
+
+  - name: "Strategic Partnerships"
+    description: "Secure two integration partnerships and one co-sell agreement with cloud providers"
+    weight: 0.15
+    status: on_track
+    key_results:
+      - description: "Sign integration partnership with a top-3 CRM vendor"
+        target: 1
+        current: 0
+        progress: 0.30
+      - description: "Launch co-sell listing on AWS Marketplace"
+        target: "listed"
+        current: "application submitted"
+        progress: 0.50
+      - description: "Generate $200K in partner-sourced pipeline"
+        target: 200000
+        current: 75000
+        progress: 0.375
