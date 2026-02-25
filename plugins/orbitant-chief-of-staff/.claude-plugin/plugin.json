@@ -1,6 +1,6 @@
 {
   "name": "orbitant-chief-of-staff",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Chief of staff capabilities to support daily grinding",
   "author": {
     "name": "Orbitant"
@@ -12,16 +12,16 @@
     "./skills/voice-drafting"
   ],
   "commands": [
-    "./commands/preflight",
-    "./commands/status",
-    "./commands/today",
-    "./commands/triage",
-    "./commands/prep",
-    "./commands/week",
-    "./commands/crm"
+    "./commands/preflight.md",
+    "./commands/status.md",
+    "./commands/today.md",
+    "./commands/triage.md",
+    "./commands/prep.md",
+    "./commands/week.md",
+    "./commands/crm.md"
   ],
   "agents": [
-    "./agents/triage-agent",
-    "./agents/enrichment-agent"
+    "./agents/triage-agent.md",
+    "./agents/enrichment-agent.md"
   ]
 }
