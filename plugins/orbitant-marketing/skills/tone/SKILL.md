@@ -1,9 +1,10 @@
 ---
 name: orbitant-tone
 description: |
-  Voice and tone reference for Orbitant blog content. Used by both the content generation
-  agent and human editors and contributors. Defines what Orbitant writing sounds like,
-  what it values, and what it avoids — with concrete examples.
+  Voice and tone reference for Orbitant blog content. Activate when someone asks about
+  Orbitant's writing style, voice, or tone — or when reviewing content for tone alignment.
+  Also useful as context when creating or editing blog posts. Defines what Orbitant writing
+  sounds like, what it values, and what it avoids — with concrete examples.
 license: MIT
 version: "1.0.0"
 metadata:
@@ -27,6 +28,8 @@ Write from your own experience. Use "I" when sharing something you lived, decide
 > ✅ **Así sí**
 > Cuando empezamos a migrar el sistema de autenticación, lo primero que hicimos fue mapear todos los puntos de entrada. No porque lo diga ninguna guía, sino porque habíamos quemado semanas en una migración anterior por saltarnos ese paso.
 
+<!-- separator -->
+
 > ❌ **Así no**
 > Las empresas que afrontan migraciones de sistemas de autenticación deben considerar mapear todos los puntos de entrada como primer paso del proceso.
 
@@ -40,6 +43,8 @@ Theory is only useful when it explains a real situation. Lead with the example, 
 > ✅ **Así sí**
 > Teníamos un pipeline que tardaba 22 minutos en completarse. Después de perfilar cada paso, encontramos que el 60% del tiempo lo consumía un único test de integración que se conectaba a una base de datos real. Lo reemplazamos por un mock y bajamos a 8 minutos.
 
+<!-- separator -->
+
 > ❌ **Así no**
 > Optimizar los tiempos de ejecución de los pipelines de CI/CD es fundamental para mejorar la productividad de los equipos de desarrollo y reducir el time-to-market.
 
@@ -50,6 +55,8 @@ Do not just describe what you did. Explain why you chose that approach over the 
 
 > ✅ **Así sí**
 > Elegimos SQLite para el almacenamiento local por tres razones: no necesitábamos un servidor separado, el volumen de datos era predecible y pequeño, y queríamos que cualquier desarrollador pudiera levantar el proyecto sin configuración adicional. Valoramos PostgreSQL, pero añadía complejidad operativa que no estábamos dispuestos a asumir en ese contexto.
+
+<!-- separator -->
 
 > ❌ **Así no**
 > Para el almacenamiento local se utilizó SQLite, una solución ligera y eficiente ampliamente utilizada en el sector.
@@ -74,6 +81,8 @@ The ideal structure for a technical section is:
 >
 > El orden importa: si inviertes las dos líneas, el logger captura los datos antes de que se saniticen.
 
+<!-- separator -->
+
 > ❌ **Así no**
 > Es importante gestionar correctamente las variables de entorno para garantizar la seguridad de las aplicaciones. Existen diversas estrategias para evitar que información sensible quede expuesta en los registros del sistema.
 
@@ -84,6 +93,8 @@ Good technical writing acknowledges what did not work, what could be better, and
 
 > ✅ **Así sí**
 > Este enfoque funciona bien cuando el equipo es pequeño y los dominios están bien delimitados. Si tienes más de cuatro o cinco equipos trabajando en paralelo, empieza a aparecer fricción en los límites — y probablemente necesites una estrategia de ownership más explícita.
+
+<!-- separator -->
 
 > ❌ **Así no**
 > Esta solución es escalable y puede adaptarse a equipos de cualquier tamaño, garantizando la eficiencia operativa en todo momento.
@@ -105,6 +116,8 @@ Orbitant can and should appear in blog content — but as context, not as the su
 
 > ✅ **Así sí**
 > En Orbitant llevamos varios proyectos usando esta arquitectura en producción, y el patrón que mejor nos ha funcionado es...
+
+<!-- separator -->
 
 > ❌ **Así no**
 > En Orbitant, empresa líder en consultoría de software de nueva generación, hemos desarrollado una metodología propia que...
