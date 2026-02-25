@@ -9,5 +9,9 @@
   "skills": [
     "./skills/graceful-degradation",
     "./skills/goal-alignment"
+  ],
+  "commands": [
+    "./commands/preflight",
+    "./commands/status"
   ]
 }
