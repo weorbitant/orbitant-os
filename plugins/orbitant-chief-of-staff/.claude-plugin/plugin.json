@@ -14,7 +14,8 @@
   "commands": [
     "./commands/preflight",
     "./commands/status",
-    "./commands/today"
+    "./commands/today",
+    "./commands/triage"
   ],
   "agents": [
     "./agents/triage-agent"
