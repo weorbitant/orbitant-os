@@ -18,11 +18,15 @@ orbitant-os/
 ├── .claude-plugin/
 │   └── marketplace.json            <- THE marketplace manifest (lists all plugins)
 ├── plugins/
-│   └── orbitant-marketing/         <- v1.0.0 — has blog-post-review skill
+│   └── orbitant-marketing/         <- v1.1.0 — blog-post-review, blog-post-create, blog-post-translate
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       └── skills/
-│           └── blog-post-review/
+│           ├── blog-post-review/
+│           │   └── SKILL.md
+│           ├── blog-post-create/
+│           │   └── SKILL.md
+│           └── blog-post-translate/
 │               └── SKILL.md
 ├── .github/
 │   ├── assets/                     <- images and screenshots
@@ -131,7 +135,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 
 | Plugin | Version | Status | Skills |
 |--------|---------|--------|--------|
-| orbitant-marketing | 1.0.0 | Active | `orbitant-blog-post-review` |
+| orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate` |
 
 ## Language
 
