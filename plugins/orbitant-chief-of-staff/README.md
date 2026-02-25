@@ -31,8 +31,8 @@ mkdir -p .claude/contacts
 |---------|-------------|--------|
 | `/orbitant-chief-of-staff:preflight` | System readiness check | Available |
 | `/orbitant-chief-of-staff:status` | Operational health dashboard | Available |
-| `/orbitant-chief-of-staff:today` | Morning briefing | Coming soon |
-| `/orbitant-chief-of-staff:triage` | Inbox management | Coming soon |
+| `/orbitant-chief-of-staff:today` | Morning briefing | Available |
+| `/orbitant-chief-of-staff:triage` | Inbox management | Available |
 | `/orbitant-chief-of-staff:week` | Weekly planning | Coming soon |
 | `/orbitant-chief-of-staff:prep` | Meeting preparation | Coming soon |
 | `/orbitant-chief-of-staff:crm` | Contact management | Coming soon |
@@ -43,7 +43,7 @@ mkdir -p .claude/contacts
 |-------|------|-------------|
 | `orbitant-graceful-degradation` | Auto-triggered | Checks MCP and config availability before operations |
 | `orbitant-goal-alignment` | Auto-triggered | Scores and prioritizes work against quarterly rocks |
-| `orbitant-voice-drafting` | Auto-triggered | Drafts in your voice using style references (coming soon) |
+| `orbitant-voice-drafting` | Auto-triggered | Drafts in your voice using style references |
 
 ## Configuration
 
@@ -73,7 +73,7 @@ The `/preflight` and `/status` commands work in Cowork sessions. Commands that d
 
 ## Roadmap
 
-**Phase 2 -- Daily Operations:** `/today` morning briefing, `/triage` inbox management with rock-aligned scoring, voice-matched draft replies.
+**Phase 2 -- Daily Operations:** ✅ `/today` morning briefing, `/triage` inbox management with rock-aligned scoring, voice-matched draft replies.
 
 **Phase 3 -- Planning and Prep:** `/week` weekly planning against rocks, `/prep` meeting preparation with context pulls, `/crm` contact relationship management.
 
