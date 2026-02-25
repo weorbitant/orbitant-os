@@ -40,9 +40,15 @@ printf "\n"
 # Parse --team flag
 # --------------------------------------------
 TEAM_MODE=false
-if [[ "${1:-}" == "--team" ]]; then
-  TEAM_MODE=true
-fi
+case "${1:-}" in
+  --team) TEAM_MODE=true ;;
+  "") ;;
+  *)
+    printf "${RED}Unknown option: %s${NC}\n" "$1"
+    printf "Usage: ./install.sh [--team]\n"
+    exit 1
+    ;;
+esac
 
 # --------------------------------------------
 # Prerequisites check

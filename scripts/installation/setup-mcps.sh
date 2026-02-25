@@ -40,22 +40,22 @@ setup_mcp() {
   # Run claude mcp add
   if claude mcp add "$name" -s user -- "${command_args[@]}" > /dev/null 2>&1; then
     printf "  ${GREEN}%s${NC} %s registered successfully\n" "+" "$description"
+
+    # Auth instructions
+    printf "\n  ${BOLD}Next steps:${NC}\n"
+    printf "    1. Start a new Claude Code session\n"
+    printf "    2. Run: /mcp\n"
+    printf "    3. Select \"%s\" and complete the OAuth flow\n\n" "$name"
+
+    # Wait for user confirmation
+    local response
+    read -r -p "  Press Enter when done (or 's' to skip)... " response
+    if [[ "$response" == "s" ]]; then
+      printf "  ${YELLOW}Skipped${NC} %s auth — remember to complete it later\n" "$description"
+    fi
   else
     printf "  ${RED}%s${NC} Failed to register %s\n" "x" "$description"
     printf "    Retry manually: ${BOLD}claude mcp add \"%s\" -s user -- %s${NC}\n" "$name" "${command_args[*]}"
-  fi
-
-  # Auth instructions
-  printf "\n  ${BOLD}Next steps:${NC}\n"
-  printf "    1. Start a new Claude Code session\n"
-  printf "    2. Run: /mcp\n"
-  printf "    3. Select \"%s\" and complete the OAuth flow\n\n" "$name"
-
-  # Wait for user confirmation
-  local response
-  read -r -p "  Press Enter when done (or 's' to skip)... " response
-  if [[ "$response" == "s" ]]; then
-    printf "  ${YELLOW}Skipped${NC} %s auth — remember to complete it later\n" "$description"
   fi
 }
 
