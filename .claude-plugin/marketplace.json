@@ -11,6 +11,12 @@
       "source": "./plugins/orbitant-marketing",
       "description": "Marketing team skills for content creation and review",
       "version": "1.0.0"
+    },
+    {
+      "name": "orbitant-chief-of-staff",
+      "source": "./plugins/orbitant-chief-of-staff",
+      "description": "Chief of staff capabilities to support daily grinding",
+      "version": "1.0.0"
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "name": "orbitant-chief-of-staff",
+  "version": "1.0.0",
+  "description": "Chief of staff capabilities to support daily grinding",
+  "author": {
+    "name": "Orbitant"
+  },
+  "license": "MIT",
+  "skills": []
+}
