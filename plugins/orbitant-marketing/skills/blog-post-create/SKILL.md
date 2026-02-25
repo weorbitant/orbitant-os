@@ -5,7 +5,8 @@ description: |
   a blog post from raw input (transcript, notes, or draft). Produces a structured,
   SEO-optimised article in Spanish that matches Orbitant's tone, editorial standards,
   and content cluster strategy. Use this skill whenever someone provides raw material
-  and asks to turn it into a publishable blog post for the Orbitant blog.
+  and asks to turn it into a publishable blog post for the Orbitant blog — even if
+  they don't explicitly say "blog post" or just share notes asking for help with content.
 license: MIT
 version: "1.0.0"
 metadata:

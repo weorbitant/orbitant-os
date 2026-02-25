@@ -4,7 +4,8 @@ description: |
   Translation skill for Orbitant blog posts. Takes a Spanish article and produces an
   English version optimised for English-speaking audiences. Keyword selection is not
   a literal translation but a search-intent-driven choice for the English market.
-  Use this skill when translating Spanish blog posts to English.
+  Use this skill when translating, localizing, or creating an English version of a
+  Spanish blog post — even if they just say "translate this" or "make an English version".
 license: MIT
 version: "1.0.0"
 metadata:
