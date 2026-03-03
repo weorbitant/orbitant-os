@@ -1,0 +1,91 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+const posts = [
+  {
+    title: "Introducing orbitant-os: The Future Will Be AI or Nothing at All",
+    date: "2026-03-03",
+    slug: "welcome",
+    excerpt: "We're excited to announce orbitant-os — Orbitant's open-source plugin marketplace for AI agents.",
+  },
+];
+---
+
+<StarlightPage
+  frontmatter={{
+    title: 'Blog',
+    description: 'News and updates from the Orbitant team',
+    template: 'doc',
+    tableOfContents: false,
+  }}
+>
+  <p class="intro">News, updates, and announcements from the Orbitant team.</p>
+
+  <div class="blog-list">
+    {posts.map((post) => (
+      <article class="blog-post">
+        <a href={`/orbitant-os/blog/${post.slug}/`}>
+          <h2>{post.title}</h2>
+        </a>
+        <time datetime={post.date}>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+        <p>{post.excerpt}</p>
+        <a href={`/orbitant-os/blog/${post.slug}/`} class="read-more">Read more →</a>
+      </article>
+    ))}
+  </div>
+</StarlightPage>
+
+<style>
+  .intro {
+    font-size: 1.1rem;
+    color: var(--sl-color-gray-3);
+    margin-bottom: 2rem;
+  }
+
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .blog-post {
+    padding: 1.5rem;
+    background: var(--sl-color-bg-inline-code);
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
+  }
+
+  .blog-post h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+  }
+
+  .blog-post h2 a {
+    color: var(--sl-color-white);
+    text-decoration: none;
+  }
+
+  .blog-post h2 a:hover {
+    color: var(--sl-color-accent);
+  }
+
+  .blog-post time {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3);
+  }
+
+  .blog-post p {
+    margin: 0.75rem 0;
+    color: var(--sl-color-gray-2);
+  }
+
+  .read-more {
+    color: var(--sl-color-accent);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .read-more:hover {
+    text-decoration: underline;
+  }
+</style>

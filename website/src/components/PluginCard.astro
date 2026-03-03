@@ -1,0 +1,85 @@
+---
+interface Props {
+  name: string;
+  version: string;
+  description: string;
+  skillCount: number;
+  commandCount: number;
+  agentCount: number;
+  href?: string;
+}
+
+const { name, version, description, skillCount, commandCount, agentCount, href } = Astro.props;
+---
+
+<article class="plugin-card">
+  <header>
+    <h3>
+      {href ? (
+        <a href={href}>{name}</a>
+      ) : (
+        name
+      )}
+    </h3>
+    <span class="version">v{version}</span>
+  </header>
+  <p class="description">{description}</p>
+  <div class="stats-row">
+    {skillCount > 0 && (
+      <span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+          <path d="M2 2l7.586 7.586"/>
+          <circle cx="11" cy="11" r="2"/>
+        </svg>
+        {skillCount} skill{skillCount !== 1 ? 's' : ''}
+      </span>
+    )}
+    {commandCount > 0 && (
+      <span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="4 17 10 11 4 5"/>
+          <line x1="12" y1="19" x2="20" y2="19"/>
+        </svg>
+        {commandCount} command{commandCount !== 1 ? 's' : ''}
+      </span>
+    )}
+    {agentCount > 0 && (
+      <span>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        {agentCount} agent{agentCount !== 1 ? 's' : ''}
+      </span>
+    )}
+  </div>
+</article>
+
+<style>
+  .plugin-card header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.5rem;
+  }
+
+  .plugin-card h3 {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+
+  .plugin-card h3 a {
+    text-decoration: none;
+  }
+
+  .plugin-card h3 a:hover {
+    text-decoration: underline;
+  }
+
+  .description {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.95rem;
+  }
+</style>
