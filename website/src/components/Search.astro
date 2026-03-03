@@ -1,0 +1,47 @@
+---
+import type { Props } from '@astrojs/starlight/props';
+import Default from '@astrojs/starlight/components/Search.astro';
+---
+
+<div class="custom-search">
+  <Default {...Astro.props}><slot /></Default>
+  
+  <nav class="custom-nav">
+    <a href="/orbitant-os/getting-started/quick-start/">Docs</a>
+    <a href="/orbitant-os/plugins/">Plugins</a>
+    <a href="/orbitant-os/blog/">Blog</a>
+  </nav>
+</div>
+
+<style>
+  .custom-search {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+  }
+  .custom-nav {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .custom-nav a {
+    color: var(--sl-color-gray-2);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .custom-nav a:hover {
+    color: var(--sl-color-white);
+  }
+  @media (min-width: 50rem) {
+    .custom-nav {
+      display: flex;
+    }
+  }
+</style>

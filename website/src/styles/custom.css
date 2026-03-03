@@ -12,16 +12,16 @@
   border-color: var(--sl-color-accent);
 }
 
-.plugin-card h3 {
+.plugin-card h2 {
   margin-top: 0;
   color: var(--sl-color-text) !important;
 }
 
-.plugin-card h3 a {
+.plugin-card h2 a {
   color: var(--sl-color-text) !important;
 }
 
-.plugin-card h3 a:hover {
+.plugin-card h2 a:hover {
   color: var(--sl-color-accent);
 }
 
@@ -44,7 +44,7 @@
   background: var(--sl-color-bg-inline-code);
 }
 
-.skill-card h4 {
+.skill-card h3 {
   margin-top: 0;
   margin-bottom: 0.5rem;
 }
