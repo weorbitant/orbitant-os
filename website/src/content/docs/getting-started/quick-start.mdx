@@ -1,0 +1,69 @@
+---
+title: Overview
+description: Supercharge your AI agents with Orbitant's plugin marketplace.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## The Future Will Be AI or Nothing at All
+
+**orbitant-os** is Orbitant's open-source plugin marketplace — a curated collection of skills, agents, and commands that make AI agents actually useful for real work.
+
+No more writing the same prompts over and over. No more explaining context every time. Just install a plugin and let your AI assistant handle the heavy lifting.
+
+## What's Inside
+
+<CardGrid>
+  <Card title="Skills" icon="pencil">
+    Context-aware instructions that activate automatically. Write a blog post? The AI knows exactly how to review it, translate it, and match your brand tone.
+  </Card>
+  <Card title="Commands" icon="rocket">
+    One-shot actions via slash commands. `/preflight` your day, `/triage` your inbox, `/prep` for meetings — all in seconds.
+  </Card>
+  <Card title="Agents" icon="setting">
+    Specialized sub-agents with focused capabilities. They handle specific tasks with the right tools, nothing more, nothing less.
+  </Card>
+</CardGrid>
+
+## Available Plugins
+
+### orbitant-marketing `v1.1.0`
+Everything your content team needs:
+- **Blog post review** — editorial feedback, SEO checks, readability scoring
+- **Blog post creation** — structured drafts from outlines
+- **Translation** — maintain tone across languages
+- **Brand tone** — consistent voice in every piece
+
+### orbitant-chief-of-staff `v1.3.2`
+Your AI executive assistant:
+- **7 commands** — `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`
+- **3 skills** — graceful degradation, goal alignment, voice drafting
+- **2 agents** — triage and enrichment specialists
+
+## Get Started in 30 Seconds
+
+```bash
+# Add the marketplace
+/plugin marketplace add weorbitant/orbitant-os
+
+# Install what you need
+/plugin install orbitant-marketing
+/plugin install orbitant-chief-of-staff
+
+# You're ready
+```
+
+That's it. Skills activate automatically when relevant. Commands are available via `/plugin-name:command`.
+
+## Works Everywhere
+
+- **Claude Code** — native plugin support
+- **Claude.ai** — upload skills directly
+- **Cursor, Cline, Copilot** — via [skills.sh](https://skills.sh)
+- **Claude API** — programmatic access
+
+## Next Steps
+
+- [Browse all plugins](/orbitant-os/plugins/) — see everything available
+- [Understand the concepts](/orbitant-os/getting-started/concepts/) — skills vs agents vs commands
+- [Contribute](/orbitant-os/guides/contributing/) — add your own skills

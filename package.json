@@ -3,23 +3,35 @@
   "version": "1.0.0",
   "description": "Orbitant's Claude Code plugin marketplace",
   "private": true,
+  "type": "module",
   "scripts": {
-    "lint": "markdownlint-cli2 '**/*.md' '#node_modules'",
-    "lint:fix": "markdownlint-cli2 --fix '**/*.md' '#node_modules'",
+    "lint": "markdownlint-cli2 '**/*.md' '#node_modules' '#website'",
+    "lint:fix": "markdownlint-cli2 --fix '**/*.md' '#node_modules' '#website'",
     "validate": "npm run validate:marketplace && npm run validate:plugins && npm run validate:skills && npm run validate:forks",
     "validate:marketplace": "ajv validate -s .github/schemas/marketplace.schema.json -d .claude-plugin/marketplace.json",
-    "validate:plugins": "node scripts/validate-plugins.js",
-    "validate:skills": "node scripts/validate-skills.js",
-    "validate:forks": "node scripts/validate-forks.js",
+    "validate:plugins": "node scripts/validate-plugins.cjs",
+    "validate:skills": "node scripts/validate-skills.cjs",
+    "validate:forks": "node scripts/validate-forks.cjs",
     "check": "npm run lint && npm run validate",
-    "check:upstream": "node scripts/check-upstream.js",
-    "ci": "npm run check"
+    "check:upstream": "node scripts/check-upstream.cjs",
+    "ci": "npm run check",
+    "website:parse": "node --import tsx website/src/scripts/parse-plugins.ts",
+    "website:dev": "npm run website:parse && astro dev --root website",
+    "website:build": "npm run website:parse && astro build --root website",
+    "website:preview": "astro preview --root website"
   },
   "devDependencies": {
+    "@astrojs/starlight": "^0.31.0",
+    "@types/node": "^22.0.0",
     "ajv": "^8.17.1",
     "ajv-cli": "^5.0.0",
+    "astro": "^5.1.0",
+    "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
-    "markdownlint-cli2": "^0.21.0"
+    "markdownlint-cli2": "^0.21.0",
+    "sharp": "^0.33.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
   },
   "engines": {
     "node": ">=18"

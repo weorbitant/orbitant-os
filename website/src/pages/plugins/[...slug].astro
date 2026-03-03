@@ -1,0 +1,182 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import SkillCard from '../../components/SkillCard.astro';
+import CommandBadge from '../../components/CommandBadge.astro';
+
+interface Plugin {
+  name: string;
+  version: string;
+  description: string;
+  skills: Array<{ name: string; folder: string; description: string; version: string; tags: string[]; plugin: string }>;
+  commands: Array<{ name: string; description: string; plugin: string }>;
+  agents: Array<{ name: string; description: string; allowedTools?: string; plugin: string }>;
+}
+
+export async function getStaticPaths() {
+  let plugins: Plugin[] = [];
+
+  try {
+    const pluginsModule = await import('../../content/generated/plugins.json');
+    plugins = pluginsModule.default;
+  } catch {
+    console.warn('No generated plugins.json found.');
+    return [];
+  }
+
+  return plugins.map((plugin) => ({
+    params: { slug: plugin.name },
+    props: { plugin },
+  }));
+}
+
+interface Props {
+  plugin: Plugin;
+}
+
+const { plugin } = Astro.props;
+---
+
+<StarlightPage
+  frontmatter={{
+    title: plugin.name,
+    description: plugin.description,
+    template: 'doc',
+  }}
+>
+  <p class="version-badge">v{plugin.version}</p>
+  <p class="description">{plugin.description}</p>
+
+  <h2>Installation</h2>
+  <pre><code># Register the marketplace (if not already done)
+/plugin marketplace add weorbitant/orbitant-os
+
+# Install this plugin
+/plugin install {plugin.name}</code></pre>
+
+  {plugin.skills.length > 0 && (
+    <>
+      <h2>Skills ({plugin.skills.length})</h2>
+      <div class="skills-list">
+        {plugin.skills.map((skill) => (
+          <SkillCard
+            name={skill.name}
+            folder={skill.folder}
+            description={skill.description}
+            version={skill.version}
+            tags={skill.tags}
+            plugin={skill.plugin}
+            href={`/orbitant-os/skills/${skill.plugin}/${skill.folder}/`}
+          />
+        ))}
+      </div>
+    </>
+  )}
+
+  {plugin.commands.length > 0 && (
+    <>
+      <h2>Commands ({plugin.commands.length})</h2>
+      <div class="commands-list">
+        {plugin.commands.map((command) => (
+          <div class="command-item">
+            <CommandBadge name={command.name} plugin={plugin.name} />
+            <p>{command.description}</p>
+          </div>
+        ))}
+      </div>
+    </>
+  )}
+
+  {plugin.agents.length > 0 && (
+    <>
+      <h2>Agents ({plugin.agents.length})</h2>
+      <div class="agents-list">
+        {plugin.agents.map((agent) => (
+          <div class="agent-item">
+            <h4>{agent.name}</h4>
+            <p>{agent.description}</p>
+            {agent.allowedTools && (
+              <p class="allowed-tools">
+                <strong>Allowed tools:</strong> {agent.allowedTools}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
+    </>
+  )}
+
+  <h2>Uninstalling</h2>
+  <pre><code>/plugin uninstall {plugin.name}</code></pre>
+</StarlightPage>
+
+<style>
+  .version-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: var(--sl-color-accent-low);
+    color: var(--sl-color-accent-high);
+    border-radius: 0.25rem;
+    font-family: var(--sl-font-mono);
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    color: var(--sl-color-gray-5);
+    margin-bottom: 2rem;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .commands-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .command-item {
+    padding: 1rem;
+    background: var(--sl-color-gray-1);
+    border-radius: 0.375rem;
+  }
+
+  .command-item p {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9rem;
+    color: var(--sl-color-gray-5);
+  }
+
+  .agents-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .agent-item {
+    padding: 1rem;
+    background: var(--sl-color-gray-1);
+    border-radius: 0.375rem;
+  }
+
+  .agent-item h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--sl-color-accent);
+  }
+
+  .agent-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--sl-color-gray-5);
+  }
+
+  .allowed-tools {
+    margin-top: 0.5rem !important;
+    font-family: var(--sl-font-mono);
+    font-size: 0.8rem !important;
+  }
+</style>

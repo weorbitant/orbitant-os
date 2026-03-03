@@ -1,0 +1,137 @@
+---
+title: Creating Skills
+description: How to write effective SKILL.md files.
+---
+
+## SKILL.md Structure
+
+Every skill needs a `SKILL.md` with YAML frontmatter:
+
+```yaml
+---
+name: orbitant-{short-name}        # ALWAYS prefix with orbitant-
+description: |
+  Clear description of what this skill does and when to activate it.
+  Be specific — this is what Claude reads to decide whether to load the skill.
+  Include trigger phrases and edge cases. Be a little "pushy" to avoid undertriggering.
+version: "1.0.0"
+license: MIT
+metadata:
+  author: your-name
+  tags: comma, separated, tags
+---
+```
+
+Then write the instructions in Markdown below the frontmatter.
+
+## Required Fields
+
+| Field | Description |
+|-------|-------------|
+| `name` | Must start with `orbitant-` to avoid collisions |
+| `description` | Primary triggering mechanism — be comprehensive |
+| `version` | Semantic version (e.g., `1.0.0`) |
+
+## Writing Effective Descriptions
+
+The `description` field is the **primary triggering mechanism**. Claude reads this to decide whether to activate your skill. Make it:
+
+- **Specific** about what the skill does
+- **Include trigger phrases** and edge cases
+- **Be "pushy"** — Claude tends to under-trigger otherwise
+
+### Good Example
+
+```yaml
+description: |
+  Activate when the user asks to review, edit, or improve a blog post, article,
+  or any long-form content. This includes requests like "check my post",
+  "review this article", "improve my blog", or "edit my draft". Also activate
+  for SEO optimization requests on content, even if they don't explicitly
+  mention "review".
+```
+
+### Bad Example
+
+```yaml
+description: Reviews blog posts.
+```
+
+## Keep It Under 500 Lines
+
+If your skill is getting long, move reference material to a `references/` subfolder and link to it from the SKILL.md:
+
+```
+skills/my-skill/
+├── SKILL.md              # Under 500 lines
+├── references/
+│   ├── style-guide.md
+│   └── examples.md
+```
+
+## Naming Conventions
+
+- **Skill names**: `orbitant-{short-description}` (e.g., `orbitant-blog-post-review`)
+- **Skill folders**: kebab-case (e.g., `blog-post-review/`)
+
+:::caution[Important]
+The `orbitant-` prefix is required for all skill names to avoid collisions with community skills.
+:::
+
+## Disabling Automatic Invocation
+
+For dangerous or manual-only skills, add:
+
+```yaml
+disable-model-invocation: true
+```
+
+This prevents Claude from auto-activating the skill; users must invoke it explicitly.
+
+## Testing Your Skill
+
+Before opening a PR, test locally:
+
+```bash
+# Load the plugin from your local directory
+claude --plugin-dir ./plugins/orbitant-{vertical}
+```
+
+### Test Prompts to Try
+
+1. **Should trigger**: Write prompts that match your description
+2. **Should NOT trigger**: Write prompts that are similar but shouldn't activate
+3. **Edge cases**: Test the "pushy" phrases in your description
+
+## Example SKILL.md
+
+Here's a complete example:
+
+```yaml
+---
+name: orbitant-blog-post-review
+description: |
+  Activate when the user asks to review, edit, or improve a blog post.
+  This includes "check my post", "review this article", "improve my blog",
+  "edit my draft", or any SEO optimization requests on content.
+version: "1.0.0"
+license: MIT
+metadata:
+  author: orbitant
+  tags: content, blog, review, editing, seo
+---
+
+# Blog Post Review
+
+When reviewing a blog post, follow these guidelines...
+
+## Structure
+- Check for clear introduction
+- Verify logical flow between sections
+- Ensure strong conclusion with CTA
+
+## SEO
+- Title under 60 characters
+- Meta description 150-160 characters
+- Include target keywords naturally
+```

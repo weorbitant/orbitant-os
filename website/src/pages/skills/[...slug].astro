@@ -1,0 +1,146 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import TagBadge from '../../components/TagBadge.astro';
+
+interface Skill {
+  name: string;
+  folder: string;
+  description: string;
+  version: string;
+  tags: string[];
+  plugin: string;
+}
+
+export async function getStaticPaths() {
+  let skills: Skill[] = [];
+
+  try {
+    const skillsModule = await import('../../content/generated/skills.json');
+    skills = skillsModule.default;
+  } catch {
+    console.warn('No generated skills.json found.');
+    return [];
+  }
+
+  return skills.map((skill) => ({
+    params: { slug: `${skill.plugin}/${skill.folder}` },
+    props: { skill },
+  }));
+}
+
+interface Props {
+  skill: Skill;
+}
+
+const { skill } = Astro.props;
+---
+
+<StarlightPage
+  frontmatter={{
+    title: skill.name,
+    description: skill.description,
+    template: 'doc',
+  }}
+>
+  <div class="skill-meta">
+    <span class="version-badge">v{skill.version}</span>
+    <span class="plugin-link">
+      Part of <a href={`/orbitant-os/plugins/${skill.plugin}/`}>{skill.plugin}</a>
+    </span>
+  </div>
+
+  <p class="description">{skill.description}</p>
+
+  {skill.tags.length > 0 && (
+    <div class="tags">
+      {skill.tags.map((tag) => (
+        <TagBadge tag={tag} />
+      ))}
+    </div>
+  )}
+
+  <h2>Installation</h2>
+  <pre><code># Install the parent plugin
+/plugin marketplace add weorbitant/orbitant-os
+/plugin install {skill.plugin}</code></pre>
+
+  <h2>Usage</h2>
+  <p>
+    After installing, this skill will automatically activate when Claude detects relevant context.
+    You can also invoke it directly:
+  </p>
+  <pre><code>/{skill.plugin}:{skill.folder}</code></pre>
+
+  <h2>Using with Other Agents</h2>
+  <p>
+    Install this skill on other AI agents using <a href="https://skills.sh">skills.sh</a>:
+  </p>
+  <pre><code># Install to Cursor
+npx skills add weorbitant/orbitant-os --skill {skill.name} --agent cursor -y
+
+# Install to Cline
+npx skills add weorbitant/orbitant-os --skill {skill.name} --agent cline -y
+
+# Install to Claude Code
+npx skills add weorbitant/orbitant-os --skill {skill.name} --agent claude-code -y</code></pre>
+
+  <p class="back-link">
+    <a href={`/orbitant-os/plugins/${skill.plugin}/`}>← Back to {skill.plugin}</a>
+  </p>
+</StarlightPage>
+
+<style>
+  .skill-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .version-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background: var(--sl-color-accent-low);
+    color: var(--sl-color-accent-high);
+    border-radius: 0.25rem;
+    font-family: var(--sl-font-mono);
+    font-size: 0.875rem;
+  }
+
+  .plugin-link {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-4);
+  }
+
+  .plugin-link a {
+    color: var(--sl-color-accent);
+  }
+
+  .description {
+    font-size: 1.1rem;
+    color: var(--sl-color-gray-5);
+    margin-bottom: 1rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .back-link {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sl-color-gray-3);
+  }
+
+  .back-link a {
+    color: var(--sl-color-accent);
+    text-decoration: none;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -9,6 +9,8 @@ This is **orbitant-os**, Orbitant's Claude Code plugin marketplace. It contains 
 /plugin install orbitant-marketing
 ```
 
+**Website:** <https://weorbitant.github.io/orbitant-os>
+
 ## Repo Structure
 
 ```
@@ -22,11 +24,7 @@ orbitant-os/
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   └── skills/
-│   │       ├── blog-post-review/
-│   │       ├── blog-post-create/
-│   │       ├── blog-post-translate/
-│   │       └── tone/
-│   └── orbitant-chief-of-staff/    <- v1.3.1 — graceful-degradation, goal-alignment, voice-drafting
+│   └── orbitant-chief-of-staff/    <- v1.3.2 — graceful-degradation, goal-alignment, voice-drafting
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── skills/
@@ -34,19 +32,60 @@ orbitant-os/
 │       ├── agents/
 │       ├── crm/
 │       └── references/
+├── website/                        <- Astro + Starlight documentation site
+│   ├── astro.config.mjs
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── content/docs/           <- Documentation pages (MDX)
+│   │   ├── pages/                  <- Dynamic pages (plugins, skills, blog)
+│   │   ├── scripts/
+│   │   │   └── parse-plugins.ts    <- Build-time plugin parser
+│   │   └── styles/
+│   └── tsconfig.json
 ├── .github/
-│   ├── assets/                     <- images and screenshots
-│   ├── schemas/                    <- JSON schemas for validation
+│   ├── assets/
+│   ├── schemas/
 │   └── workflows/
-│       └── validate.yml            <- CI pipeline
-├── scripts/                        <- validation scripts
-├── .gitignore
-├── CONTRIBUTING.md
-├── FAQ.md
-├── LICENSE
+│       ├── validate.yml            <- CI pipeline
+│       └── deploy-website.yml      <- Website deployment to GitHub Pages
+├── scripts/
 ├── package.json
 └── README.md
 ```
+
+## Website
+
+The documentation website is built with Astro + Starlight and deployed to GitHub Pages.
+
+### Development
+
+```bash
+npm install                # Install all dependencies
+npm run website:dev        # Start dev server at localhost:4321
+npm run website:build      # Build static site
+npm run website:preview    # Preview built site
+```
+
+### How It Works
+
+1. **Plugin Parser** (`website/src/scripts/parse-plugins.ts`) reads `plugins/` at build time
+2. Generates JSON files in `website/src/content/generated/`
+3. Dynamic pages (`src/pages/plugins/`, `src/pages/skills/`) render from generated data
+4. Static docs live in `src/content/docs/`
+
+### Adding Pages
+
+- **Docs**: Add `.mdx` files to `website/src/content/docs/` and update sidebar in `astro.config.mjs`
+- **Blog posts**: Add to `website/src/pages/blog/` and update the index
+
+### Deployment
+
+Automatic via `.github/workflows/deploy-website.yml`:
+- Triggers on push to `main` when `website/**`, `plugins/**`, or `marketplace.json` changes
+- Builds and deploys to GitHub Pages at `weorbitant.github.io/orbitant-os`
+
+## Plugin Structure
 
 Each plugin follows this structure:
 
@@ -99,6 +138,20 @@ metadata:
 - Use `disable-model-invocation: true` in frontmatter for dangerous/manual-only skills.
 - The reference implementation is `plugins/orbitant-marketing/skills/blog-post-review/SKILL.md` — use it as a template for quality and structure.
 
+### When Adding a New Skill
+1. Create folder: `plugins/orbitant-{vertical}/skills/{skill-name}/`
+2. Write `SKILL.md` with proper frontmatter (see above)
+3. Optionally add `README.md`, `scripts/`, `references/`, `assets/`
+4. Add the skill path to `marketplace.json` -> corresponding plugin's `skills` array
+5. Bump version in `plugin.json`
+6. Open a PR
+
+### When Adding a New Vertical
+1. Create `plugins/orbitant-{vertical}/` with full structure (`.claude-plugin/plugin.json`, `skills/`, `agents/`, `commands/`)
+2. Add the plugin entry to `.claude-plugin/marketplace.json`
+3. Update `README.md` table
+4. Create a GitHub release when publishing
+
 ### Writing Agents
 ```yaml
 ---
@@ -123,30 +176,31 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 - Create a GitHub release with release notes
 - Git tags follow format: `orbitant-{vertical}-v{X.Y.Z}`
 
-### When Adding a New Skill
-1. Create folder: `plugins/orbitant-{vertical}/skills/{skill-name}/`
-2. Write `SKILL.md` with proper frontmatter (see conventions above)
-3. Optionally add `README.md`, `scripts/`, `references/`, `assets/`
-4. Add the skill path to `marketplace.json` -> corresponding plugin's `skills` array
-5. Bump version in `plugin.json`
-6. Create a GitHub release when publishing
-
-### When Adding a New Vertical
-1. Create `plugins/orbitant-{vertical}/` with full structure (`.claude-plugin/plugin.json`, `skills/`, `agents/`, `commands/`)
-2. Add the plugin entry to `.claude-plugin/marketplace.json`
-3. Update `README.md` table
-4. Create a GitHub release when publishing
-
 ## Current State
 
 | Plugin | Version | Status | Skills | Commands |
 |--------|---------|--------|--------|----------|
 | orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone` | — |
-| orbitant-chief-of-staff | 1.3.1 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
+| orbitant-chief-of-staff | 1.3.2 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
+
+## Scripts
+
+```bash
+# Validation
+npm run check              # Run lint + validate (same as CI)
+npm run lint               # Markdown linting
+npm run validate           # Schema validations
+npm run check:upstream     # Check forked skills for upstream changes
+
+# Website
+npm run website:dev        # Dev server
+npm run website:build      # Build static site
+npm run website:preview    # Preview build
+```
 
 ## Language
 
-The team works in Spanish and English. Code comments, commit messages, and technical docs are in English. Skills that interact with users should respect the language of the input (see blog-post-review for an example of language detection via frontmatter `lang` field).
+The team works in Spanish and English. Code comments, commit messages, and technical docs are in English. Skills that interact with users should respect the language of the input.
 
 ## Do NOT
 
@@ -154,3 +208,4 @@ The team works in Spanish and English. Code comments, commit messages, and techn
 - Do NOT put skills directly in the repo root — they MUST live inside a plugin under `plugins/`.
 - Do NOT exceed 500 lines in a single SKILL.md without using progressive disclosure (`references/`).
 - Do NOT forget to update `marketplace.json` when adding or modifying skills.
+- Do NOT manually edit files in `website/src/content/generated/` — they are auto-generated.
