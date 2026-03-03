@@ -1,0 +1,247 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import TagBadge from '../../components/TagBadge.astro';
+
+interface BlogPost {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  author: string;
+  tags: string[];
+  content: string;
+  plugin?: string;
+  version?: string;
+  isRelease: boolean;
+}
+
+export async function getStaticPaths() {
+  let posts: BlogPost[] = [];
+
+  try {
+    const blogModule = await import('../../content/generated/blog.json');
+    posts = blogModule.default;
+  } catch {
+    console.warn('No generated blog.json found.');
+    return [];
+  }
+
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+
+const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+// Simple markdown to HTML converter for blog content
+function markdownToHtml(markdown: string): string {
+  if (!markdown) return '';
+
+  let html = markdown;
+
+  // Escape HTML entities first
+  html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  // Code blocks (must be first to prevent other transformations inside)
+  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+
+  // Inline code
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Headers
+  html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+
+  // Bold and italic
+  html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+  html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+
+  // Links
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+
+  // Unordered lists
+  html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+  html = html.replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>');
+
+  // Horizontal rules
+  html = html.replace(/^---+$/gm, '<hr>');
+
+  // Paragraphs (lines that aren't already wrapped)
+  const lines = html.split('\n');
+  const processedLines: string[] = [];
+  let inList = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.startsWith('<h') || line.startsWith('<ul') || line.startsWith('<pre') ||
+        line.startsWith('<hr') || line.startsWith('</') || line === '') {
+      processedLines.push(lines[i]);
+      continue;
+    }
+    if (!line.startsWith('<')) {
+      processedLines.push(`<p>${line}</p>`);
+    } else {
+      processedLines.push(lines[i]);
+    }
+  }
+
+  return processedLines.join('\n');
+}
+---
+
+<StarlightPage
+  frontmatter={{
+    title: post.title,
+    description: post.description,
+    template: 'doc',
+  }}
+>
+  <div class="post-meta">
+    <time datetime={post.date}>{formattedDate}</time>
+    <span class="separator">·</span>
+    <span class="author">{post.author}</span>
+    {post.isRelease && post.version && (
+      <>
+        <span class="separator">·</span>
+        <span class="version">v{post.version}</span>
+      </>
+    )}
+  </div>
+
+  {post.tags.length > 0 && (
+    <div class="tags">
+      {post.tags.map((tag) => (
+        <TagBadge tag={tag} />
+      ))}
+    </div>
+  )}
+
+  {post.isRelease && post.plugin && (
+    <div class="release-badge">
+      <span>📦 Release for</span>
+      <a href={`/orbitant-os/plugins/${post.plugin}/`}>orbitant-{post.plugin}</a>
+    </div>
+  )}
+
+  <div class="content" set:html={markdownToHtml(post.content)} />
+
+  <p class="back-link"><a href="/orbitant-os/blog/">← Back to Blog</a></p>
+</StarlightPage>
+
+<style>
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--sl-color-gray-3);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--sl-color-hairline);
+  }
+
+  .separator {
+    color: var(--sl-color-gray-4);
+  }
+
+  .version {
+    font-family: var(--sl-font-mono);
+    color: var(--sl-color-accent);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .release-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--sl-color-accent-low);
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .release-badge a {
+    color: var(--sl-color-accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .release-badge a:hover {
+    text-decoration: underline;
+  }
+
+  .content {
+    line-height: 1.7;
+  }
+
+  .content :global(h2) {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .content :global(h3) {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .content :global(ul),
+  .content :global(ol) {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .content :global(pre) {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--sl-color-bg-inline-code);
+    border-radius: 0.5rem;
+    overflow-x: auto;
+  }
+
+  .content :global(code) {
+    font-family: var(--sl-font-mono);
+  }
+
+  .content :global(a) {
+    color: var(--sl-color-accent);
+  }
+
+  .back-link {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .back-link a {
+    color: var(--sl-color-accent);
+    text-decoration: none;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,91 +1,211 @@
 ---
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import BlogPostCard from '../../components/BlogPostCard.astro';
 
-const posts = [
-  {
-    title: "Introducing orbitant-os: The Future Will Be AI or Nothing at All",
-    date: "2026-03-03",
-    slug: "welcome",
-    excerpt: "We're excited to announce orbitant-os — Orbitant's open-source plugin marketplace for AI agents.",
-  },
-];
+interface BlogPost {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  author: string;
+  tags: string[];
+  content: string;
+  plugin?: string;
+  version?: string;
+  isRelease: boolean;
+}
+
+let posts: BlogPost[] = [];
+
+try {
+  const blogModule = await import('../../content/generated/blog.json');
+  posts = blogModule.default;
+} catch {
+  console.warn('No generated blog.json found.');
+}
+
+// Extract all unique tags from posts
+const allTags = [...new Set(posts.flatMap((post) => post.tags))].sort();
 ---
 
 <StarlightPage
   frontmatter={{
     title: 'Blog',
-    description: 'News and updates from the Orbitant team',
+    description: 'News, updates, and release announcements from the Orbitant team',
     template: 'doc',
     tableOfContents: false,
   }}
 >
-  <p class="intro">News, updates, and announcements from the Orbitant team.</p>
+  <p class="intro">News, updates, and release announcements from the Orbitant team.</p>
+
+  {allTags.length > 0 && (
+    <div class="tag-filter">
+      <span class="filter-label">Filter by:</span>
+      <button class="tag-pill active" data-tag="all">All</button>
+      {allTags.map((tag) => (
+        <button class="tag-pill" data-tag={tag}>{tag}</button>
+      ))}
+    </div>
+  )}
 
   <div class="blog-list">
-    {posts.map((post) => (
-      <article class="blog-post">
-        <a href={`/orbitant-os/blog/${post.slug}/`}>
-          <h2>{post.title}</h2>
-        </a>
-        <time datetime={post.date}>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
-        <p>{post.excerpt}</p>
-        <a href={`/orbitant-os/blog/${post.slug}/`} class="read-more">Read more →</a>
-      </article>
-    ))}
+    {posts.length === 0 ? (
+      <p class="no-posts">No posts yet. Check back soon!</p>
+    ) : (
+      posts.map((post) => (
+        <div class="blog-item" data-tags={post.tags.join(',')}>
+          <BlogPostCard
+            slug={post.slug}
+            title={post.title}
+            description={post.description}
+            date={post.date}
+            author={post.author}
+            tags={post.tags}
+            isRelease={post.isRelease}
+            plugin={post.plugin}
+            version={post.version}
+          />
+        </div>
+      ))
+    )}
   </div>
+
+  <p class="empty-state" style="display: none;">No posts match the selected filter.</p>
 </StarlightPage>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const tagPills = document.querySelectorAll('.tag-pill');
+    const blogItems = document.querySelectorAll('.blog-item');
+    const emptyState = document.querySelector('.empty-state');
+
+    // Check URL for tag parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialTag = urlParams.get('tag') || 'all';
+
+    function filterPosts(tag: string) {
+      let visibleCount = 0;
+
+      blogItems.forEach((item) => {
+        const itemElement = item as HTMLElement;
+        const itemTags = itemElement.dataset.tags?.split(',') || [];
+
+        if (tag === 'all' || itemTags.includes(tag)) {
+          itemElement.style.display = 'block';
+          visibleCount++;
+        } else {
+          itemElement.style.display = 'none';
+        }
+      });
+
+      // Update active state
+      tagPills.forEach((pill) => {
+        const pillElement = pill as HTMLElement;
+        if (pillElement.dataset.tag === tag) {
+          pillElement.classList.add('active');
+        } else {
+          pillElement.classList.remove('active');
+        }
+      });
+
+      // Show/hide empty state
+      if (emptyState) {
+        (emptyState as HTMLElement).style.display = visibleCount === 0 ? 'block' : 'none';
+      }
+
+      // Update URL without reload
+      const newUrl = new URL(window.location.href);
+      if (tag === 'all') {
+        newUrl.searchParams.delete('tag');
+      } else {
+        newUrl.searchParams.set('tag', tag);
+      }
+      window.history.replaceState({}, '', newUrl.toString());
+    }
+
+    // Set up click handlers
+    tagPills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const tag = (pill as HTMLElement).dataset.tag || 'all';
+        filterPosts(tag);
+      });
+    });
+
+    // Apply initial filter
+    filterPosts(initialTag);
+  });
+</script>
 
 <style>
   .intro {
     font-size: 1.1rem;
     color: var(--sl-color-gray-3);
+    margin-bottom: 1.5rem;
+  }
+
+  .tag-filter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
     margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--sl-color-bg-inline-code);
+    border-radius: 0.5rem;
+  }
+
+  .filter-label {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3);
+    margin-right: 0.5rem;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 9999px;
+    background: var(--sl-color-gray-2);
+    color: var(--sl-color-gray-5);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tag-pill:hover {
+    background: var(--sl-color-accent-low);
+    color: var(--sl-color-accent-high);
+  }
+
+  .tag-pill.active {
+    background: var(--sl-color-accent);
+    color: var(--sl-color-bg);
+    border-color: var(--sl-color-accent);
   }
 
   .blog-list {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
-  .blog-post {
-    padding: 1.5rem;
-    background: var(--sl-color-bg-inline-code);
-    border: 1px solid var(--sl-color-hairline);
-    border-radius: 0.5rem;
+  .blog-item {
+    transition: opacity 0.2s ease;
   }
 
-  .blog-post h2 {
-    margin: 0 0 0.5rem 0;
-    font-size: 1.25rem;
-  }
-
-  .blog-post h2 a {
-    color: var(--sl-color-white);
-    text-decoration: none;
-  }
-
-  .blog-post h2 a:hover {
-    color: var(--sl-color-accent);
-  }
-
-  .blog-post time {
-    font-size: 0.875rem;
+  .no-posts {
+    text-align: center;
+    padding: 3rem;
     color: var(--sl-color-gray-3);
+    font-style: italic;
   }
 
-  .blog-post p {
-    margin: 0.75rem 0;
-    color: var(--sl-color-gray-2);
-  }
-
-  .read-more {
-    color: var(--sl-color-accent);
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
-
-  .read-more:hover {
-    text-decoration: underline;
+  .empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: var(--sl-color-gray-3);
+    font-style: italic;
+    background: var(--sl-color-bg-inline-code);
+    border-radius: 0.5rem;
   }
 </style>
