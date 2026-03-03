@@ -14,13 +14,13 @@ const { name, version, description, skillCount, commandCount, agentCount, href }
 
 <article class="plugin-card">
   <header>
-    <h3>
+    <h2>
       {href ? (
         <a href={href}>{name}</a>
       ) : (
         name
       )}
-    </h3>
+    </h2>
     <span class="version">v{version}</span>
   </header>
   <p class="description">{description}</p>
@@ -65,16 +65,16 @@ const { name, version, description, skillCount, commandCount, agentCount, href }
     margin-bottom: 0.5rem;
   }
 
-  .plugin-card h3 {
+  .plugin-card h2 {
     margin: 0;
     font-size: 1.25rem;
   }
 
-  .plugin-card h3 a {
+  .plugin-card h2 a {
     text-decoration: none;
   }
 
-  .plugin-card h3 a:hover {
+  .plugin-card h2 a:hover {
     text-decoration: underline;
   }
 
