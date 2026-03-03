@@ -29,7 +29,7 @@ export default defineConfig({
         // Disable theme selector
         ThemeSelect: './src/components/EmptyThemeSelect.astro',
         // Custom header with nav links
-        Header: './src/components/Header.astro',
+        Search: './src/components/Search.astro',
       },
       customCss: ['./src/styles/custom.css'],
       sidebar: [
