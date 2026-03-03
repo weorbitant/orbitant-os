@@ -44,7 +44,7 @@
   background: var(--sl-color-bg-inline-code);
 }
 
-.skill-card h4 {
+.skill-card h3 {
   margin-top: 0;
   margin-bottom: 0.5rem;
 }

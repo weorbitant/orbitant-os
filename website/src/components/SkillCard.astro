@@ -16,13 +16,13 @@ const { name, folder, description, version, tags, plugin, href } = Astro.props;
 
 <article class="skill-card">
   <header>
-    <h4>
+    <h3>
       {href ? (
         <a href={href}>{name}</a>
       ) : (
         name
       )}
-    </h4>
+    </h3>
     <span class="version">v{version}</span>
   </header>
   <p class="description">{description}</p>
@@ -46,17 +46,17 @@ const { name, folder, description, version, tags, plugin, href } = Astro.props;
     margin-bottom: 0.375rem;
   }
 
-  .skill-card h4 {
+  .skill-card h3 {
     margin: 0;
     font-size: 1rem;
   }
 
-  .skill-card h4 a {
+  .skill-card h3 a {
     color: var(--sl-color-accent);
     text-decoration: none;
   }
 
-  .skill-card h4 a:hover {
+  .skill-card h3 a:hover {
     text-decoration: underline;
   }
 
