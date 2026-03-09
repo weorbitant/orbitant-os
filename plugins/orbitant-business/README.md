@@ -1,10 +1,10 @@
 # Business Management
 
-Business management commands — challenges, highlights, opportunities, and todos via Notion.
+Business management commands and data queries — Notion-backed management plus Factorial HR queries.
 
 ## Overview
 
-This plugin provides slash commands to create and query business execution items directly in Notion. Track challenges (blockers and risks), highlights (wins and milestones), opportunities (ideas to explore), and todos (actionable tasks with deadlines). All data lives in your Notion workspace.
+This plugin provides slash commands to create and query business execution items in Notion, plus natural-language queries against external data sources like Factorial HR. Track challenges (blockers and risks), highlights (wins and milestones), opportunities (ideas to explore), and todos (actionable tasks with deadlines). Query your HR data (headcount, holidays, sick leave) directly from conversation.
 
 ## Quick Start
 
@@ -18,25 +18,39 @@ cp plugins/orbitant-business/references/databases.example.yaml plugins/orbitant-
 # 3. Add your Notion database IDs to the config
 # Open each database in Notion → "..." → "Copy link" → extract the UUID
 
-# 4. Start using commands
+# 4. (Optional) Add Factorial API key for HR queries
+export FACTORIAL_API_KEY="your-key-here"  # in ~/.zshrc
+
+# 5. Start using commands
 /business:challenge "We need to reduce onboarding time"
-/business:highlight "Closed Q1 above target"
-/business:opportunity "Partnership with Acme Corp"
-/business:todo "Prepare board deck" by Felipe due Friday
+/business:todo "Prepare board deck" due Friday
+/business:query "Who's on holiday this week?"
+/business:preflight  # check all data sources
 ```
 
 ## Available Commands
 
-| Command | Description | Status |
-|---------|-------------|--------|
-| `/business:challenge` | Create or list challenges (blockers, risks) | Available |
-| `/business:highlight` | Create or list highlights (wins, milestones) | Available |
-| `/business:opportunity` | Create or list opportunities (ideas, leads) | Available |
-| `/business:todo` | Create or list todos (tasks with deadlines) | Available |
+### Management Commands
 
-Each command supports two modes:
+| Command | Description |
+|---------|-------------|
+| `/business:challenge` | Create or list challenges (blockers, risks) |
+| `/business:highlight` | Create or list highlights (wins, milestones) |
+| `/business:opportunity` | Create or list opportunities (ideas, leads) |
+| `/business:todo` | Create or list todos (tasks with deadlines) |
+| `/business:preflight` | Health check for all data sources |
+
+Each management command supports two modes:
 - **Create**: `/business:challenge "text"` — creates a new entry
 - **Query**: `/business:challenge list` — lists active entries
+
+### Data Commands
+
+| Command | Description |
+|---------|-------------|
+| `/business:query` | Answer natural-language questions about business data |
+
+Usage: `/business:query "How many employees do we have?"` — routes to the correct data source and answers with specific numbers.
 
 ## Configuration
 
@@ -54,7 +68,8 @@ See `references/setup-guide.md` for detailed setup instructions.
 
 | Service | Required? | Used by |
 |---------|-----------|---------|
-| Notion | Core | All commands |
+| Notion | Core | Management commands |
+| Factorial API | Optional | `/query` for HR data (via curl, not MCP) |
 
 ## Notion Database Schemas
 
@@ -69,10 +84,13 @@ Each database needs at minimum a title column. Optional columns are used when pr
 
 ## Cowork Compatibility
 
-All commands work in Cowork sessions as long as the Notion MCP server is available. If `business-databases.yaml` is not on the filesystem, paste its content into the conversation and commands will parse it from context.
+Management commands work in Cowork sessions as long as the Notion MCP server is available. If `business-databases.yaml` is not on the filesystem, paste its content into the conversation and commands will parse it from context.
+
+**Note:** Factorial queries (`/query` for HR data) are NOT available in Cowork because the factorial-fetcher uses curl (Bash), which Cowork does not support.
 
 ## Links
 
 - [Setup Guide](references/setup-guide.md)
+- [MCP Business Reference](references/mcp-business-reference.md)
 - [Plugin Marketplace](../../README.md)
 - [License](../../LICENSE)
