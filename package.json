@@ -15,7 +15,7 @@
     "check": "npm run lint && npm run validate",
     "check:upstream": "node scripts/check-upstream.cjs",
     "ci": "npm run check",
-    "website:parse": "node --import tsx website/src/scripts/parse-plugins.ts",
+    "website:parse": "node --import tsx website/src/scripts/parse-plugins.ts && node --import tsx website/src/scripts/parse-blog.ts",
     "website:dev": "npm run website:parse && astro dev --root website",
     "website:build": "npm run website:parse && astro build --root website",
     "website:preview": "astro preview --root website"

@@ -37,10 +37,14 @@ orbitant-os/
 │   ├── public/
 │   ├── src/
 │   │   ├── components/
-│   │   ├── content/docs/           <- Documentation pages (MDX)
+│   │   ├── content/
+│   │   │   ├── docs/               <- Documentation pages (MDX)
+│   │   │   ├── blog/               <- Manual blog posts (MDX)
+│   │   │   └── generated/          <- Auto-generated JSON (plugins, skills, blog)
 │   │   ├── pages/                  <- Dynamic pages (plugins, skills, blog)
 │   │   ├── scripts/
-│   │   │   └── parse-plugins.ts    <- Build-time plugin parser
+│   │   │   ├── parse-plugins.ts    <- Build-time plugin parser
+│   │   │   └── parse-blog.ts       <- Build-time blog parser (local + GitHub releases)
 │   │   └── styles/
 │   └── tsconfig.json
 ├── .github/
@@ -70,14 +74,57 @@ npm run website:preview    # Preview built site
 ### How It Works
 
 1. **Plugin Parser** (`website/src/scripts/parse-plugins.ts`) reads `plugins/` at build time
-2. Generates JSON files in `website/src/content/generated/`
-3. Dynamic pages (`src/pages/plugins/`, `src/pages/skills/`) render from generated data
-4. Static docs live in `src/content/docs/`
+2. **Blog Parser** (`website/src/scripts/parse-blog.ts`) reads local MDX posts + fetches GitHub releases
+3. Generates JSON files in `website/src/content/generated/`
+4. Dynamic pages (`src/pages/plugins/`, `src/pages/skills/`, `src/pages/blog/`) render from generated data
+5. Static docs live in `src/content/docs/`
 
 ### Adding Pages
 
 - **Docs**: Add `.mdx` files to `website/src/content/docs/` and update sidebar in `astro.config.mjs`
-- **Blog posts**: Add to `website/src/pages/blog/` and update the index
+- **Blog posts**: Add `.mdx` files to `website/src/content/blog/` with frontmatter (see Blog System below)
+
+### Blog System
+
+Blog posts come from **two sources**:
+
+1. **Manual posts** — MDX files in `website/src/content/blog/`
+2. **Release posts** — Auto-generated from GitHub releases at build time
+
+#### Manual Blog Posts
+
+Create `website/src/content/blog/{date}-{slug}.mdx`:
+
+```yaml
+---
+title: "Post Title"
+description: "Short description"
+date: "2026-03-03"
+author: "Orbitant Team"
+tags: announcement, guide
+---
+
+Content here...
+```
+
+#### Release Posts (Auto-generated)
+
+When you create a GitHub release with tag `orbitant-{plugin}-v{X.Y.Z}`:
+1. The blog parser fetches it at build time
+2. Creates a blog post with tags: `release`, `{plugin-name}`
+3. Appears on `/blog/` with the "release" tag filter
+
+#### Creating Releases
+
+1. Use the `release-notes` internal skill to draft notes
+2. Create git tag: `git tag orbitant-{plugin}-v{X.Y.Z} {commit}`
+3. Push tag: `git push origin orbitant-{plugin}-v{X.Y.Z}`
+4. Create GitHub release: `gh release create orbitant-{plugin}-v{X.Y.Z} --title "..." --notes "..."`
+5. On next website build, release appears as blog post
+
+#### Tag Filtering
+
+Blog supports filtering by tags via URL: `/blog/?tag=release`
 
 ### Deployment
 
