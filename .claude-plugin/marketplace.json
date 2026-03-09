@@ -17,6 +17,12 @@
       "source": "./plugins/orbitant-chief-of-staff",
       "description": "AI-powered chief of staff for managing priorities, communications, and goal alignment",
       "version": "1.3.2"
+    },
+    {
+      "name": "orbitant-business",
+      "source": "./plugins/orbitant-business",
+      "description": "Business management commands — challenges, highlights, opportunities, and todos via Notion",
+      "version": "0.1.0"
     }
   ]
 }
