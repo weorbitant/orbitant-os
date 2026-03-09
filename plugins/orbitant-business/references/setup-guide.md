@@ -47,6 +47,45 @@ Each database needs specific columns. See `databases.example.yaml` for the full 
 
 Optional columns (Department, Lead, Author, Owner, Deadline, etc.) are used when present but commands work without them.
 
+## External Data Sources
+
+### Factorial (HR Team Data)
+
+The `/query` command can answer questions about your HR data (headcount, holidays, sick leave, etc.) by connecting to the Factorial HR API.
+
+#### Setup
+
+1. Get an API key from your Factorial admin panel (Settings → API Keys)
+2. Add the key to your shell profile (`~/.zshrc` or `~/.bashrc`):
+   ```bash
+   export FACTORIAL_API_KEY="your-api-key-here"
+   ```
+3. Add the Factorial source to your `business-databases.yaml`:
+   ```yaml
+   sources:
+     factorial:
+       auth_env_var: "FACTORIAL_API_KEY"
+   ```
+4. Restart your Claude Code session (so the env var is loaded)
+5. Run `/preflight` to verify connectivity
+
+#### Optional Overrides
+
+```yaml
+sources:
+  factorial:
+    auth_env_var: "FACTORIAL_API_KEY"
+    base_url: "https://api.factorialhr.com/api"    # default
+    api_version: "2025-01-01"                       # default
+```
+
+#### Requirements
+
+- Factorial account with API access (admin or HR role)
+- Claude Code (desktop) — not available in Cowork sessions
+
 ## Cowork Usage
 
 In Claude Cowork (no filesystem access), paste your `business-databases.yaml` content into the conversation. Commands will detect and use it from context.
+
+**Note:** Factorial queries (`/query` for HR data) are NOT available in Cowork because the factorial-fetcher uses curl (Bash), which Cowork does not support. Management commands (`/challenge`, `/highlight`, `/opportunity`, `/todo`) work normally in Cowork via Notion MCP.
