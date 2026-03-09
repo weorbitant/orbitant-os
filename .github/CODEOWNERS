@@ -14,6 +14,9 @@
 # Marketing vertical - owned by marketing team
 plugins/orbitant-marketing/ @weorbitant/marketing
 
+# Chief of Staff vertical
+plugins/orbitant-chief-of-staff/ @weorbitant/orbitant-os
+
 # Future verticals (uncomment when created)
 # plugins/orbitant-engineering/ @weorbitant/engineering
 # plugins/orbitant-hr/ @weorbitant/hr

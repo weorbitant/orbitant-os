@@ -33,7 +33,7 @@ jobs:
       - name: Setup skills for scanning
         run: |
           mkdir -p ~/.claude/skills
-          # Symlink all skills to ~/.claude/skills/ where mcp-scan expects them
+          # Symlink all skills to ~/.claude/skills/ where snyk-agent-scan expects them
           for skill_dir in plugins/*/skills/*/; do
             skill_name=$(basename "$skill_dir")
             ln -s "$(pwd)/$skill_dir" ~/.claude/skills/"$skill_name"
@@ -41,22 +41,24 @@ jobs:
           echo "Linked skills:"
           ls -la ~/.claude/skills/
 
-      - name: Run Snyk mcp-scan
+      - name: Run Snyk Agent Scan
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           # Run scan and capture output
-          uvx mcp-scan@latest --skills --json > /tmp/scan-results.json 2>&1 || true
+          uvx snyk-agent-scan@latest --skills --json > /tmp/scan-results.json 2>&1 || true
 
           # Display results
-          uvx mcp-scan@latest --skills
+          uvx snyk-agent-scan@latest --skills
 
           # Check for security issues in results
           if grep -q '"issues": \[.\+\]' /tmp/scan-results.json; then
-            echo "::error::Security issues found by mcp-scan"
+            echo "::error::Security issues found by snyk-agent-scan"
             cat /tmp/scan-results.json | jq '.[] | select(.issues | length > 0)'
             exit 1
           fi
 
-          echo "✅ No security issues found by mcp-scan"
+          echo "✅ No security issues found by snyk-agent-scan"
 
       - name: Claude Security Review
         uses: anthropics/claude-code-security-review@main
