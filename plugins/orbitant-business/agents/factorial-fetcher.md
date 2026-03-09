@@ -74,13 +74,21 @@ Parse the JSON `data` array. Compute:
 - Employees with `terminated_on` set in the requested period (departures)
 - Employees with `seniority_calculation_date` in the requested period (new joiners)
 
-### Step 4 — Fetch leaves
+### Step 4 — Fetch leaves (with pagination)
+
+**IMPORTANT:** The leaves endpoint returns max 100 records per page. You MUST paginate to get all records.
+
+Fetch all pages by incrementing `?page=N` until an empty response is returned:
 
 ```bash
-curl -s -H "x-api-key: ${auth_env_var_value}" "{full_base_url}/timeoff/leaves"
+# Page 1
+curl -s -H "x-api-key: ${auth_env_var_value}" "{full_base_url}/timeoff/leaves?page=1"
+# Page 2 (if page 1 returned 100 records)
+curl -s -H "x-api-key: ${auth_env_var_value}" "{full_base_url}/timeoff/leaves?page=2"
+# Continue until a page returns fewer than 100 records or an empty array
 ```
 
-Filter leaves by date range overlapping the requested period. Classify using the auto-discovered leave type mapping from Step 2.
+Combine all pages into a single list, then filter by date range overlapping the requested period. Classify using the auto-discovered leave type mapping from Step 2.
 
 For weekly scope: identify leaves overlapping the current week.
 For monthly scope: aggregate all leaves in the month.
@@ -122,10 +130,6 @@ errors: [{source: "Factorial", endpoint: "{path}", error: "{error_message}"}]
 ```
 Fill what you can from the calls that succeeded.
 
-## Pagination Note
-
-The leaves endpoint returns max 100 records per page. For companies with >100 leave records in the period, append `?page=2`, `?page=3`, etc. until an empty page is returned.
-
 ## Anti-patterns
 
 - Do NOT fetch data from non-Factorial sources
@@ -134,3 +138,4 @@ The leaves endpoint returns max 100 records per page. For companies with >100 le
 - Do NOT hardcode the API key value — always read from the env var specified in config
 - Do NOT hardcode leave type IDs — always auto-discover via `/timeoff/leave_types`
 - Do NOT use `/api/v1/` or `/api/v2/` paths — they return 404. Use date-versioned paths
+- Do NOT fetch only page 1 of leaves — ALWAYS paginate until all pages are retrieved
