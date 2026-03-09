@@ -8,12 +8,12 @@
   "license": "MIT",
   "skills": [],
   "commands": [
-    "./commands/challenge.md",
-    "./commands/highlight.md",
-    "./commands/opportunity.md",
-    "./commands/todo.md",
-    "./commands/query.md",
-    "./commands/preflight.md"
+    "./commands/management/challenge.md",
+    "./commands/management/highlight.md",
+    "./commands/management/opportunity.md",
+    "./commands/management/todo.md",
+    "./commands/management/preflight.md",
+    "./commands/data/query.md"
   ],
   "agents": [
     "./agents/factorial-fetcher.md"
