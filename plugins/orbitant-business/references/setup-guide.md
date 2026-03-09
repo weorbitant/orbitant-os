@@ -10,13 +10,13 @@
 1. Copy the template:
 
    ```bash
-   cp plugins/orbitant-business/references/databases.example.yaml plugins/orbitant-business/databases.yaml
+   cp plugins/orbitant-business/references/databases.example.yaml plugins/orbitant-business/business-databases.yaml
    ```
 
    Or for global use:
 
    ```bash
-   cp plugins/orbitant-business/references/databases.example.yaml ~/.claude/databases.yaml
+   cp plugins/orbitant-business/references/databases.example.yaml ~/.claude/business-databases.yaml
    ```
 
 2. Open your copy and replace placeholder IDs with your real Notion data source IDs.
@@ -28,9 +28,9 @@
 
 ## Lookup Order
 
-Commands look for `databases.yaml` in this order:
-1. `./databases.yaml` (relative to plugin root — best for per-project config)
-2. `~/.claude/databases.yaml` (global fallback — shared across projects)
+Commands look for `business-databases.yaml` in this order:
+1. `./business-databases.yaml` (relative to plugin root — best for per-project config)
+2. `~/.claude/business-databases.yaml` (global fallback — shared across projects)
 
 The first file found wins.
 
@@ -49,4 +49,4 @@ Optional columns (Department, Lead, Author, Owner, Deadline, etc.) are used when
 
 ## Cowork Usage
 
-In Claude Cowork (no filesystem access), paste your `databases.yaml` content into the conversation. Commands will detect and use it from context.
+In Claude Cowork (no filesystem access), paste your `business-databases.yaml` content into the conversation. Commands will detect and use it from context.

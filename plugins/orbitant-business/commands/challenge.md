@@ -9,14 +9,14 @@ Add a new challenge to the execution framework, or list existing unsolved challe
 
 ## Step 0 — Load Configuration
 
-1. Read `databases.yaml` using dual-path lookup:
-   - First try `./databases.yaml` (relative to plugin root)
-   - Then try `~/.claude/databases.yaml`
+1. Read `business-databases.yaml` using dual-path lookup:
+   - First try `./business-databases.yaml` (relative to plugin root)
+   - Then try `~/.claude/business-databases.yaml`
 2. If neither exists, display this message and stop:
    ```
-   ⚠️ databases.yaml not found.
+   ⚠️ business-databases.yaml not found.
    Copy the template and add your Notion database IDs:
-     cp references/databases.example.yaml databases.yaml
+     cp references/databases.example.yaml business-databases.yaml
    See references/setup-guide.md for details.
    ```
 3. Extract the `databases.challenges` entry. Read `data_source_id`, `title_property`, `filter_property`, and `properties`.
@@ -113,7 +113,7 @@ If no results: `No unsolved challenges found.`
 ## Cowork Adaptation
 
 When running inside a Cowork session (no local filesystem access):
-- **Config**: If `databases.yaml` content was pasted into the conversation context, parse and use it. Otherwise, ask the user for the Challenges data source ID.
+- **Config**: If `business-databases.yaml` content was pasted into the conversation context, parse and use it. Otherwise, ask the user for the Challenges data source ID.
 - **MCP calls**: Work identically — the same Notion MCP tools are available in Cowork.
 - **Department resolution**: If the departments collection ID was provided in context, use it. Otherwise, skip department linking.
 
@@ -126,5 +126,5 @@ When running inside a Cowork session (no local filesystem access):
 ## Anti-patterns
 
 - Do NOT create a challenge without the user providing text — always require at least one challenge.
-- Do NOT hardcode data source IDs or property names — always read from `databases.yaml`.
+- Do NOT hardcode data source IDs or property names — always read from `business-databases.yaml`.
 - Do NOT silently skip the department link — warn the user if resolution failed.

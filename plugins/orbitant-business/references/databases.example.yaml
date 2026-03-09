@@ -1,8 +1,8 @@
-# databases.yaml — Notion database configuration for orbitant-business
+# business-databases.yaml — Notion database configuration for orbitant-business
 #
 # Copy this file to one of these locations:
-#   ./databases.yaml              (plugin root, takes precedence)
-#   ~/.claude/databases.yaml      (global fallback)
+#   ./business-databases.yaml              (plugin root, takes precedence)
+#   ~/.claude/business-databases.yaml      (global fallback)
 #
 # Replace placeholder IDs with your actual Notion data source IDs.
 # Find them in Notion: open a database → "..." menu → "Copy link" → extract the ID.
