@@ -1,7 +1,7 @@
 {
   "name": "orbitant-business",
-  "version": "0.1.0",
-  "description": "Business management commands — challenges, highlights, opportunities, and todos via Notion",
+  "version": "0.2.0",
+  "description": "Business management commands and data queries — Notion-backed management (challenges, highlights, opportunities, todos) plus Factorial HR queries",
   "author": {
     "name": "Orbitant"
   },
@@ -11,7 +11,11 @@
     "./commands/challenge.md",
     "./commands/highlight.md",
     "./commands/opportunity.md",
-    "./commands/todo.md"
+    "./commands/todo.md",
+    "./commands/query.md",
+    "./commands/preflight.md"
   ],
-  "agents": []
+  "agents": [
+    "./agents/factorial-fetcher.md"
+  ]
 }

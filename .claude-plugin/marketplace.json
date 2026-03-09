@@ -21,8 +21,8 @@
     {
       "name": "orbitant-business",
       "source": "./plugins/orbitant-business",
-      "description": "Business management commands — challenges, highlights, opportunities, and todos via Notion",
-      "version": "0.1.0"
+      "description": "Business management commands and data queries — Notion-backed management plus Factorial HR queries",
+      "version": "0.2.0"
     }
   ]
 }
