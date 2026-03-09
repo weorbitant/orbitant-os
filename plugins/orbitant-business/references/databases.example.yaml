@@ -57,3 +57,20 @@ databases:
 relations:
   departments:
     collection_id: "your-departments-collection-id"
+
+# External API data sources for /query and /preflight
+sources:
+  factorial:
+    # Environment variable containing your Factorial API key
+    auth_env_var: "FACTORIAL_API_KEY"
+    # Uncomment to override defaults:
+    # base_url: "https://api.factorialhr.com/api"
+    # api_version: "2025-01-01"
+
+  # Stub sources — uncomment and configure when integrations are ready
+  # hubspot:
+  #   type: "mcp"
+  #   description: "Commercial pipeline data"
+  # airtable:
+  #   type: "mcp"
+  #   description: "Recruitment pipeline data"
