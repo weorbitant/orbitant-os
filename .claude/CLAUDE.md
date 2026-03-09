@@ -16,7 +16,10 @@ This is **orbitant-os**, Orbitant's Claude Code plugin marketplace. It contains 
 ```
 orbitant-os/
 ├── .claude/
-│   └── CLAUDE.md                   <- this file (project instructions for Claude)
+│   ├── CLAUDE.md                   <- this file (project instructions for Claude)
+│   └── skills/                     <- internal skills (repo maintenance, not user-facing)
+│       ├── release-notes/          <- drafts release notes from git history
+│       └── skill-reviewer/         <- reviews SKILL.md files for quality
 ├── .claude-plugin/
 │   └── marketplace.json            <- THE marketplace manifest (lists all plugins)
 ├── plugins/
