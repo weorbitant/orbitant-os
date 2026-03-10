@@ -27,13 +27,20 @@ orbitant-os/
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   └── skills/
-│   └── orbitant-chief-of-staff/    <- v1.3.2 — graceful-degradation, goal-alignment, voice-drafting
+│   ├── orbitant-chief-of-staff/    <- v1.3.2 — graceful-degradation, goal-alignment, voice-drafting
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   ├── skills/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── crm/
+│   │   └── references/
+│   └── orbitant-business/          <- v0.2.0 — challenge, highlight, opportunity, todo, query, preflight
 │       ├── .claude-plugin/
 │       │   └── plugin.json
-│       ├── skills/
-│       ├── commands/
 │       ├── agents/
-│       ├── crm/
+│       │   └── factorial-fetcher.md
+│       ├── commands/
 │       └── references/
 ├── website/                        <- Astro + Starlight documentation site
 │   ├── astro.config.mjs
@@ -232,6 +239,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 |--------|---------|--------|--------|----------|
 | orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone` | — |
 | orbitant-chief-of-staff | 1.3.2 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
+| orbitant-business | 0.2.0 | Active | — | `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/preflight` |
 
 ## Scripts
 

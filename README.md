@@ -15,6 +15,7 @@ Orbitant's plugin marketplace — skills, agents, and commands organized by vert
 # Install what you need
 /plugin install orbitant-marketing
 /plugin install orbitant-chief-of-staff
+/plugin install orbitant-business
 
 # Update when there are new versions
 /plugin update
@@ -26,6 +27,7 @@ Orbitant's plugin marketplace — skills, agents, and commands organized by vert
 |--------|---------|--------|----------|
 | **orbitant-marketing** | v1.1.0 | `blog-post-review`, `blog-post-create`, `blog-post-translate`, `tone` | — |
 | **orbitant-chief-of-staff** | v1.3.2 | `graceful-degradation`, `goal-alignment`, `voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
+| **orbitant-business** | v0.2.0 | — | `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/preflight` |
 
 ## Works Everywhere
 

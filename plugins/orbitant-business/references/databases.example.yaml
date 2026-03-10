@@ -1,0 +1,76 @@
+# business-databases.yaml — Notion database configuration for orbitant-business
+#
+# Copy this file to one of these locations:
+#   ./business-databases.yaml              (plugin root, takes precedence)
+#   ~/.claude/business-databases.yaml      (global fallback)
+#
+# Replace placeholder IDs with your actual Notion data source IDs.
+# Find them in Notion: open a database → "..." menu → "Copy link" → extract the ID.
+
+year: 2026    # Update yearly when you create new databases
+
+databases:
+  # Challenge tracking — for blockers, risks, and problems to solve
+  challenges:
+    data_source_id: "your-challenges-data-source-id"
+    title_property: "Challenge"       # Title column name in your Notion database
+    filter_property: "Solved"         # Checkbox column for filtering active items
+    properties:
+      - { name: "Challenge", type: "title", required: true }
+      - { name: "Departments", type: "relation", required: false }
+      - { name: "Lead", type: "person", required: false }
+      - { name: "Outcome", type: "text", required: false }
+      - { name: "Solved", type: "checkbox", default: false }
+
+  # Headlines / highlights — wins, milestones, good news
+  headlines:
+    data_source_id: "your-headlines-data-source-id"
+    title_property: "Headline"
+    properties:
+      - { name: "Headline", type: "title", required: true }
+      - { name: "Department", type: "relation", required: false }
+      - { name: "Author", type: "person", required: false }
+
+  # Opportunities — ideas, leads, potential initiatives
+  opportunities:
+    data_source_id: "your-opportunities-data-source-id"
+    title_property: "Opportunity"
+    filter_property: "Embraced"
+    properties:
+      - { name: "Opportunity", type: "title", required: true }
+      - { name: "Department", type: "relation", required: false }
+      - { name: "Author", type: "person", required: false }
+      - { name: "Embraced", type: "checkbox", default: false }
+
+  # Todos — actionable tasks with deadlines
+  todos:
+    data_source_id: "your-todos-data-source-id"
+    title_property: "Name"
+    filter_property: "Completed"
+    properties:
+      - { name: "Name", type: "title", required: true }
+      - { name: "Owner", type: "person", required: false }
+      - { name: "Deadline", type: "date", required: false, default: "+7d" }
+      - { name: "Completed", type: "checkbox", default: false }
+
+# Optional: department relation for cross-referencing
+relations:
+  departments:
+    collection_id: "your-departments-collection-id"
+
+# External API data sources for /query and /preflight
+sources:
+  factorial:
+    # Environment variable containing your Factorial API key
+    auth_env_var: "FACTORIAL_API_KEY"
+    # Uncomment to override defaults:
+    # base_url: "https://api.factorialhr.com/api"
+    # api_version: "2025-01-01"
+
+  # Stub sources — uncomment and configure when integrations are ready
+  # hubspot:
+  #   type: "mcp"
+  #   description: "Commercial pipeline data"
+  # airtable:
+  #   type: "mcp"
+  #   description: "Recruitment pipeline data"
