@@ -158,7 +158,7 @@ Open with a blockquote or a rhetorical question that immediately engages the rea
   - Do NOT use the same combination of elements in every section.
 
 ### 4. Closing
-End with a thematic reflection or a forward-looking question. **Never use a generic "Conclusión" heading.** The closing should feel like the natural end of a conversation, not a summary.
+End with **next steps or a forward-looking statement** — what the reader can do now, what Orbitant is working on next, or where the topic goes from here. **Never use a generic "Conclusión" heading. Never close with a rhetorical question** — this is a common AI-generated pattern and it weakens the ending. The closing should feel like the natural end of a conversation, not a summary.
 
 ### 5. Technical asset suggestions
 Throughout the article, flag moments where a technical asset would strengthen the content. Use the following callout format so the author can locate them easily:
@@ -259,6 +259,10 @@ Choose one:
 - Do not open with "En este artículo veremos..." or similar meta-commentary.
 - Do not close with "En resumen..." or a generic bullet-point recap.
 - Do not exceed 1,500 words in the body (metadata and FAQs do not count toward the word count).
+- **Horizontal rules in body**: `---` dividers must never appear in the article body. Flag any occurrence.
+- **Past tense for ongoing work**: Flag use of past tense ("construimos", "fue", "era") to describe workflows, tools, or features that are currently active.
+- **Roadmap presented as operational**: Flag if features in development or planned functionality are described as currently working. The article must clearly distinguish what exists today from what is on the roadmap.
+- **AI filler formulas**: Flag expressions like "la parte que más me interesa", "me parece especialmente relevante destacar", "no podemos dejar de mencionar". These read as AI-generated filler, not as a person writing.
 
 ### Words and expressions to avoid
 
@@ -275,6 +279,9 @@ Never use the following words or patterns, regardless of context:
 | "el why" (when a Spanish equivalent exists) | Avoidable anglicism | "el porqué" |
 | "el approach" | Avoidable anglicism | "el enfoque" |
 | "el timing" (in the sense of "moment") | Avoidable anglicism | "el momento" |
+| "la parte que más me interesa" | AI-sounding filler — no real person writes like this | State the point directly |
+| "me parece especialmente relevante destacar" | AI hedging + filler preamble | Delete the preamble; state the point |
+| "no podemos dejar de mencionar" | Filler | State the point directly |
 
 Technical English terms with no consolidated Spanish equivalent (*framework*, *pipeline*, *deployment*, *token*, *clean code*) are kept in English and in italics. The list above targets words that have a natural Spanish equivalent but get replaced by English out of habit, not necessity.
 

@@ -60,6 +60,10 @@ Flag the following patterns as issues if found:
 - **Meta-commentary openings**: Starting with "En este artículo veremos..." or equivalent. The article should start with a hook.
 - **Generic closings**: Ending with "En resumen..." or a bullet-point recap under a "Conclusión" heading.
 - **Em-dash misuse (calco del inglés)**: The em dash (—) is only correct as a two-sided personal aside that opens and closes with a dash. Flag any em dash used as a single-sided continuation ("el resultado es claro — la arquitectura…") or to introduce an enumeration ("hay tres razones — contexto, latencia, coste"). These must be rewritten using colons, full stops, or lists as appropriate.
+- **Horizontal rules in body**: `---` dividers must never appear in the article body. Flag any occurrence.
+- **Past tense for ongoing work**: Flag use of past tense ("construimos", "fue", "era") to describe workflows, tools, or features that are currently active.
+- **Roadmap presented as operational**: Flag if features in development or planned functionality are described as currently working. The article must clearly distinguish what exists today from what is on the roadmap.
+- **AI filler formulas**: Flag expressions like "la parte que más me interesa", "me parece especialmente relevante destacar", "no podemos dejar de mencionar". These read as AI-generated filler, not as a person writing.
 
 ### Formatting Conventions
 
@@ -88,7 +92,7 @@ Review against the following expected structure:
    - Sections must be **homogeneous in length**. Flag significant imbalances.
    - At least one H2 must contain the primary keyword exactly.
    - Textual elements must vary across sections. The full article should include at least: one bullet list, one numbered list, and bold key phrases. Flag if the same format repeats in every section.
-4. **Closing**: Thematic, forward-looking. No generic "Conclusión" heading.
+4. **Closing**: Thematic, forward-looking. No generic "Conclusión" heading. **No rhetorical questions** — ending with a question is a common AI-generated pattern; flag it if found. The closing should be next steps or a forward-looking statement.
 5. **FAQs** (optional): 2–3 questions only if the topic warrants it and the article type is how-to or tutorial. Not appropriate for opinion or narrative pieces.
 
 ---
