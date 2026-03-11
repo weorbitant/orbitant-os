@@ -1,6 +1,6 @@
 ---
 name: query
-description: Answer natural-language questions about business data by routing to the appropriate data source. Usage: /query "{question}"
+description: "Answer natural-language questions about business data by routing to the appropriate data source. Usage: /query \"{question}\""
 ---
 
 ## Overview
