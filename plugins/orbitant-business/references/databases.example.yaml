@@ -58,7 +58,7 @@ relations:
   departments:
     collection_id: "your-departments-collection-id"
 
-# External API data sources for /query and /preflight
+# External API data sources for /query, /report, and /preflight
 sources:
   factorial:
     # Environment variable containing your Factorial API key
@@ -67,10 +67,23 @@ sources:
     # base_url: "https://api.factorialhr.com/api"
     # api_version: "2025-01-01"
 
+  # HubSpot — commercial pipeline data (used by /report commercial sections)
+  # Requires HubSpot MCP integration via Claude AI connectors
+  hubspot:
+    type: "mcp"
+    description: "Commercial pipeline data"
+
+  # Airtable — recruitment pipeline data (used by /report recruitment sections)
+  # Requires Airtable MCP server configured in Claude
+  airtable:
+    type: "mcp"
+    description: "Recruitment pipeline data"
+    # base_id: "your-airtable-base-id"  # Optional — if omitted, agent discovers via list_bases
+
   # Stub sources — uncomment and configure when integrations are ready
-  # hubspot:
-  #   type: "mcp"
-  #   description: "Commercial pipeline data"
-  # airtable:
-  #   type: "mcp"
-  #   description: "Recruitment pipeline data"
+  # holded:
+  #   type: "api"
+  #   description: "Financial data — P&L, balance sheet, cash flow"
+  # mailerlite:
+  #   type: "api"
+  #   description: "Marketing — newsletter metrics"

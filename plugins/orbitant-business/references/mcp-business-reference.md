@@ -43,14 +43,58 @@ Data source integration details for the orbitant-business plugin. Used by fetche
 
 ---
 
+## HubSpot (Remote MCP Server)
+
+- **Transport:** Claude AI HubSpot MCP integration (remote server)
+- **Auth:** OAuth via Claude AI connector
+- **Available tools:** `get_crm_objects`, `search_crm_objects`, `get_properties`, `get_user_details`, `search_owners`, `search_properties`, `manage_crm_objects`
+- **Key object types:** deals, contacts, companies
+- **Cowork:** Available — MCP works in both Claude Code and Cowork
+- **Used by:** `/report` (commercial sections), `/query` (commercial questions)
+
+### Setup
+
+1. Connect HubSpot via Claude AI integrations (OAuth)
+2. Add to `business-databases.yaml`:
+   ```yaml
+   sources:
+     hubspot:
+       type: "mcp"
+       description: "Commercial pipeline data"
+   ```
+3. Verify with `/preflight`
+
+---
+
+## Airtable (MCP Server)
+
+- **Transport:** Airtable MCP server
+- **Auth:** API key or OAuth via MCP config
+- **Available tools:** `list_records`, `search_records`, `list_tables`, `describe_table`, `get_record`, `list_bases`, `create_record`, `update_records`, `delete_records`
+- **Cowork:** Available — MCP works in both environments
+- **Used by:** `/report` (recruitment sections), `/query` (recruitment questions)
+
+### Setup
+
+1. Configure the Airtable MCP server in your Claude config
+2. Add to `business-databases.yaml`:
+   ```yaml
+   sources:
+     airtable:
+       type: "mcp"
+       description: "Recruitment pipeline data"
+       # base_id: "your-airtable-base-id"  # Optional — if omitted, agent discovers via list_bases
+   ```
+3. Verify with `/preflight`
+
+---
+
 ## Stub Sources (Not Yet Configured)
 
 These sources are referenced in the `/query` routing table but do not have fetcher agents yet.
 
 | Source | Pillar | Integration Path | Notes |
 |--------|--------|-----------------|-------|
-| HubSpot | Commercial | HubSpot Remote MCP Server | Sales pipeline, deals, proposals |
-| Airtable | HR — Recruitment | Airtable MCP (`airtable-mcp-server`) | Candidate tracking |
 | Holded | Financial | Holded REST API | P&L, balance sheet, cash flow |
 | MailerLite | Marketing | MailerLite API | Newsletter metrics |
 | Google Analytics | Marketing | GA4 API | Website traffic |
@@ -61,4 +105,5 @@ To add a new live source:
 2. Add config entry to `business-databases.yaml` → `sources`
 3. Update the routing table in `commands/query.md`
 4. Add a connectivity test to `commands/preflight.md`
-5. Update this reference file
+5. Update report definitions in `reports/` to use the new source (replace stub sections)
+6. Update this reference file
