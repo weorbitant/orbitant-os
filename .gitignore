@@ -30,3 +30,8 @@ website/src/content/generated/*.json
 # Temporary files
 *.tmp
 *.temp
+# Image creation skill (local-only artifacts)
+plugins/orbitant-marketing/skills/image-creation/assets/reference/
+plugins/orbitant-marketing/skills/image-creation/output/
+plugins/orbitant-marketing/skills/image-creation/scripts/.env
+plugins/orbitant-marketing/skills/image-creation/scripts/scrape-insights-images.mjs
