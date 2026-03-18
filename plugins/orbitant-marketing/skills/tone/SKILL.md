@@ -1,12 +1,15 @@
 ---
 name: orbitant-tone
 description: |
-  Voice and tone reference for Orbitant blog content. Activate when someone asks about
-  Orbitant's writing style, voice, or tone — or when reviewing content for tone alignment.
-  Also useful as context when creating or editing blog posts. Defines what Orbitant writing
+  Voice and tone reference for Orbitant blog content. Defines what Orbitant writing
   sounds like, what it values, and what it avoids — with concrete examples.
+
+  Activate when user asks about Orbitant voice, tone, writing style, brand voice,
+  or editorial guidelines. Also trigger when reviewing blog content for consistency,
+  checking if text "sounds like Orbitant", or when creating/editing marketing content
+  — even if they don't explicitly mention tone or voice.
+version: "1.1.0"
 license: MIT
-version: "1.0.0"
 metadata:
   author: orbitant
   tags: marketing, blog, tone, voice, editorial
@@ -23,15 +26,41 @@ Orbitant's writing reflects how the team actually thinks and works: with technic
 ## Core principles
 
 ### 1. First person, always
-Write from your own experience. Use "I" when sharing something you lived, decided, or learned. Use "we" when speaking as Orbitant. Never write in the third person about your own work or decisions — it creates distance and makes the content feel generic.
+Write from your own experience. Use "I" when sharing something you lived, decided, or learned. Use "we" when speaking as Orbitant as a company. Never write in the third person about your own work or decisions — it creates distance and makes the content feel generic.
 
 > ✅ **Así sí**
 > Cuando empezamos a migrar el sistema de autenticación, lo primero que hicimos fue mapear todos los puntos de entrada. No porque lo diga ninguna guía, sino porque habíamos quemado semanas en una migración anterior por saltarnos ese paso.
 
-<!-- separator -->
+<!-- -->
 
 > ❌ **Así no**
 > Las empresas que afrontan migraciones de sistemas de autenticación deben considerar mapear todos los puntos de entrada como primer paso del proceso.
+
+---
+
+### 1b. Multi-voice content: Slack threads, KS sessions, and group conversations
+
+Many Orbitant articles originate from group conversations — a Slack thread that sparked a debate, a KS session where several engineers shared their take. These are multi-voice inputs that need a single editorial voice.
+
+**The rule**: one article, one signer, first person singular.
+
+The signer is the person who initiated the conversation or the most senior participant. Everyone else's contribution lives in the article as prose attribution — not as a series of isolated quotes.
+
+The prose pattern is: context sentence → attribution phrase (name + functional role) → the person's actual point, paraphrased or quoted depending on whether the phrasing itself is what matters.
+
+> ✅ **Así sí**
+> Kevin llevaba semanas midiendo el consumo de tokens entre ambos enfoques y sus números apuntaban en la misma dirección: con arquitectura hexagonal, el agente necesitaba entre tres y cinco veces más contexto para completar el mismo cambio.
+
+<!-- -->
+
+> ❌ **Así no**
+> Kevin dijo: "Con arquitectura hexagonal, el agente necesita mucho más contexto."
+
+The prose version gives context, stakes, and continuity. The quote version is a telegram. The first reads like an article; the second reads like a transcript.
+
+**Pull quotes**: After integrating a contribution into prose, you may extract one memorable phrase as a visual pull quote — a blockquote that echoes what the prose already said. This is visual decoration, not content delivery. The content lives in the prose. Pull quotes lose their effect if overused — use them sparingly and only for phrases that are genuinely worth emphasising.
+
+**Attribution format**: Identify participants by name and functional role. Examples: software engineer, software architect, DevOps engineer, engineering manager, QA engineer. Do not use seniority levels (Senior, Junior, Lead) as the identifier.
 
 ---
 
@@ -43,7 +72,7 @@ Theory is only useful when it explains a real situation. Lead with the example, 
 > ✅ **Así sí**
 > Teníamos un pipeline que tardaba 22 minutos en completarse. Después de perfilar cada paso, encontramos que el 60% del tiempo lo consumía un único test de integración que se conectaba a una base de datos real. Lo reemplazamos por un mock y bajamos a 8 minutos.
 
-<!-- separator -->
+<!-- -->
 
 > ❌ **Así no**
 > Optimizar los tiempos de ejecución de los pipelines de CI/CD es fundamental para mejorar la productividad de los equipos de desarrollo y reducir el time-to-market.
@@ -56,7 +85,7 @@ Do not just describe what you did. Explain why you chose that approach over the 
 > ✅ **Así sí**
 > Elegimos SQLite para el almacenamiento local por tres razones: no necesitábamos un servidor separado, el volumen de datos era predecible y pequeño, y queríamos que cualquier desarrollador pudiera levantar el proyecto sin configuración adicional. Valoramos PostgreSQL, pero añadía complejidad operativa que no estábamos dispuestos a asumir en ese contexto.
 
-<!-- separator -->
+<!-- -->
 
 > ❌ **Así no**
 > Para el almacenamiento local se utilizó SQLite, una solución ligera y eficiente ampliamente utilizada en el sector.
@@ -81,7 +110,7 @@ The ideal structure for a technical section is:
 >
 > El orden importa: si inviertes las dos líneas, el logger captura los datos antes de que se saniticen.
 
-<!-- separator -->
+<!-- -->
 
 > ❌ **Así no**
 > Es importante gestionar correctamente las variables de entorno para garantizar la seguridad de las aplicaciones. Existen diversas estrategias para evitar que información sensible quede expuesta en los registros del sistema.
@@ -94,7 +123,7 @@ Good technical writing acknowledges what did not work, what could be better, and
 > ✅ **Así sí**
 > Este enfoque funciona bien cuando el equipo es pequeño y los dominios están bien delimitados. Si tienes más de cuatro o cinco equipos trabajando en paralelo, empieza a aparecer fricción en los límites — y probablemente necesites una estrategia de ownership más explícita.
 
-<!-- separator -->
+<!-- -->
 
 > ❌ **Así no**
 > Esta solución es escalable y puede adaptarse a equipos de cualquier tamaño, garantizando la eficiencia operativa en todo momento.
@@ -110,6 +139,46 @@ Good technical writing acknowledges what did not work, what could be better, and
 
 ---
 
+## Words and patterns to avoid
+
+These specific words and patterns degrade Orbitant's voice when they appear in published content. Treat them as red flags in any review.
+
+| Pattern | Problem | Instead |
+|---|---|---|
+| "con honestidad" | Hollow filler — implies other parts are dishonest. Acceptable at most once per article; flag if repeated. | Say the thing directly |
+| "provocador/a" (for ideas or arguments) | Sounds like business magazine copy, not a technical colleague | Describe what specifically challenges or unsettles: "la pregunta incómoda es…" |
+| "en el mundo actual" | Journalist cliché, adds no information | Delete, or replace with the specific context |
+| "es crucial / fundamental" | Tells the reader what to think without showing why | Show the consequence instead |
+| "sin duda" | Hollow intensifier | Delete |
+| "hoy en día más que nunca" | Timeless cliché | Delete |
+| "el why" (when a Spanish equivalent exists) | Avoidable anglicism | "el porqué" |
+| "el approach" | Avoidable anglicism | "el enfoque" |
+| "el timing" (in the sense of "moment") | Avoidable anglicism | "el momento" |
+| "la parte que más me interesa" | AI-sounding filler — no real person writes like this | State the point directly |
+| "me parece especialmente relevante destacar" | AI hedging + filler preamble | Delete the preamble; state the point |
+| "no podemos dejar de mencionar" | Filler | State the point directly |
+
+Technical English terms with no consolidated Spanish equivalent (*framework*, *pipeline*, *deployment*, *token*, *clean code*, *contract testing*) are kept in English and in italics. This list targets words that have a natural Spanish equivalent but get replaced by English out of habit, not necessity.
+
+---
+
+## Style note: em-dash usage (—)
+
+The em dash in Spanish marks **two-sided personal asides** — an inciso that opens and closes with a dash. This is its only correct use in Orbitant writing.
+
+> ✅ **Así sí**
+> Esta decisión —y es algo que Kevin midió durante semanas— tiene un coste real en tokens y latencia.
+
+<!-- -->
+
+> ❌ **Así no (calco del inglés)**
+> El resultado es claro — la arquitectura añade fricción innecesaria.
+> Hay tres motivos — contexto, latencia, coste.
+
+For continuations, use a colon or a full stop. For enumerations, use a list or "x, y, y z" in prose. A single-sided em dash is an anglicism — it does not exist in Spanish punctuation. Flag it in any review.
+
+---
+
 ## On mentioning Orbitant
 
 Orbitant can and should appear in blog content — but as context, not as the subject. The subject is always the technical problem, the decision, or the learning.
@@ -117,7 +186,7 @@ Orbitant can and should appear in blog content — but as context, not as the su
 > ✅ **Así sí**
 > En Orbitant llevamos varios proyectos usando esta arquitectura en producción, y el patrón que mejor nos ha funcionado es...
 
-<!-- separator -->
+<!-- -->
 
 > ❌ **Así no**
 > En Orbitant, empresa líder en consultoría de software de nueva generación, hemos desarrollado una metodología propia que...

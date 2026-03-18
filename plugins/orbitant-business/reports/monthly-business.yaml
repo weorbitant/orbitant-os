@@ -1,0 +1,152 @@
+name: "Monthly Business Report"
+cadence: monthly
+version: "1.0"
+
+output:
+  format: markdown
+  destination: terminal
+  file_path: "Logs/Business/Monthly/{MONTH_YEAR}.md"
+
+sections:
+  - id: executive-summary
+    title: "Executive Summary"
+    type: executive-summary
+
+  - id: monthly-kpis
+    title: "Monthly KPIs"
+    type: kpi-table
+    compare: mom
+    kpis:
+      - name: "Revenue Invoiced"
+        source: holded
+        query: revenue_invoiced
+      - name: "Profit Margin"
+        source: holded
+        query: profit_margin
+      - name: "New Business Pipeline"
+        source: hubspot
+        query: pipeline_total_value
+      - name: "Accounts Receivable"
+        source: holded
+        query: accounts_receivable
+      - name: "Accounts Payable"
+        source: holded
+        query: accounts_payable
+      - name: "Client NPS"
+        source: sheets
+        query: client_nps
+      - name: "Team NPS"
+        source: sheets
+        query: team_nps
+
+  - id: management
+    title: "Management Overview"
+    type: notion-management
+    source: notion
+    databases:
+      - challenges
+      - headlines
+      - opportunities
+      - todos
+
+  - id: commercial
+    title: "Commercial"
+    source: hubspot
+    type: pipeline-detail
+    metrics:
+      - pipeline_stages
+      - deals_won
+      - deals_lost
+      - win_rate
+      - new_deals
+      - active_proposals
+      - calls
+      - avg_deal_size
+
+  - id: pipeline-movement
+    title: "Pipeline Movement"
+    source: hubspot
+    type: pipeline-movement
+    metrics:
+      - som_value
+      - eom_value
+      - delta_value
+      - som_count
+      - eom_count
+      - delta_count
+
+  - id: weekly-breakdown
+    title: "Weekly Breakdown"
+    source: hubspot
+    type: weekly-breakdown
+    metrics:
+      - pipeline_value
+      - deals_won
+      - deals_lost
+
+  - id: hr-team
+    title: "HR — Team"
+    source: factorial
+    type: hr-snapshot
+    metrics:
+      - headcount
+      - som_headcount
+      - headcount_delta
+      - joiners
+      - departures
+
+  - id: hr-time-off
+    title: "Time Off Summary"
+    source: factorial
+    type: time-off-summary
+    metrics:
+      - holiday_days
+      - holiday_people
+      - sick_days
+      - sick_people
+      - other_days
+      - other_people
+
+  - id: hr-staff
+    title: "Staff Overview"
+    source: factorial
+    type: hr-snapshot
+    metrics:
+      - staff_table
+
+  - id: hr-recruitment
+    title: "HR — Recruitment"
+    source: airtable
+    type: recruitment-detail
+    metrics:
+      - open_positions
+      - active_candidates
+      - offers
+      - hires
+      - rejections
+      - by_position
+      - by_status
+      - by_source
+      - candidate_details
+
+  - id: financial
+    title: "Financial"
+    source: holded
+    type: stub
+    note: "Pending Holded + Google Sheets integration (v2). Planned: Revenue Invoiced, P&L summary, Cash Flow, AR/AP aging, Profit Margin, Budget vs. Actual"
+
+  - id: marketing
+    title: "Marketing"
+    source: mailerlite
+    type: stub
+    note: "Pending MailerLite + GA + LinkedIn + YouTube integration (v2). Planned: Newsletter subscribers/opens, Website traffic, LinkedIn engagement, YouTube views"
+
+  - id: operations
+    title: "Operations"
+    source: sheets
+    type: stub
+    note: "Pending spreadsheet integration (v2). Planned: Team Utilization, 30/60/90 Utilization, Resource Allocation, Opportunity Cost"
+
+  - id: notes-and-actions
+    title: "Notes & Actions"
+    type: notes-and-actions

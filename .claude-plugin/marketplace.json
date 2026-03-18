@@ -21,8 +21,8 @@
     {
       "name": "orbitant-business",
       "source": "./plugins/orbitant-business",
-      "description": "Business management commands and data queries — Notion-backed management plus Factorial HR queries",
-      "version": "0.2.0"
+      "description": "Business management commands, data queries, and automated reports — Notion-backed management plus Factorial HR, HubSpot, and Airtable queries",
+      "version": "0.3.0"
     }
   ]
 }
