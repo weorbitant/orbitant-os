@@ -5,6 +5,5 @@
   "author": {
     "name": "Orbitant"
   },
-  "license": "MIT",
-  "skills": ["./skills/blog-post-review", "./skills/blog-post-create", "./skills/blog-post-translate", "./skills/tone", "./skills/yt-description"]
+  "license": "MIT"
 }
