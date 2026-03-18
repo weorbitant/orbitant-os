@@ -8,7 +8,7 @@ description: |
   wants editorial feedback on a draft, needs SEO analysis for an article, or requests
   writing improvements for the Orbitant blog — even if they don't explicitly mention "review".
 license: MIT
-version: "1.1.0"
+version: "1.2.0"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, content-review, writing
@@ -43,7 +43,7 @@ Mid-to-senior software engineers, tech leads, and engineering managers. Also CTO
 ### Tone & Voice
 
 - **Tone**: Conversational-professional — like a knowledgeable colleague sharing insights. Confident but humble, technical but accessible. Transparent about trade-offs and mistakes.
-- **Voice**: Mixed — first person singular for personal experience, first person plural ("nosotros" / "we") when speaking as Orbitant, second person ("tú" / "you") to engage the reader.
+- **Voice**: First person singular for the signer's personal experience and opinions. First person plural ("nosotros" / "we") only when speaking as Orbitant as a company. Second person ("tú" / "you") to engage the reader.
 - **Spanish articles**: Use informal "tú", never "usted".
 - **English technical terms** within Spanish text should appear in italics (e.g., *framework*, *pipeline*, *deployment*).
 
@@ -52,18 +52,25 @@ Mid-to-senior software engineers, tech leads, and engineering managers. Also CTO
 Flag the following patterns as issues if found:
 
 - **Generic consultant language**: Expressions like "en el mundo actual", "en el vertiginoso panorama tecnológico", "esto es fundamental", "sin duda", "es crucial", "hoy en día más que nunca". These must be rewritten.
+- **Banned words**: Flag any occurrence of "provocador/a" used to describe an idea, argument, or question. Flag "con honestidad" if it appears more than once in the article.
+- **Avoidable anglicisms**: Flag English words used when a natural Spanish equivalent exists and is in common use: "el why" → "el porqué", "el approach" → "el enfoque", "el timing" (in the sense of moment) → "el momento". Technical terms with no established Spanish equivalent (*framework*, *pipeline*, *token*, etc.) are acceptable in italics.
 - **Editorialising**: Praising Orbitant or the author explicitly instead of letting the content demonstrate authority. Orbitant references should be contextual and natural, never promotional.
 - **Reader-unaware writing**: Content written from the company's perspective instead of from the reader's. Good articles give the reader something transferable and useful.
 - **Homogeneous structure**: Every H2 section structured the same way (e.g., always paragraph + bullets). Variety is required.
 - **Meta-commentary openings**: Starting with "En este artículo veremos..." or equivalent. The article should start with a hook.
 - **Generic closings**: Ending with "En resumen..." or a bullet-point recap under a "Conclusión" heading.
+- **Em-dash misuse (calco del inglés)**: The em dash (—) is only correct as a two-sided personal aside that opens and closes with a dash. Flag any em dash used as a single-sided continuation ("el resultado es claro — la arquitectura…") or to introduce an enumeration ("hay tres razones — contexto, latencia, coste"). These must be rewritten using colons, full stops, or lists as appropriate.
+- **Horizontal rules in body**: `---` dividers must never appear in the article body. Flag any occurrence.
+- **Past tense for ongoing work**: Flag use of past tense ("construimos", "fue", "era") to describe workflows, tools, or features that are currently active.
+- **Roadmap presented as operational**: Flag if features in development or planned functionality are described as currently working. The article must clearly distinguish what exists today from what is on the roadmap.
+- **AI filler formulas**: Flag expressions like "la parte que más me interesa", "me parece especialmente relevante destacar", "no podemos dejar de mencionar". These read as AI-generated filler, not as a person writing.
 
 ### Formatting Conventions
 
 | Element | Usage |
 |---------|-------|
 | Rhetorical questions | Hooks, transitions, and engagement devices |
-| Blockquotes | Opening hooks, attributed quotes, external citations |
+| Blockquotes | Opening hooks, attributed quotes, external citations, pull quotes as visual reinforcement |
 | Admonitions | GitHub-flavored: `> [!IMPORTANT]`, `> [!TIP]` for callouts |
 | Bold | Key insights (scannable) |
 | Italics | Technical terms being introduced; English terms within Spanish text |
@@ -84,9 +91,22 @@ Review against the following expected structure:
    - Each H2 section must have a minimum of **300 words**. Flag any section that falls short.
    - Sections must be **homogeneous in length**. Flag significant imbalances.
    - At least one H2 must contain the primary keyword exactly.
-   - Textual elements must vary across sections. The full article should include at least: one bullet list, one numbered list, one blockquote or callout, and bold key phrases. Flag if the same format repeats in every section.
-4. **Closing**: Thematic, forward-looking. No generic "Conclusión" heading.
-5. **FAQs** (optional): 2–3 questions if the topic warrants it.
+   - Textual elements must vary across sections. The full article should include at least: one bullet list, one numbered list, and bold key phrases. Flag if the same format repeats in every section.
+4. **Closing**: Thematic, forward-looking. No generic "Conclusión" heading. **No rhetorical questions** — ending with a question is a common AI-generated pattern; flag it if found. The closing should be next steps or a forward-looking statement.
+5. **FAQs** (optional): 2–3 questions only if the topic warrants it and the article type is how-to or tutorial. Not appropriate for opinion or narrative pieces.
+
+---
+
+## Multi-voice checklist (for articles from Slack threads or KS sessions)
+
+When reviewing an article generated from a multi-participant input, check:
+
+- [ ] **Single signer**: The article is written in first person singular. "Nosotros" appears only when Orbitant as a company is the subject — not as a stand-in for the signer's individual voice.
+- [ ] **Correct signer**: The person signing is the conversation initiator or most senior participant. Flag if the signer appears to be misidentified.
+- [ ] **Prose attribution**: Other participants' contributions appear in running prose — not as a series of isolated blockquotes. Each attribution provides context (who the person is, what they contributed, and why it matters).
+- [ ] **Functional role in attributions**: Attribution lines identify participants by functional role (software engineer, software architect, DevOps engineer, engineering manager), not by seniority level (Senior Engineer, Junior Developer).
+- [ ] **Pull quotes as reinforcement only**: Blockquotes used as pull quotes must echo content already stated in prose above. Flag any blockquote that introduces information for the first time.
+- [ ] **Pull quote density**: Each H2 section may include at most one pull quote. Flag if more. Also flag if pull quotes feel overused even within this limit.
 
 ---
 
@@ -96,9 +116,9 @@ Review against the following expected structure:
 
 | Field | Standard |
 |---|---|
-| Título SEO | 55–60 characters including spaces. Primary keyword near the beginning. |
-| Slug | 65–70 characters including spaces. Lowercase, hyphens, no accents or special characters. |
-| Meta descripción | 130–140 characters including spaces. Must begin with the **exact primary keyword**. |
+| Título SEO | 55–60 characters including spaces. Must **begin with the exact primary keyword** — not a paraphrase, the exact keyword. |
+| Slug | 65–70 characters including spaces. Lowercase, hyphens, no accents or special characters. Must contain the primary keyword. |
+| Meta descripción | 130–140 characters including spaces. Must **begin with the exact primary keyword**. |
 
 ### Keyword Distribution
 - Primary keyword in: H1, at least one H2, meta description (as the opening), and first 100 words of the body.
@@ -107,6 +127,7 @@ Review against the following expected structure:
 ### Links
 - **Internal**: 2–4 links to other Orbitant blog posts. Flag if missing or excessive.
 - **External**: 3–5 links to authoritative sources (MDN, official docs, GitHub, research). Flag if linking to competitors or low-authority sources.
+- **Anchor text**: Links must span the natural phrase in which the topic appears, not just the topic noun. Flag anchor text that is too narrow (e.g., linking only the noun when the surrounding phrase would be more natural and informative).
 
 ### Images
 - Alt text must be descriptive, SEO-friendly, and include the primary keyword naturally.
@@ -145,21 +166,25 @@ Produce feedback with these sections:
 - Are H2 sections balanced in length (min. 300 words each)?
 - Is textual variety present across sections?
 - Is the closing thematic and non-generic?
+- If the article originates from a multi-voice source: apply the multi-voice checklist above.
 
 ### 3. Tono y voz
 - Does it sound like a person, not a consultancy brochure?
 - Is Orbitant referenced naturally and contextually, not promotionally?
 - Flag any generic consultant phrases found (quote them exactly).
+- Flag any banned words or avoidable anglicisms found (quote them exactly).
+- Flag any em-dash misuse (quote the exact sentence).
 - Is the writing reader-first?
 
 ### 4. Revisión SEO
 Evaluate with checkmarks or crosses:
-- [ ] Título SEO: length (55–60 chars) and keyword placement
-- [ ] Slug: length (65–70 chars), format correct
+- [ ] Título SEO: length (55–60 chars) and begins with exact primary keyword
+- [ ] Slug: length (65–70 chars), format correct, contains keyword
 - [ ] Meta descripción: length (130–140 chars), begins with exact keyword
 - [ ] Keyword in H1, at least one H2, first 100 words
 - [ ] Internal links (2–4)
 - [ ] External links (3–5, authoritative)
+- [ ] Anchor text spans natural phrase (not just the noun)
 - [ ] Image alt text: descriptive and keyword-aware
 - [ ] Cluster and category correctly assigned
 
