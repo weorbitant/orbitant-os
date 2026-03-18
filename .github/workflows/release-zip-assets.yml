@@ -1,0 +1,40 @@
+name: Attach Plugin ZIP to Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  attach-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Extract plugin name from tag
+        id: plugin
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          # orbitant-marketing-v1.2.0 -> orbitant-marketing
+          PLUGIN_NAME="${TAG%-v*}"
+          echo "name=${PLUGIN_NAME}" >> "$GITHUB_OUTPUT"
+          echo "dir=plugins/${PLUGIN_NAME}" >> "$GITHUB_OUTPUT"
+          echo "zip=${PLUGIN_NAME}.zip" >> "$GITHUB_OUTPUT"
+
+      - name: Verify plugin directory exists
+        run: |
+          if [ ! -d "${{ steps.plugin.outputs.dir }}" ]; then
+            echo "::error::Plugin directory ${{ steps.plugin.outputs.dir }} not found"
+            exit 1
+          fi
+
+      - name: Create ZIP
+        run: cd plugins && zip -r "../${{ steps.plugin.outputs.zip }}" "${{ steps.plugin.outputs.name }}"
+
+      - name: Upload ZIP to release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "${{ steps.plugin.outputs.zip }}"
