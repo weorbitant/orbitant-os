@@ -1,0 +1,27 @@
+{
+  "$schema": "../../../../.github/schemas/fork-metadata.schema.json",
+  "upstream": {
+    "repo": "https://github.com/davila7/claude-code-templates",
+    "commit": "a0c2269927faddfa3ce94d5aed6451f215487ea9",
+    "branch": "main",
+    "files": [
+      {
+        "source": "cli-tool/components/skills/business-marketing/brand-guidelines-anthropic/SKILL.md",
+        "target": "SKILL.md"
+      },
+      {
+        "source": "cli-tool/components/skills/business-marketing/brand-guidelines-anthropic/LICENSE.txt",
+        "target": "LICENSE.txt"
+      }
+    ]
+  },
+  "forked_at": "2026-02-22",
+  "customizations": [
+    "Renamed from brand-guidelines to orbitant-brand-guidelines",
+    "Replaced Anthropic brand colors with Orbitant brand colors",
+    "Replaced Anthropic typography with Orbitant typography",
+    "Added Orbitant gradients (Blue-Lila, Blue-Cyan, Corporate)",
+    "Updated description for better triggering",
+    "Added orbitant metadata (author, tags, forked_from)"
+  ]
+}

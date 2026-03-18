@@ -237,7 +237,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 
 | Plugin | Version | Status | Skills | Commands |
 |--------|---------|--------|--------|----------|
-| orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone` | — |
+| orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-brand-guidelines` | — |
 | orbitant-chief-of-staff | 1.3.2 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
 | orbitant-business | 0.3.0 | Active | — | `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/preflight`, `/report` |
 
