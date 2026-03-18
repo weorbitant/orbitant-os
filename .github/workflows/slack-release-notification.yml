@@ -1,0 +1,38 @@
+name: Slack Release Notification
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build Slack message
+        id: message
+        env:
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          BLOG_URL="https://weorbitant.github.io/orbitant-os/blog/release-${RELEASE_TAG}/"
+          RELEASE_URL="${{ github.event.release.html_url }}"
+
+          MSG=":uwu_hype: *New release is out!* :rocket:\n\n"
+          MSG+="*<${RELEASE_URL}|${RELEASE_NAME}>*\n"
+          MSG+="→ <${BLOG_URL}|Read the blog post>\n\n"
+          MSG+="Update your plugins: \`/plugin update\`"
+
+          echo "text=${MSG}" >> "$GITHUB_OUTPUT"
+
+      - name: Post release notification to Slack
+        uses: slackapi/slack-github-action@v3.0.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            text: "${{ steps.message.outputs.text }}"
+            blocks:
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "${{ steps.message.outputs.text }}"
