@@ -41,7 +41,84 @@ Orbitant's plugin marketplace — skills, agents, and commands organized by vert
 npx skills add weorbitant/orbitant-os --skill orbitant-blog-post-review --agent cursor -y
 ```
 
-## Adding Skills
+This is useful when:
+- You want to use skills outside of Claude Code's plugin system
+- You're using a different AI coding agent
+- You need to install skills in CI/CD pipelines
+
+### Claude API
+
+Use the `/v1/skills` endpoint. See [Skills API docs](https://docs.claude.com/en/api/skills).
+
+## MCP Setup
+
+Some plugins require MCP servers (e.g., Gmail, Calendar, Slack). Run the setup script to configure them:
+
+```bash
+# Community users — interactive plugin selection
+./install.sh
+
+# Orbitant team members — sets up everything
+./install.sh --team
+```
+
+The script checks prerequisites, registers MCP servers via `claude mcp add`, and guides you through OAuth authentication for each service.
+
+## Repo Structure
+
+```
+orbitant-os/
+├── .claude/
+│   └── CLAUDE.md                   <- project instructions for Claude
+├── .claude-plugin/
+│   └── marketplace.json            <- marketplace manifest
+├── plugins/
+│   ├── orbitant-marketing/
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   └── skills/
+│   │       ├── blog-post-review/
+│   │       ├── blog-post-create/
+│   │       ├── blog-post-translate/
+│   │       └── tone/
+│   └── orbitant-chief-of-staff/
+│       ├── .claude-plugin/
+│       │   └── plugin.json
+│       ├── skills/
+│       ├── commands/
+│       ├── agents/
+│       ├── crm/
+│       └── references/
+├── .github/
+│   ├── assets/                     <- images and screenshots
+│   ├── schemas/                    <- JSON schemas for validation
+│   └── workflows/
+│       └── validate.yml            <- CI pipeline
+├── scripts/                        <- validation scripts
+├── .gitignore
+├── CONTRIBUTING.md
+├── FAQ.md
+├── LICENSE
+├── package.json
+└── README.md
+```
+
+## How It Works
+
+Each vertical is an independent **plugin** with its own namespace. This means:
+
+- **No collisions**: Skills use prefixed names (e.g., `orbitant-blog-post-review`) so Claude can distinguish them from community skills.
+- **Install only what you need**: A marketer doesn't need infra skills, and vice versa.
+
+### Component Types
+
+| Component | What it is | How it triggers |
+|-----------|-----------|-----------------|
+| **Skills** | Instructions Claude loads automatically when relevant | Claude reads the `description` and decides |
+| **Agents** | Specialized sub-agents with restricted tools | Invoked via slash command or by another agent |
+| **Commands** | Slash commands invoked manually | User types `/orbitant-marketing:command-name` |
+
+## Adding New Skills
 
 1. Create folder: `plugins/orbitant-{vertical}/skills/{skill-name}/`
 2. Add `SKILL.md` with frontmatter:
