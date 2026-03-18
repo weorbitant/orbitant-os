@@ -1,0 +1,90 @@
+---
+title: Versioning
+description: How orbitant-os handles semantic versioning.
+---
+
+## Semantic Versioning
+
+We use [Semantic Versioning](https://semver.org/):
+
+| Change | Version Bump | Examples |
+|--------|--------------|----------|
+| **MAJOR** | Breaking changes to skill behavior or output format | Removing a skill, changing required inputs |
+| **MINOR** | New skills, agents, or commands added | Adding `orbitant-new-skill` |
+| **PATCH** | Bug fixes, wording improvements, SEO tweaks | Fixing typos, improving descriptions |
+
+## Where Versions Are Tracked
+
+1. **`plugin.json`** — Per-plugin version
+   ```json
+   {
+     "name": "orbitant-marketing",
+     "version": "1.1.0"
+   }
+   ```
+
+2. **`marketplace.json`** — Marketplace-level version reference
+   ```json
+   {
+     "plugins": [
+       {
+         "name": "orbitant-marketing",
+         "version": "1.1.0"
+       }
+     ]
+   }
+   ```
+
+3. **Git tags** — `orbitant-{vertical}-v{X.Y.Z}`
+   ```
+   orbitant-marketing-v1.0.0
+   orbitant-marketing-v1.1.0
+   orbitant-chief-of-staff-v1.3.0
+   ```
+
+## When to Bump Versions
+
+### Adding a New Skill
+
+1. Bump **MINOR** version in `plugin.json`
+2. Update version in `marketplace.json` to match
+3. Create a git tag after merge
+
+### Fixing a Skill
+
+1. Bump **PATCH** version in `plugin.json`
+2. Update version in `marketplace.json` to match
+3. Create a git tag after merge
+
+### Breaking Changes
+
+1. Bump **MAJOR** version in `plugin.json`
+2. Update version in `marketplace.json` to match
+3. Add migration notes to release
+4. Create a git tag after merge
+
+## Creating Releases
+
+After merging a version bump:
+
+```bash
+# Create and push a tag
+git tag orbitant-marketing-v1.1.0
+git push origin orbitant-marketing-v1.1.0
+```
+
+Then create a GitHub release with:
+
+- Tag: `orbitant-marketing-v1.1.0`
+- Title: `orbitant-marketing v1.1.0`
+- Description: List of changes
+
+## Checking for Updates
+
+Users can update plugins with:
+
+```bash
+/plugin update
+```
+
+This pulls the latest versions from the marketplace.

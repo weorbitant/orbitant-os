@@ -1,0 +1,70 @@
+---
+title: Concepts
+description: Understand the difference between skills, agents, and commands.
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Component Types
+
+orbitant-os organizes capabilities into three component types:
+
+<CardGrid>
+  <Card title="Skills" icon="pencil">
+    Instructions Claude loads automatically when relevant. Claude reads the `description` field and decides when to activate them.
+  </Card>
+  <Card title="Agents" icon="setting">
+    Specialized sub-agents with restricted tool access. Invoked via slash command or by another agent.
+  </Card>
+  <Card title="Commands" icon="rocket">
+    Slash commands invoked manually by the user via `/plugin-name:command-name`.
+  </Card>
+</CardGrid>
+
+## Comparison
+
+| Component | What it is | How it triggers |
+|-----------|-----------|-----------------|
+| **Skills** | Instructions Claude loads automatically when relevant | Claude reads the `description` and decides |
+| **Agents** | Specialized sub-agents with restricted tools | Invoked via slash command or by another agent |
+| **Commands** | Slash commands invoked manually | User types `/orbitant-{vertical}:command-name` |
+
+## Why Verticals?
+
+Each vertical is an independent **plugin** with its own namespace. This means:
+
+- **No collisions**: Skills use prefixed names (e.g., `orbitant-blog-post-review`) so Claude can distinguish them from community skills.
+- **Install only what you need**: A marketer doesn't need infra skills, and vice versa.
+
+## File Structure
+
+Each plugin follows this structure:
+
+```
+plugins/orbitant-{vertical}/
+├── .claude-plugin/
+│   └── plugin.json          # Plugin metadata + version
+├── skills/
+│   └── {skill-name}/
+│       ├── SKILL.md         # Required (frontmatter + instructions)
+│       ├── README.md        # Optional (human docs)
+│       ├── scripts/         # Optional (executable code)
+│       ├── references/      # Optional (docs loaded on demand)
+│       └── assets/          # Optional (templates, fonts, images)
+├── agents/
+│   └── {agent-name}.md      # Specialized sub-agents
+└── commands/
+    └── {command-name}.md    # Slash commands
+```
+
+## Naming Conventions
+
+- **Skill names**: `orbitant-{short-description}` (e.g., `orbitant-blog-post-review`)
+- **Skill folders**: kebab-case (e.g., `blog-post-review/`)
+- **Agent files**: kebab-case `.md` (e.g., `content-strategist.md`)
+- **Command files**: kebab-case `.md` (e.g., `generate-copy.md`)
+- **Plugin folders**: `orbitant-{vertical}` (e.g., `orbitant-marketing`)
+
+:::caution[Important]
+The `orbitant-` prefix is required for all skill names to avoid collisions with community skills.
+:::

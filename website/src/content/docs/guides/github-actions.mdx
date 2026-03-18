@@ -1,0 +1,115 @@
+---
+title: GitHub Actions
+description: Using orbitant-os skills in CI/CD pipelines.
+---
+
+## Overview
+
+You can use skills in CI/CD pipelines with the `claude-code-action`. This is useful for:
+
+- Automated code review
+- Blog post review on PRs
+- Content validation
+- Any automated Claude-powered workflows
+
+## Example: Blog Post Review
+
+Here's a workflow that automatically reviews blog posts when they change in a PR:
+
+```yaml
+# .github/workflows/blog-review.yml
+name: Blog Writer Coach
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+
+      - name: Install orbitant-blog-post-review skill
+        run: npx skills add weorbitant/orbitant-os --skill orbitant-blog-post-review --agent claude-code -y
+
+      - name: Get changed blog files
+        id: changed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          files=$(gh pr diff "${{ github.event.pull_request.number }}" --name-only | grep -E '^blog/.*\.md' || true)
+          if [ -n "$files" ]; then
+            {
+              echo "files<<EOF"
+              echo "$files"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+            echo "has_files=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_files=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Review blog posts with Claude
+        if: steps.changed.outputs.has_files == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ github.token }}
+          prompt: |
+            Review the following blog post files changed in PR #${{ github.event.pull_request.number }}:
+            ${{ steps.changed.outputs.files }}
+
+            Use the orbitant-blog-post-review skill to provide editorial feedback.
+            Post your review as a comment on this PR using gh pr comment.
+          claude_args: "--max-turns 15 --allowedTools Read,Glob,Grep,Bash,Write"
+```
+
+## How It Works
+
+1. **Install skill**: Uses `npx skills add` to install the skill without Claude Code
+2. **Detect changes**: Checks which blog files changed in the PR
+3. **Run Claude**: Uses `claude-code-action` with the installed skill to review content
+4. **Post comment**: Claude posts the review as a PR comment
+
+## Required Secrets
+
+Add these to your repository secrets:
+
+- `ANTHROPIC_API_KEY` — Your Anthropic API key
+
+## CI/CD Pipelines in orbitant-os
+
+Every PR to orbitant-os is automatically validated:
+
+| Pipeline | What it checks |
+|----------|----------------|
+| **Validate** | Markdown linting, JSON schema validation |
+| **Semver** | Version bumps when plugins change |
+| **Security** | Snyk Agent Scan for security analysis |
+| **Skill Review** | AI quality review |
+
+### PR Review Labels
+
+Use these labels to trigger specific reviews:
+
+| Label | Triggers |
+|-------|----------|
+| `review-requested` | ALL reviews (security + quality + semver) |
+| `review-security` | Security scan only |
+| `review-quality` | AI skill quality review only |
+| `review-semver` | Semver validation only |
+
+Add the label to your PR, and the workflow runs automatically.

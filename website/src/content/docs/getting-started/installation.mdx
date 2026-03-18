@@ -1,0 +1,95 @@
+---
+title: Installation
+description: Detailed installation instructions for all platforms.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## Claude Code (Recommended)
+
+Claude Code has native plugin support:
+
+```bash
+# Register the marketplace (one-time setup)
+/plugin marketplace add weorbitant/orbitant-os
+
+# Install a plugin
+/plugin install orbitant-marketing
+
+# Install multiple plugins
+/plugin install orbitant-marketing orbitant-chief-of-staff
+
+# Update all plugins
+/plugin update
+```
+
+### Uninstalling
+
+```bash
+# Remove a plugin
+/plugin uninstall orbitant-marketing
+
+# Remove the marketplace
+/plugin marketplace remove weorbitant/orbitant-os
+```
+
+## Claude.ai / Claude Desktop
+
+1. Download the skill folder you need as a `.zip`
+2. Go to **Settings > Capabilities > Skills**
+3. Click **Upload skill** and select the zip
+
+### Uninstalling
+
+1. Go to **Settings > Capabilities > Skills**
+2. Find the skill under "Your skills"
+3. Click the skill and select **Delete**
+
+## Other AI Agents (via skills.sh)
+
+Use [skills.sh](https://skills.sh) to install skills on any supported agent (Cursor, Cline, Windsurf, Codex, GitHub Copilot, and 40+ more):
+
+```bash
+# Install a specific skill to Claude Code
+npx skills add weorbitant/orbitant-os --skill orbitant-blog-post-review --agent claude-code -y
+
+# Install to Cursor
+npx skills add weorbitant/orbitant-os --skill orbitant-blog-post-review --agent cursor -y
+
+# Install to Cline
+npx skills add weorbitant/orbitant-os --skill orbitant-blog-post-review --agent cline -y
+
+# List available skills before installing
+npx skills add weorbitant/orbitant-os --list
+```
+
+### When to use skills.sh
+
+| Use case | Recommended method |
+|----------|-------------------|
+| Using Claude Code as your main agent | `/plugin install` (native integration) |
+| Using multiple AI agents | `npx skills add` (cross-agent compatibility) |
+| Installing skills in CI/CD | `npx skills add` (works without Claude Code) |
+| Sharing skills with non-Claude users | `npx skills add` (agent-agnostic) |
+
+skills.sh follows the [Agent Skills](https://agentskills.io) open standard, which works across multiple AI tools.
+
+## Claude API
+
+Use the `/v1/skills` endpoint. See [Skills API docs](https://docs.claude.com/en/api/skills).
+
+## Local Development
+
+Before pushing to GitHub, test plugins with the `--plugin-dir` flag:
+
+```bash
+# Start Claude Code with a local plugin loaded
+claude --plugin-dir ./plugins/orbitant-marketing
+
+# Load multiple plugins
+claude --plugin-dir ./plugins/orbitant-marketing --plugin-dir ./plugins/orbitant-chief-of-staff
+```
+
+:::note
+The `/plugin marketplace add` and `/plugin install` commands require the repo to be on GitHub. Use `--plugin-dir` for local development.
+:::

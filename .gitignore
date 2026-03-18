@@ -3,8 +3,8 @@
 .claude/plans/
 .claude/todos/
 
-# Design docs and plans (local only)
-docs/
+# Design docs and plans (local only, root level)
+/docs/
 
 # OS files
 .DS_Store
@@ -18,6 +18,11 @@ Thumbs.db
 
 # Node (if running CI locally)
 node_modules/
+
+# Website build output
+website/dist/
+website/.astro/
+website/src/content/generated/*.json
 
 # Logs
 *.log

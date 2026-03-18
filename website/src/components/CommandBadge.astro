@@ -1,0 +1,10 @@
+---
+interface Props {
+  name: string;
+  plugin: string;
+}
+
+const { name, plugin } = Astro.props;
+---
+
+<code class="command-badge">/{plugin}:{name}</code>

@@ -1,0 +1,125 @@
+---
+title: FAQ
+description: Frequently asked questions about orbitant-os.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+## General
+
+### What is orbitant-os?
+
+A plugin marketplace for Claude Code containing skills, agents, and commands organized by business vertical (marketing, chief-of-staff, etc.).
+
+### What's the difference between skills, agents, and commands?
+
+| Component | What it is | When to use |
+|-----------|-----------|-------------|
+| **Skills** | Instructions Claude loads automatically when relevant | When you want Claude to activate behavior based on context |
+| **Agents** | Specialized sub-agents with restricted tool access | When you need isolated execution with specific permissions |
+| **Commands** | Slash commands invoked manually | When you want explicit user-triggered actions |
+
+### Why prefix everything with `orbitant-`?
+
+To avoid naming collisions with community skills. If someone publishes a `blog-post-review` skill, ours won't conflict because it's named `orbitant-blog-post-review`.
+
+## Installation
+
+### How do I install a plugin in Claude Code?
+
+```bash
+/plugin marketplace add weorbitant/orbitant-os
+/plugin install orbitant-marketing
+```
+
+### How do I use a skill after installing?
+
+Skills are invoked with `/plugin-name:skill-name`:
+
+```bash
+# Use the blog-post-review skill from orbitant-marketing
+/orbitant-marketing:blog-post-review
+```
+
+### How do I uninstall a plugin?
+
+```bash
+# Remove a plugin
+/plugin uninstall orbitant-marketing
+
+# Remove the marketplace entirely
+/plugin marketplace remove weorbitant/orbitant-os
+```
+
+### Can I use skills with the Claude API?
+
+Yes, use the `/v1/skills` endpoint. See the [Skills API docs](https://docs.claude.com/en/api/skills).
+
+### Can I use skills with other AI agents?
+
+Yes! Use [skills.sh](https://skills.sh):
+
+```bash
+npx skills add weorbitant/orbitant-os --skill orbitant-blog-post-review --agent cursor -y
+```
+
+skills.sh supports 40+ agents including Claude Code, Cursor, Cline, Windsurf, Codex, and GitHub Copilot.
+
+## Contributing
+
+### How do I add a new skill?
+
+See [Contributing](/orbitant-os/guides/contributing/) for the full process. Quick summary:
+
+1. Create folder in `plugins/orbitant-{vertical}/skills/{skill-name}/`
+2. Write `SKILL.md` with proper frontmatter
+3. Update `marketplace.json`
+4. Open a PR
+
+### Why is my skill not triggering?
+
+The `description` field in SKILL.md frontmatter is the primary triggering mechanism. Make it:
+
+- Specific about what the skill does
+- Include trigger phrases and edge cases
+- Be "pushy" — Claude tends to under-trigger otherwise
+
+### How long can a SKILL.md be?
+
+Keep it under 500 lines. If longer, move reference material to a `references/` subfolder.
+
+## Forking Skills
+
+### How do I fork a skill from another repo?
+
+1. **Copy the skill files** (SKILL.md, LICENSE, any assets) into your plugin
+2. **Rename to follow conventions** — add `orbitant-` prefix to the `name` field
+3. **Create `.fork-metadata.json`** to track the source
+4. **Update plugin.json** — add skill path and bump version
+5. **Update marketplace.json** — match the new version
+
+### How do I check for upstream changes?
+
+```bash
+npm run check:upstream
+```
+
+This finds forked skills and reports which ones have upstream changes.
+
+## Troubleshooting
+
+### CI is failing on my PR
+
+Check the workflow logs for:
+
+- **Markdown lint errors** — fix formatting issues
+- **Schema validation errors** — ensure `plugin.json` and SKILL.md frontmatter are valid
+- **Security scan failures** — Snyk Agent Scan checks for prompt injection, secrets, malicious patterns
+
+### My skill works locally but not after install
+
+Verify:
+
+1. The skill path is listed in `marketplace.json`
+2. The `name` field in SKILL.md matches the `orbitant-{short-name}` convention
+3. The `description` field is comprehensive enough for Claude to trigger it

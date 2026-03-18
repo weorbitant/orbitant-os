@@ -1,0 +1,95 @@
+name: "Weekly KPI Snapshot"
+cadence: weekly
+version: "1.0"
+
+output:
+  format: markdown
+  destination: terminal
+  file_path: "Logs/Business/Weekly/{DATE}.md"
+
+sections:
+  - id: key-metrics
+    title: "Key Metrics"
+    type: kpi-table
+    kpis:
+      - name: "New Business Pipeline"
+        source: hubspot
+        query: pipeline_total_value
+      - name: "Cash in Bank"
+        source: holded
+        query: cash_balance
+      - name: "Collection Effectiveness"
+        source: holded
+        query: collection_effectiveness
+      - name: "Team Utilization"
+        source: sheets
+        query: team_utilization
+      - name: "30/60/90 Day Utilization"
+        source: sheets
+        query: utilization_30_60_90
+      - name: "Opportunity Cost"
+        source: sheets
+        query: opportunity_cost
+
+  - id: management
+    title: "Management Overview"
+    type: notion-management
+    source: notion
+    databases:
+      - challenges
+      - headlines
+      - opportunities
+      - todos
+
+  - id: commercial
+    title: "Commercial"
+    source: hubspot
+    type: pipeline-detail
+    metrics:
+      - pipeline_stages
+      - deals_won
+      - deals_lost
+      - win_rate
+      - active_proposals
+      - calls
+      - avg_deal_size
+
+  - id: hr-team
+    title: "HR — Team"
+    source: factorial
+    type: hr-snapshot
+    metrics:
+      - headcount
+      - holidays
+      - sick_leave
+      - joiners
+      - departures
+
+  - id: hr-recruitment
+    title: "HR — Recruitment"
+    source: airtable
+    type: recruitment-pipeline
+    metrics:
+      - open_positions
+      - active_candidates
+      - by_status
+      - by_source
+      - top_candidates
+
+  - id: financial
+    title: "Financial"
+    source: holded
+    type: stub
+    note: "Pending Holded + Google Sheets integration (v2)"
+
+  - id: marketing
+    title: "Marketing"
+    source: mailerlite
+    type: stub
+    note: "Pending MailerLite + GA + LinkedIn + YouTube integration (v2)"
+
+  - id: operations
+    title: "Operations"
+    source: sheets
+    type: stub
+    note: "Pending spreadsheet integration (v2)"

@@ -1,0 +1,57 @@
+---
+title: orbitant-os
+description: Orbitant's Claude Code plugin marketplace — skills, agents, and commands organized by vertical.
+template: splash
+hero:
+  tagline: The future will be AI or nothing at all.
+  image:
+    file: ../../assets/orbitant-logo.svg
+  actions:
+    - text: Get Started
+      link: /orbitant-os/getting-started/quick-start/
+      icon: right-arrow
+      variant: primary
+    - text: Browse Plugins
+      link: /orbitant-os/plugins/
+      icon: open-book
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## What is orbitant-os?
+
+A plugin marketplace of skills, agents, and commands organized by business vertical. Compatible with Claude Code, Claude.ai, and the Claude API.
+
+<CardGrid stagger>
+  <Card title="Skills" icon="pencil">
+    Instructions Claude loads automatically when relevant. Claude reads the description and decides when to activate them.
+  </Card>
+  <Card title="Agents" icon="setting">
+    Specialized sub-agents with restricted tools for isolated execution with specific permissions.
+  </Card>
+  <Card title="Commands" icon="rocket">
+    Slash commands invoked manually via `/plugin-name:command-name` for explicit user-triggered actions.
+  </Card>
+  <Card title="Multi-platform" icon="laptop">
+    Works with Claude Code, Claude.ai, Claude API, and 40+ other AI agents via skills.sh.
+  </Card>
+</CardGrid>
+
+## Available Plugins
+
+| Plugin | Version | Skills | Commands |
+|--------|---------|--------|----------|
+| **orbitant-marketing** | v1.1.0 | 4 skills | — |
+| **orbitant-chief-of-staff** | v1.3.2 | 3 skills | 7 commands |
+
+[View all plugins →](/orbitant-os/plugins/)
+
+## Quick Install
+
+```bash
+# Register the marketplace
+/plugin marketplace add weorbitant/orbitant-os
+
+# Install a plugin
+/plugin install orbitant-marketing
+```

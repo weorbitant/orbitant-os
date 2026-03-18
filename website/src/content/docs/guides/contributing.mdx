@@ -1,0 +1,119 @@
+---
+title: Contributing
+description: How to contribute skills, agents, and commands to orbitant-os.
+---
+
+## Overview
+
+Thanks for contributing! This guide covers how to add or improve skills, agents, and commands.
+
+## Adding a New Skill
+
+### 1. Choose the right vertical
+
+Currently available:
+
+- `orbitant-marketing` — content, SEO, social, email, brand
+- `orbitant-chief-of-staff` — priorities, communications, goal alignment
+
+If your skill doesn't fit an existing vertical, see [Adding a New Vertical](#adding-a-new-vertical).
+
+### 2. Create the skill folder
+
+```bash
+mkdir -p plugins/orbitant-{vertical}/skills/{skill-name}
+```
+
+### 3. Write the SKILL.md
+
+See [Creating Skills](/orbitant-os/guides/creating-skills/) for detailed instructions.
+
+### 4. Update marketplace.json
+
+Add the skill path to the parent plugin's `skills` array in `.claude-plugin/marketplace.json`.
+
+### 5. Bump the version
+
+Update `version` in the plugin's `.claude-plugin/plugin.json` following semver.
+
+### 6. Open a PR
+
+Include:
+
+- What the skill does
+- Example prompts that should trigger it
+- Example prompts that should NOT trigger it
+
+## Adding an Agent
+
+Create a Markdown file in `plugins/orbitant-{vertical}/agents/`:
+
+```markdown
+---
+name: agent-name
+description: What this agent specializes in
+allowed-tools: Bash, Read, Write
+---
+
+# Agent Name
+
+Instructions for the agent...
+```
+
+## Adding a Command
+
+Create a Markdown file in `plugins/orbitant-{vertical}/commands/`:
+
+```markdown
+---
+name: command-name
+description: What this command does
+---
+
+# /orbitant-{vertical}:command-name
+
+Instructions for what happens when the user runs this command...
+```
+
+## Adding a New Vertical
+
+When a skill doesn't fit any existing vertical:
+
+1. Open an issue to discuss the new vertical
+2. Create the plugin structure:
+   ```bash
+   mkdir -p plugins/orbitant-{vertical}/.claude-plugin
+   mkdir -p plugins/orbitant-{vertical}/skills
+   ```
+3. Add `plugin.json` with version `1.0.0`
+4. Add at least one skill
+5. Register in `.claude-plugin/marketplace.json`
+6. Create a GitHub release when publishing
+
+## Testing Your Skill
+
+Before opening a PR, test locally:
+
+```bash
+# In Claude Code, load the plugin from your local directory
+claude --plugin-dir ./plugins/orbitant-{vertical}
+```
+
+Then try your skill with realistic prompts to make sure it triggers correctly.
+
+## Running Validation Locally
+
+```bash
+# Install dependencies (first time only)
+npm install
+
+# Run all checks (same as CI)
+npm run check
+
+# Or run individually:
+npm run lint              # Markdown linting
+npm run validate          # All schema validations
+
+# Fix markdown issues automatically
+npm run lint:fix
+```

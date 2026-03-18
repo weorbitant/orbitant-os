@@ -1,0 +1,64 @@
+---
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import PluginCard from '../../components/PluginCard.astro';
+
+// Import generated plugin data
+let plugins: Array<{
+  name: string;
+  version: string;
+  description: string;
+  skills: Array<{ name: string; folder: string; description: string; version: string; tags: string[]; plugin: string }>;
+  commands: Array<{ name: string; description: string; plugin: string }>;
+  agents: Array<{ name: string; description: string; plugin: string }>;
+}> = [];
+
+try {
+  const pluginsModule = await import('../../content/generated/plugins.json');
+  plugins = pluginsModule.default;
+} catch {
+  console.warn('No generated plugins.json found. Run npm run parse-plugins first.');
+}
+---
+
+<StarlightPage
+  frontmatter={{
+    title: 'Plugin Catalog',
+    description: 'Browse all available orbitant-os plugins',
+    template: 'doc',
+    tableOfContents: false,
+  }}
+>
+  <p>
+    Explore all available plugins in the orbitant-os marketplace. Each plugin contains skills, agents, and commands organized by business vertical.
+  </p>
+
+  <div class="plugin-grid">
+    {plugins.map((plugin) => (
+      <PluginCard
+        name={plugin.name}
+        version={plugin.version}
+        description={plugin.description}
+        skillCount={plugin.skills.length}
+        commandCount={plugin.commands.length}
+        agentCount={plugin.agents.length}
+        href={`/orbitant-os/plugins/${plugin.name}/`}
+      />
+    ))}
+  </div>
+
+  {plugins.length === 0 && (
+    <p class="no-plugins">
+      No plugins found. Run <code>npm run parse-plugins</code> to generate plugin data.
+    </p>
+  )}
+</StarlightPage>
+
+<style>
+  .no-plugins {
+    padding: 2rem;
+    background: var(--sl-color-gray-1);
+    border-radius: 0.5rem;
+    text-align: center;
+    color: var(--sl-color-gray-4);
+  }
+</style>
