@@ -288,8 +288,23 @@ async function main() {
     }
   }
 
+  // Save prompt metadata alongside images for reproducibility
+  const promptFile = args.output.replace(".png", ".prompt.json");
+  const promptData = {
+    prompt: args.prompt,
+    negative: args.negative || null,
+    model: args.model,
+    aspect: args.aspect,
+    count,
+    watermark: args.watermark,
+    generatedAt: new Date().toISOString(),
+    images: results,
+  };
+  await writeFile(promptFile, JSON.stringify(promptData, null, 2));
+  console.error(`Saved prompt: ${promptFile}`);
+
   // Structured output to stdout for the agent
-  console.log(JSON.stringify({ success: true, images: results }, null, 2));
+  console.log(JSON.stringify({ success: true, promptFile, images: results }, null, 2));
 }
 
 main();
