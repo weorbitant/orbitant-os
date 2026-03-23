@@ -36,11 +36,22 @@ Or just ask Claude: _"Generate a blog image about microservices"_ — the skill 
 
 > **Note:** `--negative` is accepted but not supported by the current API. Bake negative constraints directly into the prompt instead.
 
+## Reference Images
+
+The `assets/reference/` folder holds real blog thumbnails from orbitant.com for visual style calibration. If the folder is empty, download them:
+
+```bash
+node plugins/orbitant-marketing/skills/image-creation/scripts/scrape-insights-images.mjs
+```
+
+Safe to re-run (skips existing files). Use `--force` to re-download everything.
+
 ## Output
 
 For each generated image the script saves:
 - `{name}.png` — original without watermark
 - `{name}_branded.png` — with Orbitant watermark composited (auto-detects white/black based on image brightness)
+- `{name}.prompt.json` — prompt, model, aspect ratio, and timestamp for reproducibility
 
 ## Visual Identity
 
@@ -57,9 +68,11 @@ image-creation/
 ├── references/
 │   └── visual-identity.md    # Brand visual identity rules
 ├── scripts/
-│   └── generate-image.mjs    # Image generation + watermark script
+│   ├── generate-image.mjs          # Image generation + watermark script
+│   └── scrape-insights-images.mjs  # Downloads curated reference images from orbitant.com
 ├── assets/
 │   ├── watermark-white.svg   # White watermark for dark backgrounds
-│   └── watermark-black.svg   # Black watermark for light backgrounds
-└── output/                   # Generated images (gitignored)
+│   ├── watermark-black.svg   # Black watermark for light backgrounds
+│   └── reference/            # Blog thumbnails for style reference (gitignored)
+└── output/                   # Generated images + prompt files (gitignored)
 ```

@@ -50,13 +50,28 @@ If the API key is not set, craft the prompt and show it to the user so they can 
 
 > **Note:** The `--negative` flag is accepted by the script but **not supported by the current Imagen API** (`imagen-4.0-generate-001`). Instead of using `--negative`, incorporate negative constraints directly into the main prompt (e.g., "No red, orange, or yellow fire. No text, no words, no logos.").
 
+### Reference Images Setup
+
+Before crafting prompts, check if `assets/reference/` contains images. These are real blog thumbnails from orbitant.com that show the target visual style by example.
+
+If the folder is **empty or missing**, ask the user to run:
+
+```bash
+node scripts/scrape-insights-images.mjs
+```
+
+This downloads a curated set of ~26 reference images. It is safe to re-run — existing files are skipped. Use `--force` to re-download everything.
+
+Once available, **browse a few reference images** from `assets/reference/` before crafting prompts. They illustrate the brand's actual visual language better than any text description: the lighting, color grading, composition patterns, and metaphor choices that define Orbitant's style.
+
 ---
 
 ## Available Scripts
 
 - **`scripts/generate-image.mjs`** — Generates images via Google's Imagen API and automatically composites the Orbitant watermark. Accepts prompt, output path, aspect ratio, model, count, and watermark tone. Returns JSON with file paths on success.
+- **`scripts/scrape-insights-images.mjs`** — Downloads curated reference images from orbitant.com into `assets/reference/`. Skips existing files. Use `--force` to re-download.
 
-Run `node scripts/generate-image.mjs --help` for full usage.
+Run `node scripts/generate-image.mjs --help` or `node scripts/scrape-insights-images.mjs --help` for full usage.
 
 ## Available Assets
 
@@ -68,6 +83,12 @@ The script auto-detects which watermark to use based on the bottom strip brightn
 ---
 
 ## Workflow
+
+### Step 0 — Load Visual References
+
+1. Read `references/visual-identity.md` for the brand rules.
+2. Check if `assets/reference/` contains images. If empty, ask the user to run `node scripts/scrape-insights-images.mjs` and wait before continuing.
+3. Browse 3–5 reference images from `assets/reference/` to calibrate your sense of the brand's visual style.
 
 ### Step 1 — Choose the Category
 
@@ -127,9 +148,11 @@ node scripts/generate-image.mjs \
 
 Show the user:
 1. The **category** and **metaphor reasoning**
-2. The **prompt** used
+2. The **prompt** used (also saved as `.prompt.json` next to the images for reuse)
 3. The **generated image(s)** — read the output file(s) so the user can see them
 4. Note that the **Orbitant watermark was automatically composited** (unless `--watermark none` was used)
+
+The `.prompt.json` file stores the full prompt, model, aspect ratio, and generation timestamp so the user can reproduce or tweak the image later without the skill.
 
 ---
 
