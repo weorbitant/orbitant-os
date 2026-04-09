@@ -40,13 +40,66 @@ Activate when the user:
 
 ## Prerequisites
 
-The generation script requires:
-- **Node.js 18+**
-- **`@google/genai` package** — install with `npm install @google/genai`
-- **`sharp` package** — install with `npm install sharp` (for watermark compositing)
-- **`GOOGLE_API_KEY`** environment variable — get one at <https://aistudio.google.com/apikey>
+### Dependencies
 
-If the API key is not set, craft the prompt and show it to the user so they can use it manually in AI Studio or another tool.
+- **Node.js 18+**
+- **`@google/genai`** and **`sharp`** packages:
+
+```bash
+npm install @google/genai sharp
+```
+
+### Google API Key
+
+You need a `GOOGLE_API_KEY` to call the Imagen API. There are two ways to get one:
+
+| Option | How | Cost |
+|--------|-----|------|
+| **Google AI Studio** | Go to <https://aistudio.google.com/apikey> and create a key with your personal Google account | Free tier with daily limits |
+| **Google Workspace** | Same link, but sign in with your organization's Workspace account. Many Workspace plans include Gemini/Imagen API access with generous quotas (check your admin console under **Apps → Additional Google services → Google AI Studio**) | Included in Workspace plans that have Gemini enabled |
+
+> **Tip:** If your organization uses Google Workspace with Gemini enabled, you likely already have API access at no extra cost — ask your Workspace admin if unsure.
+
+### Setting the API Key
+
+Pick **one** of the following methods:
+
+**Option A — `.env` file (recommended, stays local and git-ignored):**
+
+Create `plugins/orbitant-marketing/skills/image-creation/scripts/.env`:
+
+```env
+GOOGLE_API_KEY=your-key-here
+```
+
+**Option B — Environment variable (current shell session only):**
+
+```bash
+export GOOGLE_API_KEY="your-key-here"
+```
+
+**Option C — Shell profile (persistent across sessions):**
+
+Add to your `~/.bashrc`, `~/.zshrc`, or equivalent:
+
+```bash
+export GOOGLE_API_KEY="your-key-here"
+```
+
+> **Note:** The `.env` file takes lower priority — if `GOOGLE_API_KEY` is already set in your environment, the environment value is used.
+
+### Quick Verification
+
+Run a single test image to confirm everything works:
+
+```bash
+node plugins/orbitant-marketing/skills/image-creation/scripts/generate-image.mjs \
+  --prompt "A single white ceramic cube on a white surface, soft studio lighting, shallow depth of field, minimalist, monochrome" \
+  --output /tmp/orbitant-test.png \
+  --count 1
+```
+
+If the API key is not set, the skill will craft the prompt and show it to the user so they can use it manually in AI Studio or another tool.
 
 > **Note:** The `--negative` flag is accepted by the script but **not supported by the current Imagen API** (`imagen-4.0-generate-001`). Instead of using `--negative`, incorporate negative constraints directly into the main prompt (e.g., "No red, orange, or yellow fire. No text, no words, no logos.").
 
