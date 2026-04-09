@@ -16,20 +16,20 @@ metadata:
   tags: marketing, newsletter, email, mailerlite, slack, knowledge-sharing, meetup
 ---
 
-# Orbitant Newsletter — Skill de preparación mensual
+# Orbitant Newsletter — Monthly Preparation Skill
 
-## Qué hace esta skill
+## What this skill does
 
-Genera el borrador completo de la newsletter mensual de Orbitant a partir de los materiales del mes. El output es un documento Markdown estructurado por secciones, listo para maquetar en MailerLite, con el copy de cada bloque ya redactado en inglés.
+Generates the complete draft of Orbitant's monthly newsletter from that month's materials. The output is a Markdown document structured by sections, ready for layout in MailerLite, with all copy already written in English.
 
 ---
 
-## Audiencia y tono
+## Audience and tone
 
-- **Idioma**: Inglés exclusivamente. Nunca español en el cuerpo de la newsletter.
-- **Audiencia**: Desarrolladores senior, CTOs, ingenieros y profesionales tech del ecosistema de Orbitant (clientes, comunidad, asistentes a KS y meetups).
-- **Tono**: Directo, técnico pero accesible, sin hype. El mismo que el blog y LinkedIn: práctico, honesto, cercano. Nunca "vendehumos". Orbitant aparece contextualmente, nunca de forma promocional explícita.
-- **Estilo**: Frases cortas. Negritas para enfatizar conceptos clave dentro del copy de las secciones. Sin em dashes. Sin bullet points en el copy de las secciones narrativas (sí se usan en listas de recursos y "What you'll get").
+- **Language**: English exclusively. Never Spanish in the newsletter body.
+- **Audience**: Senior developers, CTOs, engineers, and tech professionals in the Orbitant ecosystem (clients, community, KS and meetup attendees).
+- **Tone**: Direct, technical but accessible, no hype. The same as the blog and LinkedIn: practical, honest, approachable. Never salesy. Orbitant appears contextually, never as explicit promotion.
+- **Style**: Short sentences. Bold for emphasizing key concepts within section copy. No em dashes. No bullet points in narrative section copy (bullet points are used in resource lists and "What you'll get" sections).
 
 ---
 
@@ -40,13 +40,13 @@ Genera el borrador completo de la newsletter mensual de Orbitant a partir de los
 
 ---
 
-## Flujo de trabajo al arrancar
+## Workflow on activation
 
-Cuando Alma diga algo como "prepara la newsletter de [mes]", la skill sigue este orden:
+When Alma says something like "prepare the newsletter for [month]", the skill follows this order:
 
-### Paso 1 — Obtener los enlaces de Slack de forma autónoma
+### Step 1 — Fetch Slack links autonomously
 
-Claude busca directamente en Slack, sin necesidad de que Alma prepare nada en Notion. Los canales a monitorizar son:
+Claude searches Slack directly, without Alma needing to prepare anything in Notion. Channels to monitor:
 
 - `#knowledge-sharing`
 - `#ai-coding`
@@ -54,140 +54,140 @@ Claude busca directamente en Slack, sin necesidad de que Alma prepare nada en No
 - `#open-source`
 - `#cybersecurity-for-hackers`
 
-**Fecha de corte**: Claude busca mensajes publicados desde el día siguiente al envío de la newsletter anterior hasta la fecha actual. Alma indica la fecha de envío de la edición anterior si Claude no la conoce.
+**Cutoff date**: Claude searches for messages posted from the day after the previous newsletter was sent until the current date. Alma provides the send date of the previous edition if Claude doesn't know it.
 
-**Proceso de búsqueda:**
-1. Usar `slack_search_public_and_private` con filtro `after:[fecha]` y `has:link` en cada canal.
-2. Para cada mensaje que haya generado un hilo, leer el thread completo con `slack_read_thread` para entender el debate real antes de decidir si incluirlo.
-3. Filtrar: quedarse con los mensajes que tienen hilo con debate real, los que tienen comentario editorial del que comparte, y los técnicamente más relevantes.
-4. Excluir: duplicados con el mes anterior, links de entretenimiento sin fondo técnico, eventos locales sin interés general, mensajes sin URL externa enlazable. Los debates internos sin URL externa no van como item de lista.
-5. Agrupar por temática en 3-5 categorías. No forzar más de 5.
-6. Redactar cada item en inglés en una sola línea, incorporando el matiz o la opinión del equipo si la hay, sin atribuir directamente al nombre de la persona.
+**Search process:**
+1. Use `slack_search_public_and_private` with `after:[date]` and `has:link` filters in each channel.
+2. For each message that generated a thread, read the full thread with `slack_read_thread` to understand the actual discussion before deciding whether to include it.
+3. Filter: keep messages with threads containing real discussion, those with editorial commentary from the person sharing, and the most technically relevant ones.
+4. Exclude: duplicates from the previous month, entertainment links without technical substance, local events without general interest, messages without an external linkable URL. Internal discussions without an external URL are not included as list items.
+5. Group by topic into 3-5 categories. Don't force more than 5.
+6. Write each item in English on a single line, incorporating the team's nuance or opinion if available, without directly attributing to the person's name.
 
-**Limitación conocida**: La búsqueda por API de Slack no garantiza capturar el 100% de los mensajes en canales de mucho volumen. Alma puede añadir manualmente cualquier enlace que quiera incluir y que Claude no haya recogido.
+**Known limitation**: Slack's API search doesn't guarantee capturing 100% of messages in high-volume channels. Alma can manually add any link she wants to include that Claude didn't pick up.
 
-### Paso 2 — Pedir a Alma los inputs que no se pueden obtener de forma autónoma
+### Step 2 — Ask Alma for inputs that can't be obtained autonomously
 
-Claude solicita de una sola vez, al inicio, solo lo que no puede obtener solo:
+Claude requests everything at once, at the start, only what it can't obtain on its own:
 
-1. **KS pasada — URL del vídeo en YouTube**
-2. **KS pasada — descripción del vídeo** (copiar y pegar desde YouTube, versión ES o EN). YouTube está bloqueado. El transcript completo también es válido.
-3. **KS pasada — recursos mencionados** (slides, repos, artículos), si no están en la descripción del vídeo.
-4. **KS próxima — datos completos**: título, ponente (nombre + cargo + URL de LinkedIn), fecha, idioma (español/inglés).
-5. **Post destacado del mes**: URL del post featured.
-6. **Meetup**: ¿hay fotos disponibles para el carrusel? (sí/no/pendiente) + datos del próximo meetup si están confirmados (fecha, ponente).
+1. **Past KS — YouTube video URL**
+2. **Past KS — video description** (copy-paste from YouTube, ES or EN version). YouTube is blocked. The full transcript is also valid.
+3. **Past KS — resources mentioned** (slides, repos, articles), if not in the video description.
+4. **Next KS — full details**: title, speaker (name + role + LinkedIn URL), date, language (Spanish/English).
+5. **Featured post of the month**: URL of the featured post.
+6. **Meetup**: Are photos available for the carousel? (yes/no/pending) + next meetup details if confirmed (date, speaker).
 
-### Paso 3 — Generar el borrador completo
+### Step 3 — Generate the complete draft
 
-Con los inputs de Alma y los enlaces de Slack ya curados, Claude redacta el borrador completo siguiendo la estructura de secciones descrita a continuación.
+With Alma's inputs and the already curated Slack links, Claude writes the complete draft following the section structure described below.
 
 ---
 
-## Estructura fija de la newsletter
+## Fixed newsletter structure
 
-### 1. ASUNTO Y PREHEADER
+### 1. SUBJECT LINE AND PREHEADER
 
-Dos campos distintos en MailerLite. Siempre indicarlos separados y etiquetados.
+Two separate fields in MailerLite. Always indicate them separately and labeled.
 
-- **Asunto**: Corto. Puede ser el titular de la KS pasada, una pregunta o una tensión del mes.
-- **Preheader**: Complementa el asunto sin repetirlo. Sin verbo inicial. Foco en el contenido o en el hook de otro bloque (puede hacer referencia a la próxima KS). Máximo una frase corta.
+- **Subject**: Short. Can be the past KS headline, a question, or a tension point from the month.
+- **Preheader**: Complements the subject without repeating it. No initial verb. Focus on the content or on the hook of another section (can reference the next KS). One short sentence maximum.
 
-Ejemplos reales:
-- Asunto: *"Who reviews the AI's code?"* / Preheader: *"Scale or go extinct. Up next in our KS."*
-- Asunto: *"AI speed without structure is a liability"* / Preheader: *"Juan Macías on spec-driven development with Claude Code."*
+Real examples:
+- Subject: *"Who reviews the AI's code?"* / Preheader: *"Scale or go extinct. Up next in our KS."*
+- Subject: *"AI speed without structure is a liability"* / Preheader: *"Juan Macías on spec-driven development with Claude Code."*
 
-### 2. PAST KS — Recap de la Knowledge Sharing del mes
+### 2. PAST KS — Knowledge Sharing recap of the month
 
-- **Titular H1**: Evocador, no descriptivo. Captura la tensión o el problema que resuelve la sesión. Puede ser una cita directa del ponente entre comillas con atribución. Ejemplos reales: *"npm publishing isn't what it used to be"*, *"What happens when no one knows if it is working"*, *"AI speed without structure is a liability" —Juan Macías*.
-- **Párrafo intro**: 2-3 frases. Ponente con nombre + cargo linkado a LinkedIn. Enfoque concreto de la charla. Termina con: *"If you couldn't attend, we've published the full session on [our YouTube channel](URL). You can watch it here 👇"*
-- **Thumbnail**: Placeholder `[VIDEO THUMBNAIL — nombre del ponente, cargo]`
-- **"💡 In this session you'll discover:"**: Lista de 4-7 puntos. Concepto en negrita + descripción breve.
-- **"⚒️ Resources from the session:"**: Lista de enlaces con anchor text descriptivo.
-- **Blockquote**: *"Next launch: our new public Knowledge Sharing will be on **[día, fecha]**"*
+- **H1 headline**: Evocative, not descriptive. Captures the tension or the problem the session solves. Can be a direct speaker quote in quotation marks with attribution. Real examples: *"npm publishing isn't what it used to be"*, *"What happens when no one knows if it is working"*, *"AI speed without structure is a liability" —Juan Macías*.
+- **Intro paragraph**: 2-3 sentences. Speaker with name + role linked to LinkedIn. Concrete focus of the talk. Ends with: *"If you couldn't attend, we've published the full session on [our YouTube channel](URL). You can watch it here 👇"*
+- **Thumbnail**: Placeholder `[VIDEO THUMBNAIL — speaker name, role]`
+- **"💡 In this session you'll discover:"**: List of 4-7 points. Concept in bold + brief description.
+- **"⚒️ Resources from the session:"**: List of links with descriptive anchor text.
+- **Blockquote**: *"Next launch: our new public Knowledge Sharing will be on **[day, date]**"*
 
-### 3. NEXT KS — Anuncio de la próxima Knowledge Sharing
+### 3. NEXT KS — Upcoming Knowledge Sharing announcement
 
-- **Titular H2**: Título oficial de la sesión.
-- **Párrafo intro**: 2-3 frases. Ponente con nombre linkado + cargo. Qué abordará la sesión, generando curiosidad sin spoilear.
-- **Datos**:
+- **H2 headline**: Official session title.
+- **Intro paragraph**: 2-3 sentences. Speaker with linked name + role. What the session will cover, generating curiosity without spoiling.
+- **Details**:
   ```
-  📅 [fecha]
-  🕔 17:00 CET/CEST (según época del año)
+  📅 [date]
+  🕔 17:00 CET/CEST (depending on time of year)
   🇪🇸 Session held in Spanish / 🇬🇧 Session held in English
   💻 Online and free
   ```
-- **CTA**: `[Register now]` (el link lo añade Alma en MailerLite)
+- **CTA**: `[Register now]` (link added by Alma in MailerLite)
 
 ### 4. FEATURED BLOG POST
 
-- **Titular H2**: Título real del post.
-- **Imagen**: Placeholder `[FEATURED IMAGE]`
-- **Byline**: *"By [nombre linkado a LinkedIn], cargo"* — solo si es autor individual. Omitir en posts corporativos.
-- **Extracto**: Las primeras 2-3 frases del post tal como aparecen en el blog + `[Read more](URL)`. Usar el texto real, no parafrasear.
+- **H2 headline**: Actual post title.
+- **Image**: Placeholder `[FEATURED IMAGE]`
+- **Byline**: *"By [name linked to LinkedIn], role"* — only for individual authors. Omit for corporate posts.
+- **Excerpt**: The first 2-3 sentences of the post as they appear on the blog + `[Read more](URL)`. Use the actual text, don't paraphrase.
 
 ### 5. WHAT WE'RE TALKING ABOUT IN SLACK
 
-- Máximo 12-15 items en total, agrupados en 3-5 categorías temáticas.
-- Cada item: `[Anchor text descriptivo](URL)` — descripción de **una sola línea**. Nunca párrafos.
-- Todo item debe tener URL externa pública. Sin enlace, no va.
-- No repetir enlaces que aparecieron en la edición anterior.
-- Categorías habituales: *AI-Powered Development*, *Security & Open Source*, *Architecture & Engineering*, *Worth the Read*, *Tools & Resources*. Se adaptan al mes.
+- Maximum 12-15 items total, grouped in 3-5 thematic categories.
+- Each item: `[Descriptive anchor text](URL)` — **single-line** description. Never paragraphs.
+- Every item must have a public external URL. No link, no inclusion.
+- Don't repeat links that appeared in the previous edition.
+- Common categories: *AI-Powered Development*, *Security & Open Source*, *Architecture & Engineering*, *Worth the Read*, *Tools & Resources*. Adapted to the month.
 
 ### 6. LATEST FROM OUR BLOG
 
-Posts del mes distintos al featured. Se obtienen del feed del blog: no hace falta que Alma los liste.
+Posts from the month other than the featured one. Obtained from the blog feed: Alma doesn't need to list them.
 
-Por post: título en negrita + placeholder `[POST IMAGE]` + extracto de apertura + `[Read more](URL)`.
+Per post: title in bold + placeholder `[POST IMAGE]` + opening excerpt + `[Read more](URL)`.
 
 ### 7. COMMUNITY — Node.js Madrid Meetup
 
-Incluir siempre que haya habido un meetup ese mes o haya uno próximo confirmado.
+Always include when there was a meetup that month or there's an upcoming one confirmed.
 
-- **Titular H2**: Evocador del contenido de la sesión. Cambia cada mes. Nunca reutilizar el mismo título de ediciones anteriores ni usar fórmulas genéricas. Ejemplo real: *"Node.js Madrid: Growth doesn't stop at Senior"*.
-- **Fotos**: Placeholder `[MEETUP PHOTOS CAROUSEL]` si hay fotos disponibles.
-- **Párrafo**: Recap del evento pasado (ponente, tema, ambiente). Si hay próximo meetup confirmado: datos y CTA `[Join the meetup]`.
+- **H2 headline**: Evocative of the session content. Changes every month. Never reuse the same title from previous editions or use generic formulas. Real example: *"Node.js Madrid: Growth doesn't stop at Senior"*.
+- **Photos**: Placeholder `[MEETUP PHOTOS CAROUSEL]` if photos are available.
+- **Paragraph**: Recap of the past event (speaker, topic, atmosphere). If there's a confirmed upcoming meetup: details and CTA `[Join the meetup]`.
 
-### 8. CIERRE
+### 8. CLOSING
 
-Formato fijo e invariable:
+Fixed and invariable format:
 
-> That's our **[Mes]** snapshot. See you next month with fresh ideas and sharper insights.
-
----
-
-## Reglas de escritura
-
-- Sin em dashes (—). Usar coma, punto y coma o punto.
-- Negritas para conceptos clave, no para decorar.
-- Sin exclamaciones salvo en celebración de hito concreto.
-- Sin frases de relleno: "It's no secret that...", "In today's world...", "We're excited to...", etc.
-- Orbitant aparece contextualmente. Nunca autopromoción explícita.
-- Ponentes: nombre linkado a LinkedIn + cargo. Nunca abrir el segundo párrafo con el nombre del ponente.
-- CTA buttons: texto corto y directo. "Register now", "Read more", "Join the meetup".
+> That's our **[Month]** snapshot. See you next month with fresh ideas and sharper insights.
 
 ---
 
-## Output esperado
+## Writing rules
 
-Documento Markdown con todas las secciones en orden. Incluir:
-- Asunto y preheader al inicio, claramente separados y etiquetados.
-- Todo el copy redactado.
-- Placeholders claramente marcados para imágenes, thumbnails y carruseles.
-- URLs de todos los enlaces.
-- Notas `[NOTA: ...]` donde Alma deba completar algo.
+- No em dashes (—). Use comma, semicolon, or period.
+- Bold for key concepts, not for decoration.
+- No exclamation marks except for celebrating a concrete milestone.
+- No filler phrases: "It's no secret that...", "In today's world...", "We're excited to...", etc.
+- Orbitant appears contextually. Never explicit self-promotion.
+- Speakers: name linked to LinkedIn + role. Never open the second paragraph with the speaker's name.
+- CTA buttons: short and direct text. "Register now", "Read more", "Join the meetup".
 
 ---
 
-## Referencia de ediciones anteriores
+## Expected output
 
-Ediciones publicadas: diciembre 2025, enero 2026, febrero 2026, marzo 2026.
+Markdown document with all sections in order. Include:
+- Subject and preheader at the top, clearly separated and labeled.
+- All copy fully written.
+- Clearly marked placeholders for images, thumbnails, and carousels.
+- URLs for all links.
+- `[NOTE: ...]` annotations where Alma needs to complete something.
 
-Patrones clave:
-- El titular de la KS pasada reformula el problema o es una cita del ponente. Nunca el título literal de la sesión.
-- El bloque "Next launch" es un blockquote visual con tipografía en cursiva y negrita.
-- La sección Slack tiene entre 10 y 15 items, agrupados en 4-5 categorías. Cada item: una línea.
-- El cierre "[Mes] snapshot" es invariable.
-- Las fotos del meetup van en carrusel.
-- El titular de la sección meetup cambia cada mes y refleja el contenido de la sesión.
-- Los datos de la KS próxima incluyen siempre: fecha, hora, idioma y "💻 Online and free".
-- La newsletter se envía el miércoles siguiente a la KS, a las 8:45h CET. La programación la hace Alma en MailerLite.
+---
+
+## Previous editions reference
+
+Published editions: December 2025, January 2026, February 2026, March 2026.
+
+Key patterns:
+- The past KS headline reformulates the problem or is a speaker quote. Never the literal session title.
+- The "Next launch" block is a visual blockquote with italic and bold typography.
+- The Slack section has 10-15 items, grouped in 4-5 categories. Each item: one line.
+- The "[Month] snapshot" closing is invariable.
+- Meetup photos go in a carousel.
+- The meetup section headline changes every month and reflects the session content.
+- Next KS details always include: date, time, language, and "💻 Online and free".
+- The newsletter is sent the Wednesday after the KS at 8:45 CET. Scheduling is done by Alma in MailerLite.
