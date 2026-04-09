@@ -1,27 +1,9 @@
 {
   "name": "orbitant-chief-of-staff",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Chief of staff capabilities to support daily grinding",
   "author": {
     "name": "Orbitant"
   },
-  "license": "MIT",
-  "skills": [
-    "./skills/graceful-degradation",
-    "./skills/goal-alignment",
-    "./skills/voice-drafting"
-  ],
-  "commands": [
-    "./commands/preflight.md",
-    "./commands/status.md",
-    "./commands/today.md",
-    "./commands/triage.md",
-    "./commands/prep.md",
-    "./commands/week.md",
-    "./commands/crm.md"
-  ],
-  "agents": [
-    "./agents/triage-agent.md",
-    "./agents/enrichment-agent.md"
-  ]
+  "license": "MIT"
 }

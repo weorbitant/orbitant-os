@@ -1,24 +1,9 @@
 {
   "name": "orbitant-business",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Business management commands, data queries, and automated reports — Notion-backed management plus Factorial HR, HubSpot, and Airtable queries",
   "author": {
     "name": "Orbitant"
   },
-  "license": "MIT",
-  "skills": [],
-  "commands": [
-    "./commands/challenge.md",
-    "./commands/highlight.md",
-    "./commands/opportunity.md",
-    "./commands/todo.md",
-    "./commands/preflight.md",
-    "./commands/query.md",
-    "./commands/report.md"
-  ],
-  "agents": [
-    "./agents/factorial-fetcher.md",
-    "./agents/hubspot-fetcher.md",
-    "./agents/airtable-fetcher.md"
-  ]
+  "license": "MIT"
 }
