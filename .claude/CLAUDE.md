@@ -23,11 +23,11 @@ orbitant-os/
 ├── .claude-plugin/
 │   └── marketplace.json            <- THE marketplace manifest (lists all plugins)
 ├── plugins/
-│   ├── orbitant-marketing/         <- v1.1.0 — blog-post-review, blog-post-create, blog-post-translate, tone
+│   ├── orbitant-marketing/         <- v1.4.0 — blog-post-review, blog-post-create, blog-post-translate, tone, yt-description, linkedin-post, image-creation, newsletter
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   └── skills/
-│   ├── orbitant-chief-of-staff/    <- v1.3.2 — graceful-degradation, goal-alignment, voice-drafting
+│   ├── orbitant-chief-of-staff/    <- v1.3.3 — graceful-degradation, goal-alignment, voice-drafting
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   ├── skills/
@@ -35,7 +35,7 @@ orbitant-os/
 │   │   ├── agents/
 │   │   ├── crm/
 │   │   └── references/
-│   └── orbitant-business/          <- v0.2.0 — challenge, highlight, opportunity, todo, query, preflight
+│   └── orbitant-business/          <- v0.3.1 — challenge, highlight, opportunity, todo, query, preflight
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── agents/
@@ -237,9 +237,9 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 
 | Plugin | Version | Status | Skills | Commands |
 |--------|---------|--------|--------|----------|
-| orbitant-marketing | 1.1.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone` | — |
-| orbitant-chief-of-staff | 1.3.2 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
-| orbitant-business | 0.3.0 | Active | — | `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/preflight`, `/report` |
+| orbitant-marketing | 1.4.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter` | — |
+| orbitant-chief-of-staff | 1.3.3 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
+| orbitant-business | 0.3.1 | Active | — | `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/preflight`, `/report` |
 
 ## Scripts
 
