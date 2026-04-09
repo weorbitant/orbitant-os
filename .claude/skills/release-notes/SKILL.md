@@ -124,7 +124,7 @@ Generate markdown suitable for a GitHub Release body:
 
 ---
 
-**Full Changelog**: {previous_tag}...{new_tag}
+**Full Changelog**: [{previous_tag}...{new_tag}](https://github.com/weorbitant/orbitant-os/compare/{previous_tag}...{new_tag})
 ```
 
 ### Rules for Output
@@ -179,7 +179,7 @@ This release adds powerful blog translation capabilities and improves SEO analys
 
 ---
 
-**Full Changelog**: orbitant-marketing-v1.1.0...orbitant-marketing-v1.2.0
+**Full Changelog**: [orbitant-marketing-v1.1.0...orbitant-marketing-v1.2.0](https://github.com/weorbitant/orbitant-os/compare/orbitant-marketing-v1.1.0...orbitant-marketing-v1.2.0)
 ```
 
 ## Key Rules
