@@ -153,6 +153,12 @@ async function fetchGitHubReleases(): Promise<BlogPost[]> {
       if (plugin) tags.push(plugin);
       if (release.prerelease) tags.push('prerelease');
 
+      // Convert "Full Changelog" plain-text tag ranges into proper markdown links
+      const content = (release.body || '').replace(
+        /\*\*Full Changelog\*\*:\s*([\w.-]+\.\.\.[\w.-]+)/g,
+        `**Full Changelog**: [$1](https://github.com/${GITHUB_REPO}/compare/$1)`
+      );
+
       return {
         slug: `release-${release.tag_name}`,
         title: release.name || release.tag_name,
@@ -160,7 +166,7 @@ async function fetchGitHubReleases(): Promise<BlogPost[]> {
         date: release.published_at.split('T')[0],
         author: 'Orbitant Team',
         tags,
-        content: release.body || '',
+        content,
         plugin,
         version,
         isRelease: true,
