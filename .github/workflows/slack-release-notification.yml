@@ -3,31 +3,58 @@ name: Slack Release Notification
 on:
   release:
     types: [published]
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/59227617237/locations/global/workloadIdentityPools/orbitant-os/providers/github"
+          service_account: "github-actions-sa@orbitant-infra.iam.gserviceaccount.com"
+
+      - name: Get Slack webhook from Secret Manager
+        id: secrets
+        uses: google-github-actions/get-secretmanager-secrets@v2
+        with:
+          secrets: |-
+            SLACK_WEBHOOK_URL:projects/59227617237/secrets/orbitant-os-slack-webhook/versions/latest
+
       - name: Build Slack message
         id: message
         env:
           RELEASE_NAME: ${{ github.event.release.name }}
           RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RUN_ID: ${{ github.run_id }}
+          TRIGGERED_BY: ${{ github.actor }}
         run: |
-          BLOG_URL="https://weorbitant.github.io/orbitant-os/blog/release-${RELEASE_TAG}/"
-          RELEASE_URL="${{ github.event.release.html_url }}"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            MSG=":test_tube: *This is a test message from GitHub Actions*\n\n"
+            MSG+="Run: \`${RUN_ID}\` triggered by \`${TRIGGERED_BY}\`"
+          else
+            BLOG_URL="https://weorbitant.github.io/orbitant-os/blog/release-${RELEASE_TAG}/"
+            RELEASE_URL="${{ github.event.release.html_url }}"
 
-          MSG=":uwu_hype: *New release is out!* :rocket:\n\n"
-          MSG+="*<${RELEASE_URL}|${RELEASE_NAME}>*\n"
-          MSG+="→ <${BLOG_URL}|Read the blog post>\n\n"
-          MSG+="Update your plugins: \`/plugin update\`"
+            MSG=":uwu_hype: *New release is out!* :rocket:\n\n"
+            MSG+="*<${RELEASE_URL}|${RELEASE_NAME}>*\n"
+            MSG+="→ <${BLOG_URL}|Read the blog post>\n\n"
+            MSG+="Update your plugins: \`/plugin update\`"
+          fi
 
           echo "text=${MSG}" >> "$GITHUB_OUTPUT"
 
       - name: Post release notification to Slack
         uses: slackapi/slack-github-action@v3.0.1
         with:
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook: ${{ steps.secrets.outputs.SLACK_WEBHOOK_URL }}
           webhook-type: incoming-webhook
           payload: |
             text: "${{ steps.message.outputs.text }}"
