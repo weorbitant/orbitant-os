@@ -18,7 +18,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: "projects/59227617237/locations/global/workloadIdentityPools/orbitant-os/providers/github"
-          service_account: "github-actions-sa@orbitant-os.iam.gserviceaccount.com"
+          service_account: "github-actions-sa@orbitant-infra.iam.gserviceaccount.com"
 
       - name: Get secret from Secret Manager
         id: secrets
