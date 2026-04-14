@@ -25,7 +25,7 @@ jobs:
         uses: google-github-actions/get-secretmanager-secrets@v2
         with:
           secrets: |-
-            MY_VAR:projects/orbitant-os/secrets/orbitant-os-claude-api-key/versions/latest
+            MY_VAR:projects/59227617237/secrets/orbitant-os-claude-api-key/versions/latest
 
       - name: Use the secret
         run: echo "Secret disponible como ${{ steps.secrets.outputs.MY_VAR }}"
