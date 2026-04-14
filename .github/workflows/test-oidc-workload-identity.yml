@@ -17,7 +17,7 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: "projects/59227617237/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          workload_identity_provider: "projects/59227617237/locations/global/workloadIdentityPools/orbitant-os/providers/github-provider"
           service_account: "github-actions-sa@orbitant-os.iam.gserviceaccount.com"
 
       - name: Get secret from Secret Manager
