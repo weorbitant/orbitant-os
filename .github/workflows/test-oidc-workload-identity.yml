@@ -1,0 +1,31 @@
+name: Test OIDC
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write   # necesario para OIDC
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/59227617237/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          service_account: "github-actions-sa@orbitant-os.iam.gserviceaccount.com"
+
+      - name: Get secret from Secret Manager
+        id: secrets
+        uses: google-github-actions/get-secretmanager-secrets@v2
+        with:
+          secrets: |-
+            MY_VAR:projects/orbitant-os/secrets/orbitant-os-claude-api-key/versions/latest
+
+      - name: Use the secret
+        run: echo "Secret disponible como ${{ steps.secrets.outputs.MY_VAR }}"
