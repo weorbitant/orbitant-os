@@ -20,11 +20,25 @@ jobs:
       contents: read
       pull-requests: write
       issues: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/59227617237/locations/global/workloadIdentityPools/orbitant-os/providers/github"
+          service_account: "github-actions-sa@orbitant-infra.iam.gserviceaccount.com"
+
+      - name: Get Anthropic API key from Secret Manager
+        id: secrets
+        uses: google-github-actions/get-secretmanager-secrets@v2
+        with:
+          secrets: |-
+            ANTHROPIC_API_KEY:projects/59227617237/secrets/orbitant-os-claude-api-key/versions/latest
 
       - name: Get changed skills
         id: changed
@@ -54,7 +68,7 @@ jobs:
         if: steps.changed.outputs.has_skills == 'true'
         uses: anthropics/claude-code-action@v1
         with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          anthropic_api_key: ${{ steps.secrets.outputs.ANTHROPIC_API_KEY }}
           github_token: ${{ github.token }}
           prompt: |
             Use /skill-reviewer to review each of these SKILL.md files:
