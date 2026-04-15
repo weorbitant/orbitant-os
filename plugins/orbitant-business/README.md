@@ -83,6 +83,40 @@ Usage: `/business:query "How many employees do we have?"` — routes to the corr
 - **File** — use `--output <path>` to write the report to a file (Markdown).
 - **Cron** — use `--schedule <cron-expression>` to schedule recurring generation (requires cron support).
 
+### Period Selection
+
+Every report covers a specific time window. By default, reports run against the **previous complete period** — never the one in progress, because closed periods are what accounting, ops, and reviews actually care about.
+
+**Defaults by cadence:**
+
+| Cadence | Default period | Example (running on 2026-04-15) |
+|---------|----------------|---------------------------------|
+| `monthly` | previous calendar month | March 2026 |
+| `weekly` | previous ISO week | 2026-W15 |
+| `custom` | defined by the report, or requires `--period` | — |
+
+**Override with `--period`:**
+
+```bash
+# Specific month (monthly reports)
+/business:report monthly --period 2026-03
+
+# Specific ISO week (weekly reports)
+/business:report weekly --period 2026-W11
+
+# Arbitrary date range (only for definitions whose sections all
+# support ad-hoc windows)
+/business:report <name> --period 2026-01-01..2026-03-31
+```
+
+**What the period controls — across every section:**
+
+- **Sherpa (Financial):** P&L reads the target month; burn is a trailing-3-month average ending at the period boundary; cash is always a *current* snapshot (Sherpa has no historical cash API) and the report shows a caveat when the period isn't "now".
+- **Notion (Management Overview):** challenges, highlights, opportunities, and todos are filtered by `created_time` within the period. Items created in earlier periods are hidden — even if still open — because the report is a snapshot of "what moved this period", not a running backlog.
+- **HubSpot / Airtable / Factorial:** each fetcher scopes its queries to the same window.
+
+The resolved period is echoed in the confirmation banner at the end of every run, so you always know exactly what was covered.
+
 ### Custom Reports
 
 1. Create a YAML definition at `~/.claude/reports/` (e.g., `~/.claude/reports/my-report.yaml`).
