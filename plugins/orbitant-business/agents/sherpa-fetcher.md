@@ -137,6 +137,13 @@ For each located node, extract:
 
 Route each requested query name through the vocabulary below. Internally call whichever underlying data (cash and/or P&L) is needed — once per dispatch, regardless of how many queries were asked for.
 
+**Per-KPI compare (when `compare: mom` is passed to `kpi-lookup`):**
+
+Each returned KPI gains a `compare` field:
+- For **P&L-backed queries** (`revenue_invoiced`, `ebitda`, `ebitda_margin`, `profit_margin`, `net_income`): compute against the prior month. Read prior-month totals from the same P&L tree (or the prior year's tree if target month is `"01"`). Emit `compare: { prior_value, delta, delta_pct }`. `delta_pct` is `null` if `prior_value` is zero or missing.
+- For **snapshot queries** (`cash_balance`, `cash_including_credit`, `runway_months`, `monthly_burn`): these aren't historically queryable (liquidity API has no history, burn is already a T3M average). Emit `compare: null` so the renderer shows `—` rather than inventing a delta.
+- For **unsupported queries** (`accounts_receivable`, `accounts_payable`, `collection_effectiveness`): no `compare` field — the query is flagged via `unsupported_metrics[]` instead.
+
 ### KPI query vocabulary (for `type: kpi-lookup`)
 
 | `query` name | Backing data | Expression |
@@ -209,9 +216,18 @@ pnl:                                   # pnl-summary or kpi-lookup (when P&L dat
     delta_pct: 59.4
 
 kpis:                                  # only for type: kpi-lookup
-  - { query: "cash_balance", value: 28799.07, unit: "EUR" }
-  - { query: "ebitda", value: 26183.12, unit: "EUR", period: "2026-03" }
-  - { query: "profit_margin", value: 9.09, unit: "%" }
+  # Snapshot KPIs — no compare
+  - { query: "cash_balance", value: 28799.07, unit: "EUR", compare: null }
+  - { query: "runway_months", value: 5.0, unit: "months", compare: null }
+  # P&L KPIs — compare present when caller passed compare: mom
+  - { query: "revenue_invoiced", value: 215977.09, unit: "EUR", period: "2026-03",
+      compare: { prior_value: 210745.77, delta: 5231.32, delta_pct: 2.48 } }
+  - { query: "ebitda", value: 26183.12, unit: "EUR", period: "2026-03",
+      compare: { prior_value: 16428.91, delta: 9754.21, delta_pct: 59.37 } }
+  - { query: "profit_margin", value: 9.09, unit: "%", period: "2026-03",
+      compare: { prior_value: 5.85, delta: 3.24, delta_pct: null } }   # delta_pct null for ratio metrics
+  # Unsupported — not included in kpis[], flagged below
+
 
 unsupported_metrics: []                # e.g. [accounts_receivable, accounts_payable, collection_effectiveness]
 errors: []

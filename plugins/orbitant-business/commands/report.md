@@ -30,14 +30,17 @@ Generate structured business reports by loading a YAML report definition, fetchi
 ## Invocation
 
 ```
-/report <name> [--output <destination>] [--path <file_path>] [--schedule <cron_expr>] [--unschedule]
+/report <name> [--period <spec>] [--output <destination>] [--path <file_path>] [--schedule <cron_expr>] [--unschedule]
 /report list
 ```
 
-- `/report weekly` — generate the weekly business report
-- `/report monthly` — generate the monthly business report
+- `/report weekly` — generate the weekly business report for the previous complete ISO week
+- `/report monthly` — generate the monthly business report for the previous complete calendar month
 - `/report <custom-name>` — generate a report by custom definition name
 - `/report list` — list all available report definitions
+- `/report monthly --period 2026-03` — override target month
+- `/report weekly --period 2026-W11` — override target ISO week
+- `/report <name> --period 2026-01-01..2026-03-31` — override with an arbitrary date range (only supported for definitions where all sections accept an ad-hoc window)
 - `/report weekly --output file --path ./report.md` — override output destination
 - `/report weekly --schedule "0 9 * * 1"` — register a cron schedule for the report
 - `/report weekly --unschedule` — remove an existing cron schedule
@@ -172,6 +175,26 @@ Fix the definition and try again.
 Apply any CLI overrides:
 - `--output <destination>` overrides `output.destination`
 - `--path <file_path>` overrides `output.file_path`
+- `--period <spec>` overrides the target period (see Period Resolution below)
+
+#### Period Resolution
+
+Every report run resolves to a concrete target period before any fetcher dispatch. The rule:
+
+1. **If `--period` is provided**, parse it per cadence:
+   - `monthly`: `YYYY-MM` → `{ year, month }` (e.g. `2026-03`)
+   - `weekly`: `YYYY-Www` → `{ week_start, week_end }` via ISO-8601 week (e.g. `2026-W11`)
+   - Ad-hoc: `YYYY-MM-DD..YYYY-MM-DD` → `{ start, end }` (only if the definition's sections all support ad-hoc windows — otherwise error)
+   - Invalid format → error and stop.
+
+2. **Otherwise, default by cadence:**
+   - `monthly` → the **previous complete calendar month**. On 2026-04-15 that's `2026-03`. On 2026-04-01 that's also `2026-03`. Never the current month by default — accounting teams expect closed periods.
+   - `weekly` → the **previous complete ISO week**. On 2026-04-15 (Wednesday of ISO week 16) that's `2026-W15`.
+   - `custom` — the definition must specify a period rule, or a `--period` is required.
+
+3. **Log the resolved period** in the Step 7 confirmation banner so the user can see what was actually run.
+
+4. Pass the resolved period to every fetcher dispatch as `target_period` so all sections agree on the window. Each fetcher is responsible for mapping the period into whatever shape it needs (e.g. Sherpa maps monthly `{ year, month }` to a P&L month key plus a 90-day transaction window ending at month-end).
 
 Note: if destination is `terminal`, ignore `file_path` — it exists only as a cron fallback.
 
@@ -277,6 +300,12 @@ Supported `query` values for `source: sherpa`:
 | `accounts_receivable`, `accounts_payable`, `collection_effectiveness` | Unsupported — render as `⬜ Not supported` |
 
 The fetcher returns a `kpis[]` array keyed by `query`; map back to the KPI rows in rendering order. Entries in the returned `unsupported_metrics[]` render as `⬜ Not supported` (explicit — distinct from `⬜ Not connected` which indicates an unconfigured source).
+
+**When the kpi-table declares `compare: mom`:** forward that flag to the `kpi-lookup` dispatch. Each returned KPI carries its own `compare` block (or `compare: null` for snapshot metrics like cash and runway). Render rules:
+
+- `compare: { prior_value, delta, delta_pct }` → render the "vs. Last Month" cell as `{delta with sign} ({delta_pct}%)`, e.g. `+€9,754.21 (+59.4%)`. If `delta_pct` is `null` (ratio metric), show just `{delta with sign} pp` (percentage points).
+- `compare: null` → render `—` in the "vs. Last Month" cell with a footnote marker. Snapshot KPIs cannot be compared historically; a single footnote `¹ Snapshot — MoM compare not applicable` is preferred over one per row.
+- KPI not returned (unsupported or unknown query) → render `⬜ Not supported` in Status.
 
 **Parallel dispatch:** When sections require different sources, dispatch fetcher agents in parallel. Group sections by source so each agent is dispatched at most once with all required data points.
 
@@ -529,12 +558,14 @@ Create a new page in the Notion database specified by `notion_database_id` using
 REPORT — DD-MM-YYYY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Generated: "{report_name}"
+Period:    {resolved_period}
 Sections:  {total} ({live} live, {stub} stub, {error} failed)
 Output:    {destination}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 Where:
+- `{resolved_period}` = human-readable resolved period, e.g. `March 2026 (last complete month)` or `2026-W11 (last complete week)` or `2026-03 (overridden via --period)`
 - `{total}` = total number of sections
 - `{live}` = sections that fetched data successfully
 - `{stub}` = sections rendered as stubs (unconfigured source or stub type)
