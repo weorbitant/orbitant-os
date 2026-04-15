@@ -227,11 +227,18 @@ For each KPI:
 
 #### `notion-management`
 
-Query Notion directly:
-1. Read the database ID from `databases.<section.database>` in config
-2. Query using `notion-search` or `notion-fetch` with `collection://<data_source_id>`
-3. Filter by `<filter_property> = false` (from the section definition or database config)
-4. Return the matching records
+Query Notion directly, once per database listed under `section.databases`. For each database:
+
+1. Read the database ID from `databases.<name>` in config (e.g. `databases.challenges.data_source_id`).
+2. **Derive the concrete date range from the resolved target period** (see Step 4 → Period Resolution):
+   - `monthly` → first day of target month 00:00:00 UTC through last day 23:59:59 UTC
+   - `weekly` → `week_start` 00:00:00 UTC through `week_end` 23:59:59 UTC
+   - Ad-hoc → `start` 00:00:00 UTC through `end` 23:59:59 UTC
+3. Query via `notion-search` / `notion-fetch` with `collection://<data_source_id>` and a compound filter:
+   - **Primary filter:** `created_time` ∈ `[range_start, range_end]` — items created before the period must not appear, even if still open. This makes each report a snapshot of _what moved this period_.
+   - **Secondary filter:** if the database has a `filter_property` defined AND the section explicitly sets `filter_active_only: true`, also require `<filter_property> = false`. The default behavior (no `filter_active_only` in section YAML) is to include BOTH open and resolved items created during the period — a challenge opened and solved in the same month IS an update for that month.
+4. Return the matching records. Each record carries its current resolution state (the `filter_property` value) so the renderer can show it in the Status column.
+5. If the database has zero items created in the period, return an empty set — render as `_No new items in this period._` rather than hiding the section.
 
 #### `pipeline-detail` / `pipeline-movement` / `weekly-breakdown`
 
@@ -415,13 +422,32 @@ For unconfigured KPIs:
 
 **`notion-management`:**
 
+One sub-heading per database listed in `section.databases`, in declaration order. Each sub-heading carries the count and reads `{pretty_name} ({count} this period)`.
+
 ```markdown
 ## {section.title}
 
-| # | Item | Department | Lead | Status |
-|---|------|------------|------|--------|
-| 1 | {title} | {dept} | {lead} | {status} |
+### Challenges (N this period)
+
+| # | Item | Department | Lead | Status | Created |
+|---|------|------------|------|--------|---------|
+| 1 | {title} | {dept} | {lead} | {status} | {created_date} |
+
+### Highlights (N this period)
+…
+
+### Opportunities (N this period)
+…
+
+### Todos (N this period)
+…
 ```
+
+Rules:
+- `{status}` reflects the current resolution state — `Open` / `Solved` (challenges), `Pending` / `Embraced` (opportunities), `Pending` / `Completed` (todos). Highlights have no resolution state — omit the Status column for that sub-table.
+- `{created_date}` is `YYYY-MM-DD`.
+- If a sub-table has zero rows, render `_No new items in this period._` under the sub-heading instead of an empty table.
+- At the bottom of the section, append: `_Items created before {period} are not shown here, even if still open. See Notion for the full backlog._`
 
 **`recruitment-pipeline`:**
 
