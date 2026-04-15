@@ -421,10 +421,16 @@ For unconfigured KPIs:
 
 | Metric | Value |
 |--------|------:|
-| Cash balance | €{cash.balance_eur} |
+| Cash balance (as of now) | €{cash.balance_eur} |
 | Including available credit | €{cash.including_credit_eur} |
 | Monthly burn (T3M avg) | €{burn.monthly_burn_eur} |
 | Runway | {runway.months} months |
+
+### Burn breakdown
+
+| Month | Inflow | Outflow | Net |
+|-------|-------:|--------:|----:|
+| {month} | €{inflow_eur} | €{outflow_eur} | €{net_eur} |
 
 ### By account
 
@@ -433,23 +439,29 @@ For unconfigured KPIs:
 | {bank} | {account} | €{balance_eur} |
 ```
 
-When `runway.months === "cash-positive"`, render the Runway row as `— (cash-positive)`. When `burn.monthly_burn_eur` is positive, prefix the value with `+`.
+Rules:
+- `cash.as_of === "current"` is always the case (Sherpa has no historical cash API). When the report's target window is NOT "now" (e.g. a monthly report for March when today is April), add this caveat below the main table: `_Cash balance is a current snapshot, not end-of-period._`
+- When `runway.months === "cash-positive"`, render the Runway row as `— (cash-positive)`.
+- When `burn.monthly_burn_eur` is positive, prefix with `+`.
+- Skip the "Burn breakdown" sub-table if `burn.monthly_breakdown` is absent or has fewer than 2 entries.
 
 **`pnl-summary`:**
 
 ```markdown
 ## {section.title} — {period.year}-{period.month}
 
-| Row | Month | YTD | % Revenue |
-|-----|------:|----:|----------:|
-| {label} | €{value_eur} | €{ytd_eur} | {pct_of_revenue}% |
+| Row | Month | Period-to-target | YTD | % Revenue |
+|-----|------:|-----------------:|----:|----------:|
+| {label} | €{value_eur} | €{period_to_target_eur} | €{ytd_eur} | {pct_of_revenue}% |
 ```
 
-Render rows in tree order: `revenue`, `direct-costs`, `margen-bruto`, `structural-costs`, `ebitda`, `resultado-del-período`. Omit the `% Revenue` cell (use `—`) when `pct_of_revenue` is absent. When a `compare` block is present, append a line below the table:
+Render rows in tree order: `revenue`, `direct-costs`, `margen-bruto`, `structural-costs`, `ebitda`, `resultado-del-período`. Omit the `% Revenue` cell (use `—`) when `pct_of_revenue` is absent.
 
-```markdown
-_vs. prior month ({compare.target_row}): €{compare.delta_eur} ({compare.delta_pct}%)_
-```
+Rules:
+- **Target-month partial flag:** if `pnl.target_partial === true`, append `⚠️ partial` to the section title and add a note below the table: `_The target month is not yet complete — values reflect data recorded so far._`
+- **YTD mixed-period flag:** if `pnl.ytd_includes_partial === true`, render the YTD column header as `YTD*` and add a footnote: `_*YTD includes partial data through {pnl.ytd_through}._` Use `period_to_target_eur` for clean "through target month" comparisons.
+- When a `compare` block is present, append: `_vs. prior month ({compare.target_row}): €{compare.delta_eur} ({compare.delta_pct}%)_`
+- If the only difference between `period_to_target_eur` and `ytd_eur` is partial-current-month data and the section prefers a tighter table, the Period-to-target column may be hidden — but `ytd_includes_partial` MUST still be surfaced via the footnote. Default is to show both columns.
 
 **`stub`:**
 

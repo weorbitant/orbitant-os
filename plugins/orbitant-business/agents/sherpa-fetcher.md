@@ -83,11 +83,13 @@ Compute:
 - `cash.balance_eur` = `totalLiquidityEur` from liquidity (excludes available credit — conservative)
 - `cash.including_credit_eur` = `totalLiquidityPlusAvailableCreditEur`
 - `cash.by_account` = for each checking account in `products.checkingAccounts`: `{ bank: bankName, account: accountName, balance_eur: availableBalanceEur }`
-- `burn.monthly_burn_eur` = mean over the last 3 full calendar months in window of `(sum of amountInEur over all BOOKED transactions in that month across all accounts)`
-  - Result is negative when burning cash (more outflow than inflow), positive when cash-generating
+- `cash.as_of` = `"current"` (the literal string) — Sherpa's liquidity endpoint has no historical API, so this is always a "now" snapshot. The caller is responsible for surfacing this caveat in output when the user asked about a non-current period (e.g. "last month"). Consistent, stable field — no timestamp because it's always wall-clock-now.
+- `burn.monthly_breakdown` = list of `{ month: "YYYY-MM", net_eur, inflow_eur, outflow_eur, transactions_counted }` for each of the last 3 full calendar months in the window. Surfaces variance — e.g. the renderer can show `−€42k / +€54k / −€29k` individually when the T3M average smooths heavily.
+- `burn.monthly_burn_eur` = mean of the three `net_eur` values in `monthly_breakdown`
+  - Negative when burning cash (more outflow than inflow), positive when cash-generating
   - Inter-account transfers self-cancel (positive on one account, negative on the other) in the aggregate sum — no dedup needed
 - `burn.computation_window` = `{ start, end }` actually covered
-- `burn.transactions_counted` = total BOOKED transactions aggregated
+- `burn.transactions_counted` = total BOOKED transactions aggregated across the whole window
 - `runway.months` = if `burn.monthly_burn_eur < 0`: `cash.balance_eur / abs(burn.monthly_burn_eur)` (rounded to 1 decimal); else emit the sentinel string `"cash-positive"`
 
 #### Branch B: `type: pnl-summary` (or a `kpi-lookup` that needs P&L data)
@@ -115,7 +117,8 @@ Locate nodes in the `value[]` tree:
 
 For each located node, extract:
 - `value_eur` = `totals["YYYY-MM"]` for the target month (or `null` if missing)
-- `ytd_eur` = `node.ytd`
+- `ytd_eur` = `node.ytd` — **note:** Sherpa's YTD rolls in every month that has any data, including a partial current month. Report `ytd_eur` as-is, and also emit `ytd_through` and `ytd_includes_partial` at the `pnl` level (see below).
+- `period_to_target_eur` = sum of `totals[m]` for every `m` in the same node's `totals` object where `m <= target_period.month` (lexicographic compare works because keys are fixed-width `YYYY-MM`). This is the clean "Jan through target month" figure, independent of whether April partial data exists.
 - `pct_of_revenue` = `node.percentagesOverRevenue["YYYY-MM"]` when present
 
 **Compare block** (when `compare: mom`):
@@ -124,6 +127,11 @@ For each located node, extract:
   - `prior_value_eur` = prior month's `value_eur`
   - `delta_eur` = `value_eur - prior_value_eur`
   - `delta_pct` = `100 * delta_eur / prior_value_eur` (skip if prior is zero or null)
+
+**Partial-month detection** (emit at the `pnl` level, not per row):
+- `pnl.target_partial` = `true` if `target_period.year === current_year` AND `target_period.month === current_month` AND today's day-of-month is less than the last day of that month. Otherwise `false`.
+- `pnl.ytd_through` = the maximum `YYYY-MM` key that appears in any of the extracted nodes' `totals` (i.e. the latest month with any data).
+- `pnl.ytd_includes_partial` = `true` if `ytd_through === current_year + "-" + current_month` AND today is not the last day of that month. This tells the caller that `ytd_eur` is mid-period and should be rendered with a caveat.
 
 #### Branch C: `type: kpi-lookup`
 
@@ -164,27 +172,35 @@ period:
 cash:                                  # cash-summary or kpi-lookup (when cash data needed)
   balance_eur: 28799.07
   including_credit_eur: 28799.07
+  as_of: "current"                     # always literal "current" — Sherpa has no historical cash API
   by_account:
     - { bank: "Caixabank", account: "Cuenta", balance_eur: 22360.82 }
     - { bank: "Revolut", account: "Main", balance_eur: 6438.25 }
 
 burn:                                  # cash-summary or kpi-lookup (when burn asked)
-  monthly_burn_eur: -12345.67          # negative = burning cash
-  computation_window: { start: "2026-01-15", end: "2026-04-15" }
+  monthly_burn_eur: -5796.19           # T3M avg; negative = burning cash
+  computation_window: { start: "2026-01-01", end: "2026-03-31" }
   transactions_counted: 142
+  monthly_breakdown:                   # per-month nets — surfaces variance T3M average hides
+    - { month: "2026-01", net_eur: -41688.55, inflow_eur: 112386.56, outflow_eur: -154075.11, transactions_counted: 48 }
+    - { month: "2026-02", net_eur: 53693.76, inflow_eur: 200650.00, outflow_eur: -146956.24, transactions_counted: 50 }
+    - { month: "2026-03", net_eur: -29393.77, inflow_eur: 170664.39, outflow_eur: -200058.16, transactions_counted: 44 }
 
 runway:                                # cash-summary or kpi-lookup (when runway asked)
-  months: 2.3                          # or the string "cash-positive"
+  months: 5.0                          # or the string "cash-positive"
 
 pnl:                                   # pnl-summary or kpi-lookup (when P&L data needed)
   period: { year: 2026, month: "03" }
+  target_partial: false                # true if the target month IS the current month AND not yet ended
+  ytd_through: "2026-04"               # latest YYYY-MM that has any data in the Sherpa response
+  ytd_includes_partial: true           # true if ytd_through is the current month and today < end-of-month
   rows:
-    - { id: "revenue", label: "Ingresos de la explotación", value_eur: 215977.09, ytd_eur: 630133.46 }
-    - { id: "direct-costs", label: "Costes directos", value_eur: 135154.12, ytd_eur: 399317.74, pct_of_revenue: 62.58 }
-    - { id: "margen-bruto", label: "Margen bruto", value_eur: 80822.97, ytd_eur: 230815.72, pct_of_revenue: 37.42 }
-    - { id: "structural-costs", label: "Gastos de estructura", value_eur: 54639.85, ytd_eur: 179462.39, pct_of_revenue: 25.30 }
-    - { id: "ebitda", label: "EBITDA", value_eur: 26183.12, ytd_eur: 51353.33, pct_of_revenue: 12.12 }
-    - { id: "resultado-del-período", label: "Resultado del período", value_eur: 19636.77, ytd_eur: 38518.69 }
+    - { id: "revenue", label: "Ingresos de la explotación", value_eur: 215977.09, ytd_eur: 630133.46, period_to_target_eur: 630133.46 }
+    - { id: "direct-costs", label: "Costes directos", value_eur: 135154.12, ytd_eur: 399317.74, period_to_target_eur: 399317.74, pct_of_revenue: 62.58 }
+    - { id: "margen-bruto", label: "Margen bruto", value_eur: 80822.97, ytd_eur: 230815.72, period_to_target_eur: 230815.72, pct_of_revenue: 37.42 }
+    - { id: "structural-costs", label: "Gastos de estructura", value_eur: 54639.85, ytd_eur: 179462.39, period_to_target_eur: 168143.88, pct_of_revenue: 25.30 }
+    - { id: "ebitda", label: "EBITDA", value_eur: 26183.12, ytd_eur: 51353.33, period_to_target_eur: 62671.84, pct_of_revenue: 12.12 }
+    - { id: "resultado-del-período", label: "Resultado del período", value_eur: 19636.77, ytd_eur: 38518.69, period_to_target_eur: 47007.58 }
   compare:                             # only when compare: mom
     mode: mom
     target_row: "ebitda"
