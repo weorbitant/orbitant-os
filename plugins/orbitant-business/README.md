@@ -1,10 +1,10 @@
 # Business Management
 
-Business management commands and data queries — Notion-backed management plus Factorial HR queries.
+Business management commands and data queries — Notion-backed management plus Factorial HR and Sherpa financial data.
 
 ## Overview
 
-This plugin provides slash commands to create and query business execution items in Notion, plus natural-language queries against external data sources like Factorial HR. Track challenges (blockers and risks), highlights (wins and milestones), opportunities (ideas to explore), and todos (actionable tasks with deadlines). Query your HR data (headcount, holidays, sick leave) directly from conversation.
+This plugin provides slash commands to create and query business execution items in Notion, plus natural-language queries against external data sources (Factorial HR, HubSpot CRM, Airtable recruitment, and Sherpa financial). Track challenges (blockers and risks), highlights (wins and milestones), opportunities (ideas to explore), and todos (actionable tasks with deadlines). Query your HR, commercial, and financial data directly from conversation.
 
 ## Quick Start
 
@@ -25,6 +25,7 @@ export FACTORIAL_API_KEY="your-key-here"  # in ~/.zshrc
 /business:challenge "We need to reduce onboarding time"
 /business:todo "Prepare board deck" due Friday
 /business:query "Who's on holiday this week?"
+/business:query "What's our current cash balance and runway?"
 /business:preflight  # check all data sources
 ```
 
@@ -73,8 +74,8 @@ Usage: `/business:query "How many employees do we have?"` — routes to the corr
 
 | Report | Sections | Notes |
 |--------|----------|-------|
-| Weekly KPI Snapshot | Headcount, Holidays this week, Open challenges, Active todos | *Headcount and Holidays require Factorial API |
-| Monthly Business Report | Revenue summary*, Pipeline overview*, Headcount trends, Recruitment status*, Highlights, Challenges, Opportunities | *Revenue/Pipeline require HubSpot MCP; Recruitment requires Airtable MCP |
+| Weekly KPI Snapshot | Headcount, Holidays this week, Cash & Runway*, Open challenges, Active todos | *Headcount requires Factorial API; Cash & Runway require Sherpa MCP |
+| Monthly Business Report | Revenue / EBITDA / Margin*, Pipeline overview†, Headcount trends, Recruitment status‡, P&L summary*, Cash & Runway*, Highlights, Challenges, Opportunities | *Sherpa MCP (financial); †HubSpot MCP; ‡Airtable MCP |
 
 ### Output Destinations
 
@@ -124,6 +125,7 @@ See `references/setup-guide.md` for detailed setup instructions.
 | Factorial API | Optional | `/query` for HR data (via curl, not MCP) |
 | HubSpot MCP | Optional | `/report` for commercial data |
 | Airtable MCP | Optional | `/report` for recruitment data |
+| Sherpa MCP | Optional | `/report` and `/query` for financial data (cash, P&L, burn, runway) |
 
 ## Notion Database Schemas
 

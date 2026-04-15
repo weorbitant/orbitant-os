@@ -16,10 +16,13 @@ sections:
         source: hubspot
         query: pipeline_total_value
       - name: "Cash in Bank"
-        source: holded
+        source: sherpa
         query: cash_balance
+      - name: "Runway"
+        source: sherpa
+        query: runway_months
       - name: "Collection Effectiveness"
-        source: holded
+        source: sherpa
         query: collection_effectiveness
       - name: "Team Utilization"
         source: sheets
@@ -76,11 +79,10 @@ sections:
       - by_source
       - top_candidates
 
-  - id: financial
-    title: "Financial"
-    source: holded
-    type: stub
-    note: "Pending Holded + Google Sheets integration (v2)"
+  - id: financial-cash
+    title: "Financial — Cash & Runway"
+    source: sherpa
+    type: cash-summary
 
   - id: marketing
     title: "Marketing"

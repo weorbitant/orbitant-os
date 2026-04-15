@@ -59,6 +59,17 @@ If `sources.factorial` is configured:
    - ❌ Unreachable (other HTTP code or timeout) → "API not reachable. Check network and base URL."
    - ❌ Env var not set → "Environment variable `{auth_env_var}` not found. Add it to `~/.zshrc`: `export FACTORIAL_API_KEY=\"your-key-here\"`"
 
+#### Sherpa
+
+If `sources.sherpa.enabled` is `true`:
+
+1. Call the Sherpa MCP tool `mcp__sherpa__sherpa_list_company_groups` (no shell, no env vars — OAuth is at the MCP-connector level).
+2. Report:
+   - ✅ Connected — at least one company group returned
+   - ⚠️ Authenticated but empty — "Connected, but no company groups visible for this user. Check Sherpa account permissions."
+   - ❌ Tool not available / MCP not reachable → "Sherpa MCP not connected. Run `/mcp` and add `https://app.sherpaplatform.com/api/mcp`, then complete OAuth."
+   - ❌ OAuth expired → "Sherpa MCP authentication expired. Run `/mcp` to reauthenticate."
+
 ### Phase 3 — Notion MCP Check
 
 Test Notion connectivity (used by management commands):
@@ -76,7 +87,7 @@ List all sources that are NOT configured in `business-databases.yaml` but exist 
 |--------|--------|--------|
 | Commercial | HubSpot | ⏳ Not configured |
 | HR — Recruitment | Airtable | ⏳ Not configured |
-| Financial | — | ⏳ Not configured |
+| Financial | Sherpa | ⏳ Not configured (if `sources.sherpa.enabled` is not `true`) |
 | Marketing | — | ⏳ Not configured |
 | Operations | — | ⏳ Not configured |
 
@@ -93,6 +104,7 @@ Config:
 
 Live Sources:
   Factorial (HR Team)        ✅ / ⚠️ / ❌  (details)
+  Sherpa (Financial)         ✅ / ⚠️ / ❌  (details)
 
 Integrations:
   Notion MCP                 ✅ / ❌  (details)
@@ -100,7 +112,6 @@ Integrations:
 Stub Sources:
   HubSpot (Commercial)       ⏳ Not configured
   Airtable (Recruitment)     ⏳ Not configured
-  Financial                  ⏳ Not configured
   Marketing                  ⏳ Not configured
   Operations                 ⏳ Not configured
 
@@ -118,6 +129,8 @@ If a source fails, attempt ONE fix:
 
 - **Factorial 401:** Suggest checking API key validity and env var
 - **Factorial timeout:** Suggest checking network / VPN
+- **Sherpa not connected:** Suggest `/mcp` → add `https://app.sherpaplatform.com/api/mcp` → complete OAuth
+- **Sherpa OAuth expired:** Suggest `/mcp` to reauthenticate
 - **Notion MCP:** Suggest verifying MCP server is configured
 
 If the fix doesn't work, report failure and continue with remaining checks.
@@ -127,8 +140,9 @@ If the fix doesn't work, report failure and continue with remaining checks.
 When running inside a Cowork session (no local filesystem access):
 - Skip filesystem config checks. Check if config was pasted into conversation context.
 - Skip Factorial connectivity test (requires Bash).
+- Sherpa MCP test works identically (it's MCP-based, not Bash).
 - Notion MCP test works identically.
-- Print notice: "Running in Cowork mode — Factorial check skipped (requires Bash). Notion checks available."
+- Print notice: "Running in Cowork mode — Factorial check skipped (requires Bash). MCP-based checks (Sherpa, Notion) available."
 
 ## Anti-patterns
 

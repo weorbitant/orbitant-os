@@ -18,19 +18,28 @@ sections:
     compare: mom
     kpis:
       - name: "Revenue Invoiced"
-        source: holded
+        source: sherpa
         query: revenue_invoiced
+      - name: "EBITDA"
+        source: sherpa
+        query: ebitda
       - name: "Profit Margin"
-        source: holded
+        source: sherpa
         query: profit_margin
+      - name: "Cash in Bank"
+        source: sherpa
+        query: cash_balance
+      - name: "Runway"
+        source: sherpa
+        query: runway_months
       - name: "New Business Pipeline"
         source: hubspot
         query: pipeline_total_value
       - name: "Accounts Receivable"
-        source: holded
+        source: sherpa
         query: accounts_receivable
       - name: "Accounts Payable"
-        source: holded
+        source: sherpa
         query: accounts_payable
       - name: "Client NPS"
         source: sheets
@@ -129,11 +138,16 @@ sections:
       - by_source
       - candidate_details
 
-  - id: financial
-    title: "Financial"
-    source: holded
-    type: stub
-    note: "Pending Holded + Google Sheets integration (v2). Planned: Revenue Invoiced, P&L summary, Cash Flow, AR/AP aging, Profit Margin, Budget vs. Actual"
+  - id: financial-pnl
+    title: "Financial — P&L"
+    source: sherpa
+    type: pnl-summary
+    compare: mom
+
+  - id: financial-cash
+    title: "Financial — Cash & Runway"
+    source: sherpa
+    type: cash-summary
 
   - id: marketing
     title: "Marketing"

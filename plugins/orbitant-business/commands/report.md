@@ -2,7 +2,7 @@
 name: report
 description: |
   Generate business reports from YAML definitions. Aggregates data from multiple sources
-  (Notion, Factorial, HubSpot, Airtable) into structured weekly/monthly reports.
+  (Notion, Factorial, HubSpot, Airtable, Sherpa) into structured weekly/monthly reports.
   Usage: /report weekly, /report monthly, /report list, /report <custom-name>
   Supports --output, --path, --schedule, --unschedule flags.
 ---
@@ -240,6 +240,44 @@ Source: Airtable.
    - Config values from `sources.airtable`
 3. Parse the structured response between `AIRTABLE_DATA_START` and `AIRTABLE_DATA_END` markers.
 
+#### `cash-summary` / `pnl-summary`
+
+Source: Sherpa.
+
+1. Check if `sources.sherpa` is configured (and `enabled: true`). If not: render as unconfigured stub.
+2. Dispatch the `sherpa-fetcher` agent (from `agents/sherpa-fetcher.md`) with:
+   - `type`: `cash-summary` or `pnl-summary` (matching the section type)
+   - `cadence`: the report's top-level cadence (`weekly` / `monthly`)
+   - `target_period`: derived from the report date window — `{ year, month }` for monthly, `{ week_start, week_end }` for weekly
+   - `compare`: forwarded from the section definition if set (typically `mom` on monthly P&L)
+   - `metrics`: forwarded if the section declares a subset
+3. Parse the structured response between `SHERPA_DATA_START` and `SHERPA_DATA_END` markers.
+
+**Note:** `pnl-summary` with `cadence: weekly` is unsupported (P&L is month-aligned). The fetcher will emit `unsupported_metrics: [pnl-summary]` and the section renders as `⚠️ P&L is monthly — not available in weekly reports.`
+
+**KPI auto-mapping for `source: sherpa` in `kpi-table`:** group all KPIs with `source: sherpa` in a given `kpi-table` section and make a single dispatch:
+- `type: kpi-lookup`
+- `cadence`: report's top-level cadence
+- `target_period`: derived from the report window
+- `queries`: the `query` field of each KPI in the group
+
+Supported `query` values for `source: sherpa`:
+
+| `query` | Meaning |
+|---------|---------|
+| `cash_balance` | Liquidity excluding available credit (EUR) |
+| `cash_including_credit` | Liquidity + available credit lines (EUR) |
+| `monthly_burn` | Trailing-3-month avg net flow (negative = burning) |
+| `runway_months` | Cash / abs(burn); `"cash-positive"` when burn ≥ 0 |
+| `revenue_invoiced` | P&L "Ingresos de la explotación" monthly total |
+| `ebitda` | P&L EBITDA monthly value |
+| `ebitda_margin` | EBITDA as % of revenue |
+| `profit_margin` | Net income as % of revenue |
+| `net_income` | P&L "Resultado del período" monthly value |
+| `accounts_receivable`, `accounts_payable`, `collection_effectiveness` | Unsupported — render as `⬜ Not supported` |
+
+The fetcher returns a `kpis[]` array keyed by `query`; map back to the KPI rows in rendering order. Entries in the returned `unsupported_metrics[]` render as `⬜ Not supported` (explicit — distinct from `⬜ Not connected` which indicates an unconfigured source).
+
 **Parallel dispatch:** When sections require different sources, dispatch fetcher agents in parallel. Group sections by source so each agent is dispatched at most once with all required data points.
 
 **Error handling:** If a fetcher fails, retry ONCE. If it fails again, mark the section with ⚠️ and continue with remaining sections.
@@ -374,6 +412,43 @@ For unconfigured KPIs:
 | Candidate | Position | Stage | Rating | Next Step |
 |-----------|----------|-------|--------|-----------|
 | {name} | {position} | {stage} | {rating} | {next} |
+```
+
+**`cash-summary`:**
+
+```markdown
+## {section.title}
+
+| Metric | Value |
+|--------|------:|
+| Cash balance | €{cash.balance_eur} |
+| Including available credit | €{cash.including_credit_eur} |
+| Monthly burn (T3M avg) | €{burn.monthly_burn_eur} |
+| Runway | {runway.months} months |
+
+### By account
+
+| Bank | Account | Balance |
+|------|---------|--------:|
+| {bank} | {account} | €{balance_eur} |
+```
+
+When `runway.months === "cash-positive"`, render the Runway row as `— (cash-positive)`. When `burn.monthly_burn_eur` is positive, prefix the value with `+`.
+
+**`pnl-summary`:**
+
+```markdown
+## {section.title} — {period.year}-{period.month}
+
+| Row | Month | YTD | % Revenue |
+|-----|------:|----:|----------:|
+| {label} | €{value_eur} | €{ytd_eur} | {pct_of_revenue}% |
+```
+
+Render rows in tree order: `revenue`, `direct-costs`, `margen-bruto`, `structural-costs`, `ebitda`, `resultado-del-período`. Omit the `% Revenue` cell (use `—`) when `pct_of_revenue` is absent. When a `compare` block is present, append a line below the table:
+
+```markdown
+_vs. prior month ({compare.target_row}): €{compare.delta_eur} ({compare.delta_pct}%)_
 ```
 
 **`stub`:**
