@@ -499,6 +499,8 @@ Rules:
 - When `runway.months === "cash-positive"`, render the Runway row as `— (cash-positive)`.
 - When `burn.monthly_burn_eur` is positive, prefix with `+`.
 - Skip the "Burn breakdown" sub-table if `burn.monthly_breakdown` is absent or has fewer than 2 entries.
+- When `burn.data_quality` is non-null (fewer than 3 months of data), append a caveat line below the burn table: `_⚠️ {burn.data_quality}_`
+- When `runway.low_confidence === true`, qualify the runway figure: render as `~{runway.months} months*` and add footnote `*Runway based on <3 months of burn data — treat with caution.`
 
 **`pnl-summary`:**
 

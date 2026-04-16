@@ -84,13 +84,18 @@ Compute:
 - `cash.including_credit_eur` = `totalLiquidityPlusAvailableCreditEur`
 - `cash.by_account` = for each checking account in `products.checkingAccounts`: `{ bank: bankName, account: accountName, balance_eur: availableBalanceEur }`
 - `cash.as_of` = `"current"` (the literal string) — Sherpa's liquidity endpoint has no historical API, so this is always a "now" snapshot. The caller is responsible for surfacing this caveat in output when the user asked about a non-current period (e.g. "last month"). Consistent, stable field — no timestamp because it's always wall-clock-now.
-- `burn.monthly_breakdown` = list of `{ month: "YYYY-MM", net_eur, inflow_eur, outflow_eur, transactions_counted }` for each of the last 3 full calendar months in the window. Surfaces variance — e.g. the renderer can show `−€42k / +€54k / −€29k` individually when the T3M average smooths heavily.
-- `burn.monthly_burn_eur` = mean of the three `net_eur` values in `monthly_breakdown`
+- `burn.monthly_breakdown` = list of `{ month: "YYYY-MM", net_eur, inflow_eur, outflow_eur, transactions_counted }` for each full calendar month available in the 90-day window (up to 3). If fewer than 3 full months exist (e.g. newly connected Sherpa account), include whatever months are available — do NOT pad or synthesize missing months.
+- `burn.months_available` = integer count of full calendar months in `monthly_breakdown` (1, 2, or 3)
+- `burn.monthly_burn_eur` = mean of the `net_eur` values in `monthly_breakdown` (regardless of count)
   - Negative when burning cash (more outflow than inflow), positive when cash-generating
   - Inter-account transfers self-cancel (positive on one account, negative on the other) in the aggregate sum — no dedup needed
+- `burn.data_quality` = data-quality signal for the renderer:
+  - `null` when `months_available === 3` (full window, no caveat needed)
+  - `"Based on N month(s) of data (< 3) — burn and runway estimates have higher variance"` when `months_available < 3`. This is NOT an error — do NOT put it in `errors[]`. It's a structured signal the renderer uses to show a `⚠️` caveat.
 - `burn.computation_window` = `{ start, end }` actually covered
 - `burn.transactions_counted` = total BOOKED transactions aggregated across the whole window
 - `runway.months` = if `burn.monthly_burn_eur < 0`: `cash.balance_eur / abs(burn.monthly_burn_eur)` (rounded to 1 decimal); else emit the sentinel string `"cash-positive"`
+- `runway.low_confidence` = `true` when `burn.months_available < 3` AND `runway.months` is numeric (not `"cash-positive"`). Signals the renderer to qualify the runway figure — e.g. `"~5.0 months (based on 1 month of data)"`. `false` otherwise.
 
 #### Branch B: `type: pnl-summary` (or a `kpi-lookup` that needs P&L data)
 
@@ -185,16 +190,19 @@ cash:                                  # cash-summary or kpi-lookup (when cash d
     - { bank: "Revolut", account: "Main", balance_eur: 6438.25 }
 
 burn:                                  # cash-summary or kpi-lookup (when burn asked)
-  monthly_burn_eur: -5796.19           # T3M avg; negative = burning cash
+  monthly_burn_eur: -5796.19           # avg of available months; negative = burning cash
+  months_available: 3                  # 1–3; renderer checks this for caveat display
+  data_quality: null                   # null when 3 months; string caveat when < 3
   computation_window: { start: "2026-01-01", end: "2026-03-31" }
   transactions_counted: 142
-  monthly_breakdown:                   # per-month nets — surfaces variance T3M average hides
+  monthly_breakdown:                   # per-month nets — surfaces variance the average hides
     - { month: "2026-01", net_eur: -41688.55, inflow_eur: 112386.56, outflow_eur: -154075.11, transactions_counted: 48 }
     - { month: "2026-02", net_eur: 53693.76, inflow_eur: 200650.00, outflow_eur: -146956.24, transactions_counted: 50 }
     - { month: "2026-03", net_eur: -29393.77, inflow_eur: 170664.39, outflow_eur: -200058.16, transactions_counted: 44 }
 
 runway:                                # cash-summary or kpi-lookup (when runway asked)
   months: 5.0                          # or the string "cash-positive"
+  low_confidence: false                # true when burn.months_available < 3 and months is numeric
 
 pnl:                                   # pnl-summary or kpi-lookup (when P&L data needed)
   period: { year: 2026, month: "03" }
