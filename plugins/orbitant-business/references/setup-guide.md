@@ -84,8 +84,57 @@ sources:
 - Factorial account with API access (admin or HR role)
 - Claude Code (desktop) — not available in Cowork sessions
 
+### Sherpa (Financial Data)
+
+The `/query` and `/report` commands use Sherpa to pull cash liquidity, bank transactions, P&L, and derived metrics (burn, runway). Sherpa is a remote MCP server — no API keys or env vars.
+
+#### Setup
+
+1. In Claude Code, run `/mcp` and add the Sherpa server URL: `https://app.sherpaplatform.com/api/mcp`
+2. Complete the OAuth flow in the browser window that opens — Claude Code stores the token.
+3. Add the Sherpa source to your `business-databases.yaml`:
+   ```yaml
+   sources:
+     sherpa:
+       type: "mcp"
+       enabled: true
+       # company_group_id: "uuid"   # optional — only set if you have >1 company group
+   ```
+4. **Restart your Claude Code session** — MCP tools bind at session start, so tools added mid-session aren't visible until the next start.
+5. Run `/preflight` to verify connectivity. A healthy check returns at least one company group.
+
+#### What Sherpa covers
+
+- Current cash liquidity (checking accounts, portfolios, deposits, lines of credit), EUR-normalized
+- Bank transactions per checking account (paginated, date-filterable)
+- Full P&L tree for a fiscal year, with monthly + YTD values and `% over revenue` on cost rows
+
+#### What Sherpa does NOT cover (v1)
+
+- Accounts receivable / accounts payable
+- Collection effectiveness
+- Future/projected balances
+- Invoicing events
+
+These render as `⬜ Not supported` in KPI tables — distinct from `⬜ Not connected` which means the source isn't configured at all.
+
+#### Requirements
+
+- Sherpa account with permission to read banking and financial data
+- Available in both Claude Code and Cowork (MCP-based)
+
 ## Cowork Usage
 
 In Claude Cowork (no filesystem access), paste your `business-databases.yaml` content into the conversation. Commands will detect and use it from context.
 
-**Note:** Factorial queries (`/query` for HR data) are NOT available in Cowork because the factorial-fetcher uses curl (Bash), which Cowork does not support. Management commands (`/challenge`, `/highlight`, `/opportunity`, `/todo`) work normally in Cowork via Notion MCP.
+**Availability by source in Cowork:**
+
+| Source | Cowork | Notes |
+|--------|:------:|-------|
+| Notion | ✅ | MCP-based |
+| Sherpa | ✅ | MCP-based |
+| HubSpot | ✅ | MCP-based |
+| Airtable | ✅ | MCP-based |
+| Factorial | ❌ | curl via Bash — desktop-only |
+
+Management commands (`/challenge`, `/highlight`, `/opportunity`, `/todo`) work normally in Cowork via Notion MCP.

@@ -89,13 +89,61 @@ Data source integration details for the orbitant-business plugin. Used by fetche
 
 ---
 
+## Sherpa (Remote MCP Server)
+
+- **Transport:** HTTP MCP at `https://app.sherpaplatform.com/api/mcp`
+- **Auth:** OAuth via Claude MCP connector (user scope — no env vars, no credentials in config)
+- **Available tools:** `sherpa_list_company_groups`, `sherpa_list_bank_products`, `sherpa_get_bank_liquidity`, `sherpa_get_bank_transactions`, `sherpa_get_profit_and_loss_report`
+- **Cowork:** Available — MCP works in both environments
+- **Used by:** `/report` (Financial sections — `cash-summary`, `pnl-summary`, and `kpi-table` KPIs with `source: sherpa`), `/query` (financial questions), `/preflight` (connectivity check)
+
+### What Sherpa covers
+
+- Current cash liquidity (checking accounts, portfolios, deposits, lines of credit) in EUR
+- Bank transactions per checking account (paginated, ISO-date filter, `BOOKED`/`PENDING`)
+- Full P&L tree for a fiscal year (monthly + YTD, with `% over revenue` for cost rows)
+
+### What Sherpa does NOT cover (v1)
+
+- Accounts receivable / accounts payable
+- Collection effectiveness
+- Future/projected balances
+- Invoicing or billing events
+
+KPIs requesting these will render as `⬜ Not supported` (not `⬜ Not connected` — the data source is up, it just doesn't expose that metric).
+
+### Setup
+
+1. Run `/mcp` in Claude Code and add the server URL: `https://app.sherpaplatform.com/api/mcp`
+2. Complete OAuth in the browser window that opens
+3. Add to `business-databases.yaml`:
+   ```yaml
+   sources:
+     sherpa:
+       type: "mcp"
+       description: "Financial data — cash liquidity, P&L, bank transactions, burn & runway"
+       enabled: true
+       # company_group_id: "uuid"   # optional — only if more than one company group exists
+   ```
+4. Verify with `/preflight`
+
+### Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| "Sherpa MCP not connected" | MCP server not registered | `/mcp` → add `https://app.sherpaplatform.com/api/mcp` |
+| "OAuth expired" | Token expired | `/mcp` to reauthenticate |
+| "No company groups visible" | Account has no group assigned | Check Sherpa web app permissions |
+| Tools not visible in session | MCP added mid-session | Restart the Claude Code session — MCP tools bind at session start |
+
+---
+
 ## Stub Sources (Not Yet Configured)
 
 These sources are referenced in the `/query` routing table but do not have fetcher agents yet.
 
 | Source | Pillar | Integration Path | Notes |
 |--------|--------|-----------------|-------|
-| Holded | Financial | Holded REST API | P&L, balance sheet, cash flow |
 | MailerLite | Marketing | MailerLite API | Newsletter metrics |
 | Google Analytics | Marketing | GA4 API | Website traffic |
 | Spreadsheets | Operations | Google Drive MCP | Resourcing data |

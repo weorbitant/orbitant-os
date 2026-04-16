@@ -64,28 +64,46 @@ output:
 | id | string | yes | Unique section identifier within the report |
 | title | string | yes | Display heading for the section |
 | type | string | yes | Section type (see Section Types below) |
-| source | string | yes | Data source: `notion`, `factorial`, `manual`, or `none` |
+| source | string | yes | Data source: `notion`, `factorial`, `hubspot`, `airtable`, `sherpa`, `manual`, or `none` |
 | metrics | list | no | Specific metrics to include (type-dependent) |
-| kpis | list | no | KPI definitions for `kpi-table` sections |
+| kpis | list | no | KPI definitions for `kpi-table` sections (see KPI Format below) |
 | note | string | no | Static note or instructions rendered in the section |
-| compare | string | no | Comparison period: `previous-week`, `previous-month`, etc. |
-| databases | object | no | Map of database roles to Notion database IDs |
+| compare | string | no | Comparison mode. Currently supported: `mom` (month-over-month). Adds a prior-period column to the rendered table and delta lines below. |
+| databases | list | no | For `notion-management` sections: list of database names defined in config (e.g. `[challenges, headlines, opportunities, todos]`) |
+| filter_active_only | bool | no | For `notion-management` sections: if `true`, also apply the database's `filter_property = false` filter on top of the period filter. Default `false` — include both open and resolved items created during the period. |
+
+### KPI Format
+
+`kpi-table` sections use a `kpis:` list. Each entry:
+
+```yaml
+kpis:
+  - name: "EBITDA"          # display label in the table
+    source: sherpa          # data source — pairs with a fetcher
+    query: ebitda           # query name understood by the fetcher
+```
+
+Per-source query vocabularies are documented in each fetcher's reference. For `source: sherpa`, supported queries are: `cash_balance`, `cash_including_credit`, `monthly_burn`, `runway_months`, `revenue_invoiced`, `ebitda`, `ebitda_margin`, `profit_margin`, `net_income`. Unsupported queries (`accounts_receivable`, `accounts_payable`, `collection_effectiveness` for Sherpa) render as `⬜ Not supported`.
+
+When the `kpi-table` declares `compare: mom`, each sherpa-backed KPI gets a prior-month value; snapshot KPIs (cash, runway) render `—` in the compare column with a footnote explaining why.
 
 ## Section Types
 
 | Type | Source | Description |
 |------|--------|-------------|
-| kpi-table | notion / factorial | Table of KPIs with current value, target, and trend |
-| pipeline-detail | notion | Detailed view of items in a pipeline database |
-| pipeline-movement | notion | Items that entered, exited, or changed stage in the period |
-| weekly-breakdown | factorial | Day-by-day breakdown of hours, leave, or activity |
-| hr-snapshot | factorial | Headcount, department distribution, and contract types |
-| time-off-summary | factorial | Leave balances, upcoming time off, and usage trends |
-| recruitment-pipeline | notion | Open roles by stage with counts and aging |
-| recruitment-detail | notion | Per-role detail: candidates, interviews, offers |
-| notion-management | notion | Pulls items from a Notion database (challenges, todos, etc.) |
-| executive-summary | manual | Free-text summary written by the report author |
-| notes-and-actions | manual | Action items and follow-ups from the reporting period |
+| kpi-table | mixed (per-KPI source) | Table of KPIs. Each row declares its own source and query. |
+| pipeline-detail | hubspot | Commercial pipeline with deal-level detail |
+| pipeline-movement | hubspot | Deals that entered, exited, or changed stage in the period |
+| weekly-breakdown | hubspot | Week-by-week activity breakdown |
+| hr-snapshot | factorial | Headcount, joiners, departures, status |
+| time-off-summary | factorial | Holiday/sick/parental leave taken in the period |
+| recruitment-pipeline | airtable | Open roles and candidate counts per stage |
+| recruitment-detail | airtable | Per-candidate detail: stage, rating, next step |
+| notion-management | notion | Items created in the period across one or more Notion databases. Items from earlier periods are hidden. |
+| cash-summary | sherpa | Cash balance, trailing-3-month burn, runway, and per-account breakdown |
+| pnl-summary | sherpa | P&L for the target month (requires `cadence: monthly`): revenue, direct costs, gross margin, structural costs, EBITDA, net income |
+| executive-summary | manual | AI-generated summary based on all other section data |
+| notes-and-actions | manual | Blank checklist for manual notes and follow-ups |
 | stub | none | Placeholder section for future data sources |
 
 ## Definition Discovery Order
@@ -176,6 +194,25 @@ sections:
     source: manual
 ```
 
+## Period Resolution
+
+Every report run resolves to a concrete target period before any data is fetched. All fetchers and Notion queries use this window, so data across sections stays consistent.
+
+**Default** (when `--period` is not provided):
+- `cadence: monthly` → the **previous complete calendar month** (e.g. running on 2026-04-15 produces a March 2026 report). Accounting teams expect closed periods, so "current month in progress" is never the default.
+- `cadence: weekly` → the **previous complete ISO week**.
+- `cadence: custom` → the definition must specify a rule, or `--period` is required.
+
+**Override with `--period`:**
+
+```bash
+/report monthly --period 2026-03                       # specific month
+/report weekly  --period 2026-W11                      # ISO week
+/report <name>  --period 2026-01-01..2026-03-31        # ad-hoc range
+```
+
+The resolved period is echoed in the confirmation banner after the run.
+
 ## Cron Scheduling
 
 Schedule a report to run automatically:
@@ -200,4 +237,12 @@ To use custom reports in a Cowork session:
 2. Add your report YAML as an artifact in the project
 3. Run `/report <name>` — the command detects definitions from conversation context
 
-**Note:** Sections with `source: factorial` are NOT available in Cowork because the factorial-fetcher uses curl (Bash), which Cowork does not support. Notion-backed sections work normally via Notion MCP.
+**Availability by source:**
+
+| Source | Cowork | Notes |
+|--------|:------:|-------|
+| Notion | ✅ | MCP-based |
+| Sherpa | ✅ | MCP-based (OAuth via connector) |
+| HubSpot | ✅ | MCP-based |
+| Airtable | ✅ | MCP-based |
+| Factorial | ❌ | Uses curl via Bash — not available in Cowork |

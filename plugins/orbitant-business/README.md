@@ -1,10 +1,10 @@
 # Business Management
 
-Business management commands and data queries — Notion-backed management plus Factorial HR queries.
+Business management commands and data queries — Notion-backed management plus Factorial HR and Sherpa financial data.
 
 ## Overview
 
-This plugin provides slash commands to create and query business execution items in Notion, plus natural-language queries against external data sources like Factorial HR. Track challenges (blockers and risks), highlights (wins and milestones), opportunities (ideas to explore), and todos (actionable tasks with deadlines). Query your HR data (headcount, holidays, sick leave) directly from conversation.
+This plugin provides slash commands to create and query business execution items in Notion, plus natural-language queries against external data sources (Factorial HR, HubSpot CRM, Airtable recruitment, and Sherpa financial). Track challenges (blockers and risks), highlights (wins and milestones), opportunities (ideas to explore), and todos (actionable tasks with deadlines). Query your HR, commercial, and financial data directly from conversation.
 
 ## Quick Start
 
@@ -25,6 +25,7 @@ export FACTORIAL_API_KEY="your-key-here"  # in ~/.zshrc
 /business:challenge "We need to reduce onboarding time"
 /business:todo "Prepare board deck" due Friday
 /business:query "Who's on holiday this week?"
+/business:query "What's our current cash balance and runway?"
 /business:preflight  # check all data sources
 ```
 
@@ -73,14 +74,48 @@ Usage: `/business:query "How many employees do we have?"` — routes to the corr
 
 | Report | Sections | Notes |
 |--------|----------|-------|
-| Weekly KPI Snapshot | Headcount, Holidays this week, Open challenges, Active todos | *Headcount and Holidays require Factorial API |
-| Monthly Business Report | Revenue summary*, Pipeline overview*, Headcount trends, Recruitment status*, Highlights, Challenges, Opportunities | *Revenue/Pipeline require HubSpot MCP; Recruitment requires Airtable MCP |
+| Weekly KPI Snapshot | Headcount, Holidays this week, Cash & Runway*, Open challenges, Active todos | *Headcount requires Factorial API; Cash & Runway require Sherpa MCP |
+| Monthly Business Report | Revenue / EBITDA / Margin*, Pipeline overview†, Headcount trends, Recruitment status‡, P&L summary*, Cash & Runway*, Highlights, Challenges, Opportunities | *Sherpa MCP (financial); †HubSpot MCP; ‡Airtable MCP |
 
 ### Output Destinations
 
 - **Terminal** — default; report renders inline in the conversation.
 - **File** — use `--output <path>` to write the report to a file (Markdown).
 - **Cron** — use `--schedule <cron-expression>` to schedule recurring generation (requires cron support).
+
+### Period Selection
+
+Every report covers a specific time window. By default, reports run against the **previous complete period** — never the one in progress, because closed periods are what accounting, ops, and reviews actually care about.
+
+**Defaults by cadence:**
+
+| Cadence | Default period | Example (running on 2026-04-15) |
+|---------|----------------|---------------------------------|
+| `monthly` | previous calendar month | March 2026 |
+| `weekly` | previous ISO week | 2026-W15 |
+| `custom` | defined by the report, or requires `--period` | — |
+
+**Override with `--period`:**
+
+```bash
+# Specific month (monthly reports)
+/business:report monthly --period 2026-03
+
+# Specific ISO week (weekly reports)
+/business:report weekly --period 2026-W11
+
+# Arbitrary date range (only for definitions whose sections all
+# support ad-hoc windows)
+/business:report <name> --period 2026-01-01..2026-03-31
+```
+
+**What the period controls — across every section:**
+
+- **Sherpa (Financial):** P&L reads the target month; burn is a trailing-3-month average ending at the period boundary; cash is always a *current* snapshot (Sherpa has no historical cash API) and the report shows a caveat when the period isn't "now".
+- **Notion (Management Overview):** challenges, highlights, opportunities, and todos are filtered by `created_time` within the period. Items created in earlier periods are hidden — even if still open — because the report is a snapshot of "what moved this period", not a running backlog.
+- **HubSpot / Airtable / Factorial:** each fetcher scopes its queries to the same window.
+
+The resolved period is echoed in the confirmation banner at the end of every run, so you always know exactly what was covered.
 
 ### Custom Reports
 
@@ -124,6 +159,7 @@ See `references/setup-guide.md` for detailed setup instructions.
 | Factorial API | Optional | `/query` for HR data (via curl, not MCP) |
 | HubSpot MCP | Optional | `/report` for commercial data |
 | Airtable MCP | Optional | `/report` for recruitment data |
+| Sherpa MCP | Optional | `/report` and `/query` for financial data (cash, P&L, burn, runway) |
 
 ## Notion Database Schemas
 

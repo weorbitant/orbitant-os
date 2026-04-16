@@ -80,10 +80,15 @@ sources:
     description: "Recruitment pipeline data"
     # base_id: "your-airtable-base-id"  # Optional — if omitted, agent discovers via list_bases
 
+  # Sherpa — financial data (cash, P&L, bank transactions, runway)
+  # Requires Sherpa MCP connector: /mcp → add https://app.sherpaplatform.com/api/mcp → OAuth
+  sherpa:
+    type: "mcp"
+    description: "Financial data — cash liquidity, P&L, bank transactions, burn & runway"
+    enabled: true
+    # company_group_id: "uuid-here"   # Optional — override if more than one group; empty = auto-select
+
   # Stub sources — uncomment and configure when integrations are ready
-  # holded:
-  #   type: "api"
-  #   description: "Financial data — P&L, balance sheet, cash flow"
   # mailerlite:
   #   type: "api"
   #   description: "Marketing — newsletter metrics"

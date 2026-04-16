@@ -2,7 +2,7 @@
 name: report
 description: |
   Generate business reports from YAML definitions. Aggregates data from multiple sources
-  (Notion, Factorial, HubSpot, Airtable) into structured weekly/monthly reports.
+  (Notion, Factorial, HubSpot, Airtable, Sherpa) into structured weekly/monthly reports.
   Usage: /report weekly, /report monthly, /report list, /report <custom-name>
   Supports --output, --path, --schedule, --unschedule flags.
 ---
@@ -30,14 +30,17 @@ Generate structured business reports by loading a YAML report definition, fetchi
 ## Invocation
 
 ```
-/report <name> [--output <destination>] [--path <file_path>] [--schedule <cron_expr>] [--unschedule]
+/report <name> [--period <spec>] [--output <destination>] [--path <file_path>] [--schedule <cron_expr>] [--unschedule]
 /report list
 ```
 
-- `/report weekly` — generate the weekly business report
-- `/report monthly` — generate the monthly business report
+- `/report weekly` — generate the weekly business report for the previous complete ISO week
+- `/report monthly` — generate the monthly business report for the previous complete calendar month
 - `/report <custom-name>` — generate a report by custom definition name
 - `/report list` — list all available report definitions
+- `/report monthly --period 2026-03` — override target month
+- `/report weekly --period 2026-W11` — override target ISO week
+- `/report <name> --period 2026-01-01..2026-03-31` — override with an arbitrary date range (only supported for definitions where all sections accept an ad-hoc window)
 - `/report weekly --output file --path ./report.md` — override output destination
 - `/report weekly --schedule "0 9 * * 1"` — register a cron schedule for the report
 - `/report weekly --unschedule` — remove an existing cron schedule
@@ -172,6 +175,26 @@ Fix the definition and try again.
 Apply any CLI overrides:
 - `--output <destination>` overrides `output.destination`
 - `--path <file_path>` overrides `output.file_path`
+- `--period <spec>` overrides the target period (see Period Resolution below)
+
+#### Period Resolution
+
+Every report run resolves to a concrete target period before any fetcher dispatch. The rule:
+
+1. **If `--period` is provided**, parse it per cadence:
+   - `monthly`: `YYYY-MM` → `{ year, month }` (e.g. `2026-03`)
+   - `weekly`: `YYYY-Www` → `{ week_start, week_end }` via ISO-8601 week (e.g. `2026-W11`)
+   - Ad-hoc: `YYYY-MM-DD..YYYY-MM-DD` → `{ start, end }` (only if the definition's sections all support ad-hoc windows — otherwise error)
+   - Invalid format → error and stop.
+
+2. **Otherwise, default by cadence:**
+   - `monthly` → the **previous complete calendar month**. On 2026-04-15 that's `2026-03`. On 2026-04-01 that's also `2026-03`. Never the current month by default — accounting teams expect closed periods.
+   - `weekly` → the **previous complete ISO week**. On 2026-04-15 (Wednesday of ISO week 16) that's `2026-W15`.
+   - `custom` — the definition must specify a period rule, or a `--period` is required.
+
+3. **Log the resolved period** in the Step 7 confirmation banner so the user can see what was actually run.
+
+4. Pass the resolved period to every fetcher dispatch as `target_period` so all sections agree on the window. Each fetcher is responsible for mapping the period into whatever shape it needs (e.g. Sherpa maps monthly `{ year, month }` to a P&L month key plus a 90-day transaction window ending at month-end).
 
 Note: if destination is `terminal`, ignore `file_path` — it exists only as a cron fallback.
 
@@ -204,11 +227,18 @@ For each KPI:
 
 #### `notion-management`
 
-Query Notion directly:
-1. Read the database ID from `databases.<section.database>` in config
-2. Query using `notion-search` or `notion-fetch` with `collection://<data_source_id>`
-3. Filter by `<filter_property> = false` (from the section definition or database config)
-4. Return the matching records
+Query Notion directly, once per database listed under `section.databases`. For each database:
+
+1. Read the database ID from `databases.<name>` in config (e.g. `databases.challenges.data_source_id`).
+2. **Derive the concrete date range from the resolved target period** (see Step 4 → Period Resolution):
+   - `monthly` → first day of target month 00:00:00 UTC through last day 23:59:59 UTC
+   - `weekly` → `week_start` 00:00:00 UTC through `week_end` 23:59:59 UTC
+   - Ad-hoc → `start` 00:00:00 UTC through `end` 23:59:59 UTC
+3. Query via `notion-search` / `notion-fetch` with `collection://<data_source_id>` and a compound filter:
+   - **Primary filter:** `created_time` ∈ `[range_start, range_end]` — items created before the period must not appear, even if still open. This makes each report a snapshot of _what moved this period_.
+   - **Secondary filter:** if the database has a `filter_property` defined AND the section explicitly sets `filter_active_only: true`, also require `<filter_property> = false`. The default behavior (no `filter_active_only` in section YAML) is to include BOTH open and resolved items created during the period — a challenge opened and solved in the same month IS an update for that month.
+4. Return the matching records. Each record carries its current resolution state (the `filter_property` value) so the renderer can show it in the Status column.
+5. If the database has zero items created in the period, return an empty set — render as `_No new items in this period._` rather than hiding the section.
 
 #### `pipeline-detail` / `pipeline-movement` / `weekly-breakdown`
 
@@ -239,6 +269,50 @@ Source: Airtable.
    - The section type and any parameters from the section definition
    - Config values from `sources.airtable`
 3. Parse the structured response between `AIRTABLE_DATA_START` and `AIRTABLE_DATA_END` markers.
+
+#### `cash-summary` / `pnl-summary`
+
+Source: Sherpa.
+
+1. Check if `sources.sherpa` is configured (and `enabled: true`). If not: render as unconfigured stub.
+2. Dispatch the `sherpa-fetcher` agent (from `agents/sherpa-fetcher.md`) with:
+   - `type`: `cash-summary` or `pnl-summary` (matching the section type)
+   - `cadence`: the report's top-level cadence (`weekly` / `monthly`)
+   - `target_period`: derived from the report date window — `{ year, month }` for monthly, `{ week_start, week_end }` for weekly
+   - `compare`: forwarded from the section definition if set (typically `mom` on monthly P&L)
+   - `metrics`: forwarded if the section declares a subset
+3. Parse the structured response between `SHERPA_DATA_START` and `SHERPA_DATA_END` markers.
+
+**Note:** `pnl-summary` with `cadence: weekly` is unsupported (P&L is month-aligned). The fetcher will emit `unsupported_metrics: [pnl-summary]` and the section renders as `⚠️ P&L is monthly — not available in weekly reports.`
+
+**KPI auto-mapping for `source: sherpa` in `kpi-table`:** group all KPIs with `source: sherpa` in a given `kpi-table` section and make a single dispatch:
+- `type: kpi-lookup`
+- `cadence`: report's top-level cadence
+- `target_period`: derived from the report window
+- `queries`: the `query` field of each KPI in the group
+
+Supported `query` values for `source: sherpa`:
+
+| `query` | Meaning |
+|---------|---------|
+| `cash_balance` | Liquidity excluding available credit (EUR) |
+| `cash_including_credit` | Liquidity + available credit lines (EUR) |
+| `monthly_burn` | Trailing-3-month avg net flow (negative = burning) |
+| `runway_months` | Cash / abs(burn); `"cash-positive"` when burn ≥ 0 |
+| `revenue_invoiced` | P&L "Ingresos de la explotación" monthly total |
+| `ebitda` | P&L EBITDA monthly value |
+| `ebitda_margin` | EBITDA as % of revenue |
+| `profit_margin` | Net income as % of revenue |
+| `net_income` | P&L "Resultado del período" monthly value |
+| `accounts_receivable`, `accounts_payable`, `collection_effectiveness` | Unsupported — render as `⬜ Not supported` |
+
+The fetcher returns a `kpis[]` array keyed by `query`; map back to the KPI rows in rendering order. Entries in the returned `unsupported_metrics[]` render as `⬜ Not supported` (explicit — distinct from `⬜ Not connected` which indicates an unconfigured source).
+
+**When the kpi-table declares `compare: mom`:** forward that flag to the `kpi-lookup` dispatch. Each returned KPI carries its own `compare` block (or `compare: null` for snapshot metrics like cash and runway). Render rules:
+
+- `compare: { prior_value, delta, delta_pct }` → render the "vs. Last Month" cell as `{delta with sign} ({delta_pct}%)`, e.g. `+€9,754.21 (+59.4%)`. If `delta_pct` is `null` (ratio metric), show just `{delta with sign} pp` (percentage points).
+- `compare: null` → render `—` in the "vs. Last Month" cell with a footnote marker. Snapshot KPIs cannot be compared historically; a single footnote `¹ Snapshot — MoM compare not applicable` is preferred over one per row.
+- KPI not returned (unsupported or unknown query) → render `⬜ Not supported` in Status.
 
 **Parallel dispatch:** When sections require different sources, dispatch fetcher agents in parallel. Group sections by source so each agent is dispatched at most once with all required data points.
 
@@ -348,13 +422,32 @@ For unconfigured KPIs:
 
 **`notion-management`:**
 
+One sub-heading per database listed in `section.databases`, in declaration order. Each sub-heading carries the count and reads `{pretty_name} ({count} this period)`.
+
 ```markdown
 ## {section.title}
 
-| # | Item | Department | Lead | Status |
-|---|------|------------|------|--------|
-| 1 | {title} | {dept} | {lead} | {status} |
+### Challenges (N this period)
+
+| # | Item | Department | Lead | Status | Created |
+|---|------|------------|------|--------|---------|
+| 1 | {title} | {dept} | {lead} | {status} | {created_date} |
+
+### Highlights (N this period)
+…
+
+### Opportunities (N this period)
+…
+
+### Todos (N this period)
+…
 ```
+
+Rules:
+- `{status}` reflects the current resolution state — `Open` / `Solved` (challenges), `Pending` / `Embraced` (opportunities), `Pending` / `Completed` (todos). Highlights have no resolution state — omit the Status column for that sub-table.
+- `{created_date}` is `YYYY-MM-DD`.
+- If a sub-table has zero rows, render `_No new items in this period._` under the sub-heading instead of an empty table.
+- At the bottom of the section, append: `_Items created before {period} are not shown here, even if still open. See Notion for the full backlog._`
 
 **`recruitment-pipeline`:**
 
@@ -375,6 +468,57 @@ For unconfigured KPIs:
 |-----------|----------|-------|--------|-----------|
 | {name} | {position} | {stage} | {rating} | {next} |
 ```
+
+**`cash-summary`:**
+
+```markdown
+## {section.title}
+
+| Metric | Value |
+|--------|------:|
+| Cash balance (as of now) | €{cash.balance_eur} |
+| Including available credit | €{cash.including_credit_eur} |
+| Monthly burn (T3M avg) | €{burn.monthly_burn_eur} |
+| Runway | {runway.months} months |
+
+### Burn breakdown
+
+| Month | Inflow | Outflow | Net |
+|-------|-------:|--------:|----:|
+| {month} | €{inflow_eur} | €{outflow_eur} | €{net_eur} |
+
+### By account
+
+| Bank | Account | Balance |
+|------|---------|--------:|
+| {bank} | {account} | €{balance_eur} |
+```
+
+Rules:
+- `cash.as_of === "current"` is always the case (Sherpa has no historical cash API). When the report's target window is NOT "now" (e.g. a monthly report for March when today is April), add this caveat below the main table: `_Cash balance is a current snapshot, not end-of-period._`
+- When `runway.months === "cash-positive"`, render the Runway row as `— (cash-positive)`.
+- When `burn.monthly_burn_eur` is positive, prefix with `+`.
+- Skip the "Burn breakdown" sub-table if `burn.monthly_breakdown` is absent or has fewer than 2 entries.
+- When `burn.data_quality` is non-null (fewer than 3 months of data), append a caveat line below the burn table: `_⚠️ {burn.data_quality}_`
+- When `runway.low_confidence === true`, qualify the runway figure: render as `~{runway.months} months*` and add footnote `*Runway based on <3 months of burn data — treat with caution.`
+
+**`pnl-summary`:**
+
+```markdown
+## {section.title} — {period.year}-{period.month}
+
+| Row | Month | Period-to-target | YTD | % Revenue |
+|-----|------:|-----------------:|----:|----------:|
+| {label} | €{value_eur} | €{period_to_target_eur} | €{ytd_eur} | {pct_of_revenue}% |
+```
+
+Render rows in tree order: `revenue`, `direct-costs`, `margen-bruto`, `structural-costs`, `ebitda`, `resultado-del-período`. Omit the `% Revenue` cell (use `—`) when `pct_of_revenue` is absent.
+
+Rules:
+- **Target-month partial flag:** if `pnl.target_partial === true`, append `⚠️ partial` to the section title and add a note below the table: `_The target month is not yet complete — values reflect data recorded so far._`
+- **YTD mixed-period flag:** if `pnl.ytd_includes_partial === true`, render the YTD column header as `YTD*` and add a footnote: `_*YTD includes partial data through {pnl.ytd_through}._` Use `period_to_target_eur` for clean "through target month" comparisons.
+- When a `compare` block is present, append: `_vs. prior month ({compare.target_row}): €{compare.delta_eur} ({compare.delta_pct}%)_`
+- If the only difference between `period_to_target_eur` and `ytd_eur` is partial-current-month data and the section prefers a tighter table, the Period-to-target column may be hidden — but `ytd_includes_partial` MUST still be surfaced via the footnote. Default is to show both columns.
 
 **`stub`:**
 
@@ -442,12 +586,14 @@ Create a new page in the Notion database specified by `notion_database_id` using
 REPORT — DD-MM-YYYY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Generated: "{report_name}"
+Period:    {resolved_period}
 Sections:  {total} ({live} live, {stub} stub, {error} failed)
 Output:    {destination}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 Where:
+- `{resolved_period}` = human-readable resolved period, e.g. `March 2026 (last complete month)` or `2026-W11 (last complete week)` or `2026-03 (overridden via --period)`
 - `{total}` = total number of sections
 - `{live}` = sections that fetched data successfully
 - `{stub}` = sections rendered as stubs (unconfigured source or stub type)

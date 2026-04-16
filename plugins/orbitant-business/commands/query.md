@@ -40,7 +40,10 @@ Identify which pillar(s) the question maps to using this routing table:
 | headcount, employees, holidays, sick, team, joiners, departures, factorial, leaves, parental | HR — Team | Factorial | factorial-fetcher | LIVE (if `sources.factorial` configured) |
 | pipeline, deals, proposals, won, lost, sales, commercial, hubspot, calls | Commercial | HubSpot | — | STUB |
 | candidates, recruitment, hiring, positions, airtable, applications | HR — Recruitment | Airtable | — | STUB |
-| revenue, profit, invoices, cash, AR, AP, budget, margin | Financial | — | — | STUB |
+| cash, balance, liquidez, tesorería, treasury, runway, burn, cash flow | Financial — Cash | Sherpa | sherpa-fetcher | LIVE (if `sources.sherpa` enabled) |
+| P&L, PyG, EBITDA, revenue, ingresos, profit, beneficio, margin, margen, net income | Financial — P&L | Sherpa | sherpa-fetcher | LIVE (if `sources.sherpa` enabled) |
+| AR, accounts receivable, AP, accounts payable, collection effectiveness | Financial — Receivables | — | — | NOT SUPPORTED (Sherpa MCP does not expose this) |
+| budget, forecast, invoices | Financial — Planning | — | — | STUB |
 | newsletter, traffic, linkedin, youtube, website, marketing | Marketing | — | — | STUB |
 | utilization, allocation, resourcing, operations | Operations | — | — | STUB |
 
@@ -57,6 +60,25 @@ If the question spans multiple pillars, handle each independently.
    - Customize the prompt to fetch only what's needed to answer the question (not a full data dump)
    - Example: "Fetch only leave data for this week" for "Who's on holiday?"
 4. Parse the agent's structured response (between `FACTORIAL_DATA_START/END` markers).
+
+**For Sherpa (LIVE):**
+
+1. Verify `sources.sherpa.enabled` is `true` in config. If not: treat as STUB.
+2. Read the `sherpa-fetcher` agent from `agents/sherpa-fetcher.md`.
+3. Infer the date window from the question:
+   - "this month" / "current month" → `type: pnl-summary` or `cash-summary`, target = current calendar month
+   - "last month" → prior calendar month
+   - "now" / "today" / "current" (for cash) → `cash-summary` with latest snapshot
+   - "Q1", "this quarter", "YTD" → `pnl-summary` for the relevant months (aggregate if multiple)
+   - If no window is stated, default to the latest complete month
+4. Choose `type`:
+   - Cash/runway/burn/treasury keywords → `type: cash-summary`
+   - P&L/revenue/EBITDA/margin/profit keywords → `type: pnl-summary`
+   - Mixed question → dispatch twice, or use `type: kpi-lookup` with relevant `queries[]`
+5. Spawn the agent via the Agent tool passing `type`, `cadence: ad-hoc`, `target_period`, and `metrics` (or `queries`) when helpful.
+6. Parse the agent's structured response (between `SHERPA_DATA_START/END` markers).
+7. For AR, AP, or collection-effectiveness questions: respond without dispatching —
+   > The Sherpa MCP doesn't currently expose invoicing data. Accounts receivable/payable and collection effectiveness are out of scope for v1. _(Source: Sherpa MCP coverage)_
 
 **For STUB sources:**
 
@@ -100,6 +122,7 @@ When running inside a Cowork session (no local filesystem access):
   ⚠️ Factorial queries require Claude Code (desktop).
   The factorial-fetcher uses curl to call the Factorial API, which is not available in Cowork.
   ```
+- **Sherpa queries**: Work in Cowork IF the Sherpa MCP connector is enabled at the user level (the fetcher uses MCP tools, not Bash). Authentication is OAuth via the connector — no env vars required.
 - **Notion-backed data**: Management commands (`/challenge list`, `/todo list`, etc.) still work in Cowork for querying Notion databases.
 
 ## Resilience
