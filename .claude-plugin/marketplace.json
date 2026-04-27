@@ -23,6 +23,12 @@
       "source": "./plugins/orbitant-business",
       "description": "Business management commands, data queries, and automated reports — Notion-backed management plus Factorial HR, HubSpot, Airtable, and Sherpa financial queries",
       "version": "0.4.0"
+    },
+    {
+      "name": "orbitant-engineering",
+      "source": "./plugins/orbitant-engineering",
+      "description": "Engineering standards audit commands for any repo, any stack",
+      "version": "0.1.0"
     }
   ]
 }
