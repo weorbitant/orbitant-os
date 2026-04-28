@@ -3,7 +3,7 @@
 Static checks only. Factors that require runtime access are excluded from scoring
 but documented at the bottom so the auditor knows what's not being checked.
 
-Source: https://12factor.net
+Source: [12factor.net](https://12factor.net)
 
 ---
 
