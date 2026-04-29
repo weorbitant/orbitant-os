@@ -113,7 +113,7 @@ Render the dashboard using this structure. Adapt content based on actual data â€
 
 ---
 Last checked: 2026-02-25 09:15 AM
-Run /orbitant-chief-of-staff:preflight to verify system setup
+Run /orbitant-operations:preflight to verify system setup
 ```
 
 Keep the output scannable. No paragraphs of prose â€” use short lines, counts, and indicators.
@@ -133,4 +133,4 @@ When running inside a Cowork session (no local filesystem access):
 3. **Present data, don't take action.** This command is strictly read-only. Do not send emails, update tasks, or modify any files.
 4. **Keep output scannable.** No walls of text. Use counts, progress bars, and short status lines.
 5. **Timestamp the report.** Always include "Last checked" with the current date and time at the bottom.
-6. **Include the preflight hint.** Always end with the `/orbitant-chief-of-staff:preflight` suggestion so the user knows how to fix setup issues surfaced by the dashboard.
+6. **Include the preflight hint.** Always end with the `/orbitant-operations:preflight` suggestion so the user knows how to fix setup issues surfaced by the dashboard.

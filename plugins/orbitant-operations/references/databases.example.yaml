@@ -1,4 +1,4 @@
-# business-databases.yaml — Notion database configuration for orbitant-business
+# business-databases.yaml — Notion database configuration for orbitant-operations
 #
 # Copy this file to one of these locations:
 #   ./business-databases.yaml              (plugin root, takes precedence)

@@ -2,7 +2,7 @@
 # rocks.yaml — Quarterly Objectives Configuration
 # =============================================================================
 #
-# This file is the strategic backbone of the orbitant-chief-of-staff plugin.
+# This file is the strategic backbone of the orbitant-operations plugin.
 # Every command references it for scoring, prioritization, and alignment checks.
 #
 # SETUP

@@ -55,7 +55,7 @@ Search for report definition YAML files in this order:
 
 1. Conversation context (Cowork) — check if any report definitions were pasted
 2. `~/.claude/reports/*.yaml` — user-level custom definitions
-3. `plugins/orbitant-business/reports/*.yaml` — plugin-bundled definitions
+3. `plugins/orbitant-operations/reports/*.yaml` — plugin-bundled definitions
 
 ### Step 2 — Display Available Reports
 
@@ -76,7 +76,7 @@ Usage: /report <name>
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-If no definitions found: `No report definitions found. Add YAML files to ~/.claude/reports/ or plugins/orbitant-business/reports/`
+If no definitions found: `No report definitions found. Add YAML files to ~/.claude/reports/ or plugins/orbitant-operations/reports/`
 
 ## Execution — Generate Mode
 
@@ -90,14 +90,14 @@ Map the name argument to a filename:
 Search for the file in this order:
 1. Conversation context (Cowork) — check if the definition was pasted
 2. `~/.claude/reports/<filename>` — user-level
-3. `plugins/orbitant-business/reports/<filename>` — plugin-bundled
+3. `plugins/orbitant-operations/reports/<filename>` — plugin-bundled
 
 If not found, show error and stop:
 ```
 ⚠️ Report definition "<name>" not found.
 Searched:
   - ~/.claude/reports/<filename>
-  - plugins/orbitant-business/reports/<filename>
+  - plugins/orbitant-operations/reports/<filename>
 Run /report list to see available definitions.
 ```
 

@@ -1,0 +1,9 @@
+{
+  "name": "orbitant-operations",
+  "version": "1.0.0",
+  "description": "Operations toolkit — daily chief-of-staff workflows (briefings, inbox triage, meeting prep, goal alignment) plus Notion-backed business management and queries against Factorial HR, HubSpot, Airtable, and Sherpa financial",
+  "author": {
+    "name": "Orbitant"
+  },
+  "license": "MIT"
+}

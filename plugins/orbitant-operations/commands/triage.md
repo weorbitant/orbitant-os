@@ -5,7 +5,7 @@ description: Inbox triage — scans Gmail/Slack, prioritizes by tier and goal al
 
 ## Overview
 
-This command scans your inbox across Gmail and Slack, prioritizes unread messages into three action tiers, and drafts responses in your voice for high-priority items. Run it after `/orbitant-chief-of-staff:today` to complete the morning workflow. No message is ever sent without your explicit confirmation.
+This command scans your inbox across Gmail and Slack, prioritizes unread messages into three action tiers, and drafts responses in your voice for high-priority items. Run it after `/orbitant-operations:today` to complete the morning workflow. No message is ever sent without your explicit confirmation.
 
 ## Execution Flow
 
@@ -29,9 +29,9 @@ This command scans your inbox across Gmail and Slack, prioritizes unread message
 - No flags -- scan all available channels
 
 If a flagged channel is unavailable (per graceful-degradation report), print a warning and exit:
-"Gmail is not available -- run /orbitant-chief-of-staff:preflight to diagnose." (or the equivalent for Slack).
+"Gmail is not available -- run /orbitant-operations:preflight to diagnose." (or the equivalent for Slack).
 
-If no flags and both channels are unavailable, print: "No inbox channels available -- connect Gmail or Slack via /orbitant-chief-of-staff:preflight."
+If no flags and both channels are unavailable, print: "No inbox channels available -- connect Gmail or Slack via /orbitant-operations:preflight."
 
 ## Tier System
 
@@ -109,7 +109,7 @@ Present these as a compact action bar below each Tier 1 and Tier 2 item. For Tie
 
 ---
 Processed: N Gmail + N Slack | Time window: 24h
-Run /orbitant-chief-of-staff:today for your full briefing
+Run /orbitant-operations:today for your full briefing
 ```
 
 Number each item sequentially so the user can reference them easily ("send 1", "defer 3"). Draft numbers match the `#` column in the table. Tier 3 items get only archive and defer actions.
@@ -141,4 +141,4 @@ When running inside a Cowork session (no local filesystem access):
 7. **Confirm delivery.** After every send, print "Sent to [recipient] via [channel]."
 8. **Number items sequentially.** Users reference items by number for actions.
 9. **No hallucinated data.** If a message cannot be read, skip it and note the failure. Never fabricate senders, subjects, or content.
-10. **End with /today.** Close with a pointer to `/orbitant-chief-of-staff:today` if the user hasn't run it yet.
+10. **End with /today.** Close with a pointer to `/orbitant-operations:today` if the user hasn't run it yet.
