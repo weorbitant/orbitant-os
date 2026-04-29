@@ -1,9 +1,6 @@
 name: Skill Quality Review
 
 on:
-  pull_request:
-    paths:
-      - 'plugins/**/skills/**/SKILL.md'
   pull_request_target:
     types: [labeled]
   workflow_dispatch:
@@ -12,7 +9,6 @@ jobs:
   review:
     name: AI Skill Review
     if: >-
-      github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'pull_request_target' && github.event.label.name == 'review-quality')
     runs-on: ubuntu-latest
