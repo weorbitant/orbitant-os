@@ -27,20 +27,20 @@ orbitant-os/
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   └── skills/
-│   ├── orbitant-chief-of-staff/    <- v1.3.3 — graceful-degradation, goal-alignment, voice-drafting
-│   │   ├── .claude-plugin/
-│   │   │   └── plugin.json
-│   │   ├── skills/
-│   │   ├── commands/
-│   │   ├── agents/
-│   │   ├── crm/
-│   │   └── references/
-│   └── orbitant-business/          <- v0.4.0 — challenge, highlight, opportunity, todo, query, preflight, report (+ sherpa-fetcher agent)
+│   └── orbitant-operations/        <- v1.0.0 — combined chief-of-staff + business: graceful-degradation, goal-alignment, voice-drafting, plus /challenge, /highlight, /opportunity, /todo, /query, /preflight, /report, /status, /today, /triage, /week, /prep, /crm
 │       ├── .claude-plugin/
 │       │   └── plugin.json
-│       ├── agents/
-│       │   └── factorial-fetcher.md
+│       ├── skills/
 │       ├── commands/
+│       ├── agents/
+│       │   ├── airtable-fetcher.md
+│       │   ├── enrichment-agent.md
+│       │   ├── factorial-fetcher.md
+│       │   ├── hubspot-fetcher.md
+│       │   ├── sherpa-fetcher.md
+│       │   └── triage-agent.md
+│       ├── crm/
+│       ├── reports/
 │       └── references/
 ├── website/                        <- Astro + Starlight documentation site
 │   ├── astro.config.mjs
@@ -238,8 +238,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 | Plugin | Version | Status | Skills | Commands |
 |--------|---------|--------|--------|----------|
 | orbitant-marketing | 1.4.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter` | — |
-| orbitant-chief-of-staff | 1.3.3 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
-| orbitant-business | 0.4.0 | Active | — | `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/preflight`, `/report` |
+| orbitant-operations | 1.0.0 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
 
 ## Scripts
 

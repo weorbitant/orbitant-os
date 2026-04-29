@@ -46,7 +46,7 @@ It works standalone (user-invocable) unlike most chief-of-staff skills.
 ### If Information Is Missing
 
 Ask the user:
-- "Which plugin should I generate release notes for? (orbitant-marketing, orbitant-chief-of-staff)"
+- "Which plugin should I generate release notes for? (orbitant-marketing, orbitant-operations)"
 - "What version range? Options: since last release, since v1.x.x, or all changes"
 
 ## Git History Analysis

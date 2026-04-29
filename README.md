@@ -14,8 +14,7 @@ Orbitant's plugin marketplace — skills, agents, and commands organized by vert
 
 # Install what you need
 /plugin install orbitant-marketing
-/plugin install orbitant-chief-of-staff
-/plugin install orbitant-business
+/plugin install orbitant-operations
 
 # Update when there are new versions
 /plugin update
@@ -25,9 +24,8 @@ Orbitant's plugin marketplace — skills, agents, and commands organized by vert
 
 | Plugin | Version | Skills | Commands |
 |--------|---------|--------|----------|
-| **orbitant-marketing** | v1.1.0 | `blog-post-review`, `blog-post-create`, `blog-post-translate`, `tone` | — |
-| **orbitant-chief-of-staff** | v1.3.2 | `graceful-degradation`, `goal-alignment`, `voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm` |
-| **orbitant-business** | v0.4.0 | — | `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/preflight`, `/report` |
+| **orbitant-marketing** | v1.4.0 | `blog-post-review`, `blog-post-create`, `blog-post-translate`, `tone`, `yt-description`, `linkedin-post`, `image-creation`, `newsletter` | — |
+| **orbitant-operations** | v1.0.0 | `graceful-degradation`, `goal-alignment`, `voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
 
 ## Works Everywhere
 
@@ -81,13 +79,14 @@ orbitant-os/
 │   │       ├── blog-post-create/
 │   │       ├── blog-post-translate/
 │   │       └── tone/
-│   └── orbitant-chief-of-staff/
+│   └── orbitant-operations/
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── skills/
 │       ├── commands/
 │       ├── agents/
 │       ├── crm/
+│       ├── reports/
 │       └── references/
 ├── .github/
 │   ├── assets/                     <- images and screenshots
