@@ -100,7 +100,62 @@ P0 findings must be surfaced immediately at the top of the report, before sectio
 
 Assign a rating: ❌ Critical / ⚠️ Needs work / ✅ Compliant / 🚀 Strong
 
-### Step 4 — 12-Factor Compliance
+### Step 3.5 — Secret history scan
+
+Static grep only catches secrets in tracked files **today**. A secret committed and later removed remains in `git log` and is recoverable by anyone with repo access. This step scans the full history.
+
+Detect whether `gitleaks` is installed:
+
+```bash
+command -v gitleaks
+```
+
+**If installed** (preferred path): run a redacted scan on the full history:
+
+```bash
+gitleaks detect \
+  --source . \
+  --report-format json \
+  --report-path /tmp/gitleaks-${RANDOM}.json \
+  --redact \
+  --no-banner \
+  --exit-code 0
+```
+
+Parse the JSON report. For each finding, capture: `RuleID`, `File`, `Commit` (short hash), `Date`, `Author`. Surface findings under Section 3 with this format:
+
+```
+- {RuleID} (gitleaks)
+  Location: {File} @ {Commit} ({Date}, {Author})
+  Finding: secret matched rule "{RuleID}" (value redacted)
+  Recommendation: rotate the credential immediately, then purge from history (git filter-repo) and force-push. Rotation is mandatory even if the secret was already removed from the working tree.
+```
+
+**Promote ALL gitleaks findings to 🔴 Critical** in the report header. A leaked secret in history is always P0 regardless of how old the commit is.
+
+**If `gitleaks` is NOT installed** (fallback path): run a minimal grep over history. This is shallower and noisier, so the report must say so explicitly.
+
+```bash
+# Private keys
+git log --all -p -S 'BEGIN PRIVATE KEY' | head -200
+git log --all -p -S 'BEGIN OPENSSH PRIVATE KEY' | head -200
+
+# Generic credential assignments with high-entropy values (case-insensitive)
+git log --all -p -i -G '(api[_-]?key|secret|token|password)\s*[=:]\s*["\x27]?[A-Za-z0-9_\-]{20,}' | head -500
+
+# Deleted .env files (excluding samples/examples)
+git log --all --diff-filter=D --name-only -- '*.env' '*.env.*' \
+  | grep -vE '\.(example|sample|template)$' \
+  | sort -u
+```
+
+Add a note at the top of Section 3:
+
+> ⚠️ Secret history scan was shallow — `gitleaks` not found on PATH. Install with `brew install gitleaks` (macOS) or see https://github.com/gitleaks/gitleaks for full coverage.
+
+Even with the fallback, any match must be promoted to 🔴 Critical with rotation guidance.
+
+
 
 Follow the checks defined in `12-factor.md`. Only statically verifiable factors are scored.
 
@@ -127,7 +182,8 @@ Assign a rating: ❌ Not compliant / ⚠️ Partial / ✅ Good / 🚀 Fully obse
 
 ## 🔴 Critical Findings (fix first)
 
-{List any P0 findings from git hygiene or OWASP here, before section breakdowns.
+{List any P0 findings from git hygiene, OWASP, or secret history scan here, before section breakdowns.
+Any gitleaks/fallback finding is automatically P0 — include commit hash and rotation guidance.
 If none, write "No critical findings."}
 
 ---
