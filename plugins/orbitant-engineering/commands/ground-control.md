@@ -18,22 +18,11 @@ Run it at the start of a new client engagement, after a long period of low activ
 
 ---
 
-## Before You Start
-
-Load the four reference files. These define exactly what to check in each section:
-
-- `@plugins/orbitant-engineering/skills/ai-readiness/references/ai-readiness.md`
-- `@plugins/orbitant-engineering/skills/git-hygiene/references/git-hygiene.md`
-- `@plugins/orbitant-engineering/skills/owasp-scan/references/owasp-patterns.md`
-- `@plugins/orbitant-engineering/skills/12-factor/references/12-factor.md`
-
-If running from outside the orbitant-os repo, the references are embedded at the bottom of this command file.
-
----
-
 ## Execution Steps
 
-Run these steps in order. Collect all findings before printing the report.
+Each section delegates to a dedicated skill. Invoke each skill via the `Skill` tool — do not inline the checks. Collect all findings across sections before printing the consolidated report.
+
+Run these steps in order.
 
 ### Step 0 — Detect stack
 
@@ -48,9 +37,9 @@ Before auditing, understand what you're looking at:
 
 ### Step 1 — AI Readiness
 
-Follow the checks defined in `ai-readiness.md`.
+Invoke the `orbitant-ai-readiness` skill. It defines the full check list and rating rubric for this section.
 
-Key checks:
+Key checks (summary):
 - `CLAUDE.md` present and substantive (not empty, not boilerplate)
 - `.claude/` directory exists
 - Key commands documented in CLAUDE.md or README
@@ -63,9 +52,9 @@ Assign a rating: ❌ Not AI-ready / ⚠️ Minimal / ✅ Operational / 🚀 Opti
 
 ### Step 2 — Git Hygiene
 
-Follow the checks defined in `git-hygiene.md`.
+Invoke the `orbitant-git-hygiene` skill. It defines the full check list and rating rubric for this section.
 
-Key checks:
+Key checks (summary):
 - No secrets in tracked files (`git ls-files` scan)
 - `.gitignore` present and covers the detected stack
 - Last 20 commits: count Conventional Commits compliance
@@ -84,9 +73,9 @@ Assign a rating: ❌ Critical / ⚠️ Needs work / ✅ Compliant / 🚀 Strong 
 
 ### Step 3 — OWASP Patterns
 
-Follow the checks defined in `owasp-patterns.md`. Scope grep to detected stack (Node.js patterns, Python patterns, or both).
+Invoke the `orbitant-owasp-scan` skill. It defines the full check list and rating rubric for this section. Scope greps to the detected stack (Node.js patterns, Python patterns, or both).
 
-Key checks:
+Key checks (summary):
 - Hardcoded secrets (grep across all source files, exclude test fixtures)
 - Dangerous functions: `eval`, `exec`, `child_process.exec`, `pickle.loads`, `shell=True`
 - Weak crypto: MD5/SHA1 for security, `Math.random()` for tokens
@@ -151,15 +140,15 @@ git log --all --diff-filter=D --name-only -- '*.env' '*.env.*' \
 
 Add a note at the top of Section 3:
 
-> ⚠️ Secret history scan was shallow — `gitleaks` not found on PATH. Install with `brew install gitleaks` (macOS) or see https://github.com/gitleaks/gitleaks for full coverage.
+> ⚠️ Secret history scan was shallow — `gitleaks` not found on PATH. Install with `brew install gitleaks` (macOS) or see <https://github.com/gitleaks/gitleaks> for full coverage.
 
 Even with the fallback, any match must be promoted to 🔴 Critical with rotation guidance.
 
+### Step 4 — 12-Factor
 
+Invoke the `orbitant-12-factor` skill. It defines the full check list and rating rubric for this section. Only statically verifiable factors are scored.
 
-Follow the checks defined in `12-factor.md`. Only statically verifiable factors are scored.
-
-Key checks:
+Key checks (summary):
 - **II. Dependencies**: lockfile present, versions pinned
 - **III. Config**: no hardcoded URLs/credentials, `.env.example` present
 - **V. Build/release/run**: CI pipeline defined, build and deploy separated
@@ -236,7 +225,7 @@ If none, write "No critical findings."}
 - ...
 
 ### Not checked (requires runtime)
-- Factors I, IV, VI, VII, VIII, IX, XII — see references/12-factor.md for details
+- Factors I, IV, VI, VII, VIII, IX, XII — see the `orbitant-12-factor` skill for details
 
 ---
 
