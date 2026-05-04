@@ -5,7 +5,6 @@ description: |
   and produces a structured report across four areas: AI readiness, git hygiene,
   OWASP security patterns, and 12-factor compliance. Run this on any project to surface
   what doesn't meet Orbitant's engineering standards — no external APIs, no runtime needed.
-model: claude-opus-4-6
 ---
 
 ## Overview
