@@ -1,6 +1,6 @@
 {
   "name": "orbitant-engineering",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Engineering standards audit commands for any repo, any stack",
   "author": {
     "name": "Orbitant"
@@ -12,5 +12,5 @@
     "./skills/owasp-scan",
     "./skills/12-factor"
   ],
-  "commands": ["./commands/ground-control"]
+  "commands": ["./commands/ground-control.md"]
 }
