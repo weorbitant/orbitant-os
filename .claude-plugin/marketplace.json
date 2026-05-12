@@ -13,16 +13,10 @@
       "version": "1.4.0"
     },
     {
-      "name": "orbitant-chief-of-staff",
-      "source": "./plugins/orbitant-chief-of-staff",
-      "description": "AI-powered chief of staff for managing priorities, communications, and goal alignment",
-      "version": "1.3.3"
-    },
-    {
-      "name": "orbitant-business",
-      "source": "./plugins/orbitant-business",
-      "description": "Business management commands, data queries, and automated reports — Notion-backed management plus Factorial HR, HubSpot, Airtable, and Sherpa financial queries",
-      "version": "0.4.0"
+      "name": "orbitant-operations",
+      "source": "./plugins/orbitant-operations",
+      "description": "Operations toolkit — daily chief-of-staff workflows (briefings, inbox triage, meeting prep, goal alignment) plus Notion-backed business management and queries against Factorial HR, HubSpot, Airtable, and Sherpa financial",
+      "version": "1.0.0"
     },
     {
       "name": "orbitant-engineering",

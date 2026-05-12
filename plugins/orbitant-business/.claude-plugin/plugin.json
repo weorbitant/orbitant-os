@@ -1,9 +1,0 @@
-{
-  "name": "orbitant-business",
-  "version": "0.4.0",
-  "description": "Business management commands, data queries, and automated reports — Notion-backed management plus Factorial HR, HubSpot, Airtable, and Sherpa financial queries",
-  "author": {
-    "name": "Orbitant"
-  },
-  "license": "MIT"
-}

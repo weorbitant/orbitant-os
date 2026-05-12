@@ -51,7 +51,7 @@ Tier 3 (5 contacts): 4 active, 1 stale
 
 ---
 Generated: {date} {time}
-Run /orbitant-chief-of-staff:crm enrich to update contacts from Gmail, Slack, and Calendar
+Run /orbitant-operations:crm enrich to update contacts from Gmail, Slack, and Calendar
 ```
 
 ## Enrichment Flow
@@ -89,4 +89,4 @@ When running inside a Cowork session (no local filesystem access):
 5. **Never overwrite user-written fields during enrichment.** Protected fields: tier, communication_style, role, notes. Only update machine-derived fields like last_interaction and status.
 6. **Staleness formula**: `today - last_interaction > staleness_days`. Default staleness_days is 30 if the field is not specified in the contact frontmatter.
 7. **Timestamp the report.** Always include "Generated: {date} {time}" at the bottom.
-8. **End with enrichment suggestion.** If not already enriching, close with: "Run /orbitant-chief-of-staff:crm enrich to update contacts from Gmail, Slack, and Calendar."
+8. **End with enrichment suggestion.** If not already enriching, close with: "Run /orbitant-operations:crm enrich to update contacts from Gmail, Slack, and Calendar."

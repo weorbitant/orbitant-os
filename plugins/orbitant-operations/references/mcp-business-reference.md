@@ -1,6 +1,6 @@
 # MCP Business Reference
 
-Data source integration details for the orbitant-business plugin. Used by fetcher agents and commands.
+Data source integration details for the orbitant-operations plugin. Used by fetcher agents and commands.
 
 ---
 

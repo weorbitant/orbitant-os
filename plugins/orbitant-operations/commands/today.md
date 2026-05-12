@@ -120,7 +120,7 @@ Warning: Jane Smith (Tier 1) -- 21 days since last contact (threshold: 7)
 Warning: Calendar drift -- Platform GA (30% weight) has 0% of today's meetings
 
 ---
-Run /orbitant-chief-of-staff:triage to process your inbox
+Run /orbitant-operations:triage to process your inbox
 ```
 
 Keep the output scannable. No paragraphs of prose -- use short lines, counts, indicators, and scores.
@@ -140,5 +140,5 @@ When running inside a Cowork session (no local filesystem access):
 3. **Graceful-degradation first.** Always invoke the skill before building sections. Do not re-probe MCP servers yourself.
 4. **Goal-alignment inline.** Show alignment scores next to tasks and meetings so the user sees strategic relevance at a glance.
 5. **Greet naturally.** Use time-appropriate greeting based on local time or constraints.yaml timezone.
-6. **End with /triage.** Always close with a suggestion to run `/orbitant-chief-of-staff:triage` to process the inbox.
+6. **End with /triage.** Always close with a suggestion to run `/orbitant-operations:triage` to process the inbox.
 7. **Timestamp the report.** Include "Generated: {date} {time}" at the bottom, before the /triage suggestion.

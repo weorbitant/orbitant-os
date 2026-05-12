@@ -151,4 +151,4 @@ When running inside a Cowork session (no local filesystem access):
 4. **If a contact has no file, show what's available.** Use calendar event data and MCP search results to build a partial profile rather than showing nothing.
 5. **Always include goal-alignment.** Every meeting briefing must show an alignment score when rocks.yaml is available.
 6. **Timestamp the report.** Include "Generated: {date} {time}" at the bottom.
-7. **End with a suggestion.** Close with: "Run /orbitant-chief-of-staff:today for the full daily briefing."
+7. **End with a suggestion.** Close with: "Run /orbitant-operations:today for the full daily briefing."

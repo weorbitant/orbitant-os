@@ -17,7 +17,7 @@ This command builds a weekly plan by pulling Asana tasks, scoring them against y
 6. **Generate the proposed weekly plan** by slotting scored tasks into available calendar blocks following the schedule suggestion rules below.
 7. **Present the plan** for user approval using the output format below.
 
-If any data source is unavailable, use the same fallback pattern as `/orbitant-chief-of-staff:today` — note the missing source inline and continue with what is available. A plan with partial data is better than no plan.
+If any data source is unavailable, use the same fallback pattern as `/orbitant-operations:today` — note the missing source inline and continue with what is available. A plan with partial data is better than no plan.
 
 ## Task Scoring
 
