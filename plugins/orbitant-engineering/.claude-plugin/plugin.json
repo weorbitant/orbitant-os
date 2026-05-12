@@ -10,7 +10,8 @@
     "./skills/ai-readiness",
     "./skills/git-hygiene",
     "./skills/owasp-scan",
-    "./skills/12-factor"
+    "./skills/12-factor",
+    "./skills/debrief"
   ],
   "commands": ["./commands/ground-control.md"]
 }
