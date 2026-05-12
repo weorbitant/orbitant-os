@@ -17,6 +17,12 @@
       "source": "./plugins/orbitant-operations",
       "description": "Operations toolkit — daily chief-of-staff workflows (briefings, inbox triage, meeting prep, goal alignment) plus Notion-backed business management and queries against Factorial HR, HubSpot, Airtable, and Sherpa financial",
       "version": "1.0.0"
+    },
+    {
+      "name": "orbitant-engineering",
+      "source": "./plugins/orbitant-engineering",
+      "description": "Engineering standards audit commands for any repo, any stack",
+      "version": "0.1.1"
     }
   ]
 }

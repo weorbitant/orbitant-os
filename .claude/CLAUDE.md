@@ -27,21 +27,26 @@ orbitant-os/
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   └── skills/
-│   └── orbitant-operations/        <- v1.0.0 — combined chief-of-staff + business: graceful-degradation, goal-alignment, voice-drafting, plus /challenge, /highlight, /opportunity, /todo, /query, /preflight, /report, /status, /today, /triage, /week, /prep, /crm
+│   ├── orbitant-operations/        <- v1.0.0 — combined chief-of-staff + business: graceful-degradation, goal-alignment, voice-drafting, plus /challenge, /highlight, /opportunity, /todo, /query, /preflight, /report, /status, /today, /triage, /week, /prep, /crm
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   ├── skills/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   │   ├── airtable-fetcher.md
+│   │   │   ├── enrichment-agent.md
+│   │   │   ├── factorial-fetcher.md
+│   │   │   ├── hubspot-fetcher.md
+│   │   │   ├── sherpa-fetcher.md
+│   │   │   └── triage-agent.md
+│   │   ├── crm/
+│   │   ├── reports/
+│   │   └── references/
+│   └── orbitant-engineering/       <- v0.1.1 — ai-readiness, git-hygiene, owasp-scan, 12-factor, debrief (+ /ground-control)
 │       ├── .claude-plugin/
 │       │   └── plugin.json
-│       ├── skills/
 │       ├── commands/
-│       ├── agents/
-│       │   ├── airtable-fetcher.md
-│       │   ├── enrichment-agent.md
-│       │   ├── factorial-fetcher.md
-│       │   ├── hubspot-fetcher.md
-│       │   ├── sherpa-fetcher.md
-│       │   └── triage-agent.md
-│       ├── crm/
-│       ├── reports/
-│       └── references/
+│       └── skills/
 ├── website/                        <- Astro + Starlight documentation site
 │   ├── astro.config.mjs
 │   ├── public/
@@ -239,6 +244,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 |--------|---------|--------|--------|----------|
 | orbitant-marketing | 1.4.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter` | — |
 | orbitant-operations | 1.0.0 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
+| orbitant-engineering | 0.1.1 | Active | `orbitant-ai-readiness`, `orbitant-git-hygiene`, `orbitant-owasp-scan`, `orbitant-12-factor`, `orbitant-debrief` | `/ground-control` |
 
 ## Scripts
 

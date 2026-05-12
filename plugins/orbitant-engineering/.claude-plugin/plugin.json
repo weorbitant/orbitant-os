@@ -1,0 +1,17 @@
+{
+  "name": "orbitant-engineering",
+  "version": "0.1.1",
+  "description": "Engineering standards audit commands for any repo, any stack",
+  "author": {
+    "name": "Orbitant"
+  },
+  "license": "MIT",
+  "skills": [
+    "./skills/ai-readiness",
+    "./skills/git-hygiene",
+    "./skills/owasp-scan",
+    "./skills/12-factor",
+    "./skills/debrief"
+  ],
+  "commands": ["./commands/ground-control.md"]
+}
