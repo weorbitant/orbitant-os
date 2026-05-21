@@ -1,10 +1,9 @@
 {
   "name": "orbitant-marketing",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Marketing team skills for content creation and review",
   "author": {
     "name": "Orbitant"
   },
-  "license": "MIT",
-  "skills": ["./skills/blog-post-review", "./skills/blog-post-create", "./skills/blog-post-translate", "./skills/tone", "./skills/image-creation"]
+  "license": "MIT"
 }
