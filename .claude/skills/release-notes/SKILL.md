@@ -191,3 +191,11 @@ This release adds powerful blog translation capabilities and improves SEO analys
 5. **Be concise** — Nobody reads long changelogs; keep each bullet to one line
 6. **Celebrate features** — The summary paragraph should make users excited about the release
 7. **Warn about breaking changes** — These go first with clear migration guidance
+
+## After the Release is Published
+
+Once the GitHub release is live, remind the user of the manual internal-distribution step:
+
+> ⚠️ **Manual step (org admin only)**: upload the plugin zip to <https://claude.ai/admin-settings/plugins> to propagate the new version internally.
+
+The website blog parser picks up the release on the next build, but internal Claude.ai distribution requires this manual upload by an org admin.
