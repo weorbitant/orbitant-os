@@ -136,6 +136,7 @@ When you create a GitHub release with tag `orbitant-{plugin}-v{X.Y.Z}`:
 3. Push tag: `git push origin orbitant-{plugin}-v{X.Y.Z}`
 4. Create GitHub release: `gh release create orbitant-{plugin}-v{X.Y.Z} --title "..." --notes "..."`
 5. On next website build, release appears as blog post
+6. **Manual step (org admin only)**: upload the plugin zip to <https://claude.ai/admin-settings/plugins> to propagate the new version internally.
 
 #### Tag Filtering
 
