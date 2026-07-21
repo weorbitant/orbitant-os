@@ -19,6 +19,10 @@ jobs:
     name: Build and publish to GitHub Packages
     runs-on: ubuntu-latest
     steps:
+      # Intentionally NO `ref:` here. On push:tags the tag's own commit is already checked out;
+      # for workflow_dispatch we build from the default branch on purpose — some existing release
+      # tags predate this build tooling, so checking them out would leave scripts/ missing.
+      # The tag<->built-version guard in publish-package.ts covers version correctness.
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
