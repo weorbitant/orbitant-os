@@ -34,3 +34,6 @@ website/src/content/generated/*.json
 plugins/orbitant-marketing/skills/image-creation/assets/reference/
 plugins/orbitant-marketing/skills/image-creation/output/
 plugins/orbitant-marketing/skills/image-creation/scripts/.env
+
+# npm package build output
+dist/
