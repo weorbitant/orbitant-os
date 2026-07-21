@@ -7,6 +7,8 @@ on:
       - 'website/**'
       - 'plugins/**'
       - '.claude-plugin/marketplace.json'
+      # The website parses plugins via this shared module, so its changes affect the built site too.
+      - 'scripts/lib/**'
   release:
     types: [published]
   workflow_dispatch:
