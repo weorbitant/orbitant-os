@@ -22,5 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run full check suite (lint, validate, test, build:packages)
-        run: npm run ci
+      - name: Lint & validate
+        run: npm run lint && npm run validate
+
+      - name: Test
+        run: npm run test
+
+      - name: Build packages
+        run: npm run build:packages
