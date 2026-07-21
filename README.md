@@ -200,10 +200,13 @@ import brain from '@weorbitant/orbitant-os';
 brain.marketing; brain.operations; brain.engineering;
 ```
 
-Each entry exposes `{ name, description, version, tags, content, frontmatter, dir }`
-for skills (and the analogous shape for agents/commands). Package versions track
-the vertical's `plugin.json`; publishing happens on the `orbitant-{vertical}-v{X.Y.Z}`
-release tag.
+Each skill entry exposes `{ name, folder, description, version, tags, content, frontmatter, dir }`.
+Agents expose `{ name, description, allowedTools?, content, frontmatter, path }` and commands
+`{ name, description, content, frontmatter, path }` — agents and commands carry a `path` to the
+source file rather than a `dir`. You can also import a single vertical straight from the
+meta-package via a subpath, e.g. `import marketing from '@weorbitant/orbitant-os/marketing'`.
+Package versions track the vertical's `plugin.json`; publishing happens on the
+`orbitant-{vertical}-v{X.Y.Z}` release tag.
 
 ## Documentation
 
