@@ -76,8 +76,93 @@ export function buildVerticalPackages(): ParsedPlugin[] {
   return plugins;
 }
 
+function buildMeta(plugins: ParsedPlugin[]): void {
+  const pkgName = `${SCOPE}/${META.name}`;
+  const pkgDir = path.join(DIST_DIR, SCOPE, META.name);
+  fs.rmSync(pkgDir, { recursive: true, force: true });
+  fs.mkdirSync(path.join(pkgDir, 'dist'), { recursive: true });
+
+  const dependencies: Record<string, string> = {};
+  const exportsMap: Record<string, { types: string; import: string }> = {
+    '.': { types: './dist/index.d.ts', import: './dist/index.js' },
+  };
+
+  const namedExports: string[] = [];
+  const namedImports: string[] = [];
+  const brainProps: string[] = [];
+  const dtsImports: string[] = [];
+  const dtsBrainProps: string[] = [];
+
+  for (const plugin of plugins) {
+    const dep = `${SCOPE}/${plugin.name}`;
+    dependencies[dep] = plugin.version; // exact pin
+    const v = plugin.vertical;
+
+    // subpath re-export files
+    fs.writeFileSync(
+      path.join(pkgDir, 'dist', `${v}.js`),
+      `export * from '${dep}';\nexport { default } from '${dep}';\n`,
+    );
+    fs.writeFileSync(
+      path.join(pkgDir, 'dist', `${v}.d.ts`),
+      `export * from '${dep}';\nexport { default } from '${dep}';\n`,
+    );
+    exportsMap[`./${v}`] = { types: `./dist/${v}.d.ts`, import: `./dist/${v}.js` };
+
+    namedExports.push(`export { default as ${v} } from '${dep}';`);
+    namedImports.push(`import ${v} from '${dep}';`);
+    brainProps.push(v);
+    dtsImports.push(`import type ${v} from '${dep}';`);
+    dtsBrainProps.push(`  ${v}: typeof ${v};`);
+  }
+
+  // aggregate index.js
+  fs.writeFileSync(
+    path.join(pkgDir, 'dist', 'index.js'),
+    [
+      ...namedExports,
+      ...namedImports,
+      `const brain = { ${brainProps.join(', ')} };`,
+      `export default brain;`,
+      '',
+    ].join('\n'),
+  );
+
+  // aggregate index.d.ts
+  fs.writeFileSync(
+    path.join(pkgDir, 'dist', 'index.d.ts'),
+    [
+      ...dtsImports,
+      `export { ${brainProps.join(', ')} };`,
+      `declare const brain: {`,
+      ...dtsBrainProps,
+      `};`,
+      `export default brain;`,
+      '',
+    ].join('\n'),
+  );
+
+  const pkgJson = {
+    name: pkgName,
+    version: META.version,
+    description: 'Orbitant OS — all vertical brains aggregated',
+    type: 'module',
+    exports: exportsMap,
+    dependencies,
+    author: { name: 'Orbitant' },
+    license: 'MIT',
+    repository: { type: 'git', url: 'https://github.com/weorbitant/orbitant-os.git' },
+    publishConfig: { registry: REGISTRY },
+  };
+  fs.writeFileSync(path.join(pkgDir, 'package.json'), JSON.stringify(pkgJson, null, 2));
+
+  console.log(`  - ${pkgName}@${META.version} (meta → ${plugins.map((p) => p.vertical).join(', ')})`);
+}
+
 export function buildAll(): void {
-  buildVerticalPackages();
+  const plugins = buildVerticalPackages();
+  console.log('Building meta package...');
+  buildMeta(plugins);
 }
 
 // Executed directly (not imported by a test).

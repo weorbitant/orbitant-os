@@ -63,3 +63,20 @@ test('generated index type-checks against a consumer smoke file', () => {
     { cwd: ROOT, stdio: 'pipe' },
   );
 });
+
+test('meta package pins exact vertical versions and declares subpaths', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir('orbitant-os'), 'package.json'), 'utf-8'));
+  assert.equal(pkg.name, '@weorbitant/orbitant-os');
+  assert.equal(pkg.dependencies['@weorbitant/orbitant-marketing'], '1.5.0');
+  assert.equal(pkg.dependencies['@weorbitant/orbitant-operations'], '1.0.0');
+  assert.equal(pkg.dependencies['@weorbitant/orbitant-engineering'], '0.2.0');
+  assert.equal(pkg.exports['./marketing'].import, './dist/marketing.js');
+  assert.equal(pkg.exports['.'].import, './dist/index.js');
+});
+
+test('meta package emits a re-export module per vertical', () => {
+  for (const v of ['marketing', 'operations', 'engineering']) {
+    const js = fs.readFileSync(path.join(pkgDir('orbitant-os'), 'dist', `${v}.js`), 'utf-8');
+    assert.ok(js.includes(`@weorbitant/orbitant-${v}`), `${v}.js re-exports the vertical package`);
+  }
+});
