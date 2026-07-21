@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parsePlugin, parseAllPlugins } from '../scripts/lib/parse-plugin.ts';
@@ -7,12 +8,17 @@ import { parsePlugin, parseAllPlugins } from '../scripts/lib/parse-plugin.ts';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PLUGINS = path.join(ROOT, 'plugins');
 
+function pluginJsonVersion(folder: string): string {
+  const pj = path.join(PLUGINS, folder, '.claude-plugin', 'plugin.json');
+  return JSON.parse(fs.readFileSync(pj, 'utf-8')).version as string;
+}
+
 test('parsePlugin reads marketing skills with content and metadata', () => {
   const plugin = parsePlugin(path.join(PLUGINS, 'orbitant-marketing'));
   assert.ok(plugin, 'plugin should parse');
   assert.equal(plugin.name, 'orbitant-marketing');
   assert.equal(plugin.vertical, 'marketing');
-  assert.equal(plugin.version, '1.5.0');
+  assert.equal(plugin.version, pluginJsonVersion('orbitant-marketing'));
 
   const tone = plugin.skills.find((s) => s.folder === 'tone');
   assert.ok(tone, 'tone skill present');

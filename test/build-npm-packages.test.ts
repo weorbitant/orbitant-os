@@ -20,6 +20,14 @@ function pkgDir(name: string): string {
   return path.join(DIST_DIR, SCOPE, name);
 }
 
+// Read a vertical's version from its own plugin.json (the single source of truth) instead of
+// hardcoding it, so a routine version bump doesn't break these tests. Still meaningful: it
+// verifies the build propagates plugin.json -> the generated package/manifest, not the literal.
+function pluginVersion(vertical: string): string {
+  const pj = path.join(ROOT, 'plugins', `orbitant-${vertical}`, '.claude-plugin', 'plugin.json');
+  return JSON.parse(fs.readFileSync(pj, 'utf-8')).version as string;
+}
+
 // Symlinks every vertical package into the meta package's own node_modules, so the meta's
 // generated dist/index.js and dist/index.d.ts can resolve their bare `@weorbitant/orbitant-*`
 // specifiers both at runtime (Node) and at type-check time (tsc). Idempotent — safe to call
@@ -40,7 +48,7 @@ function linkVerticalsIntoMeta(): void {
 test('marketing package.json has version from plugin.json', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir('orbitant-marketing'), 'package.json'), 'utf-8'));
   assert.equal(pkg.name, '@weorbitant/orbitant-marketing');
-  assert.equal(pkg.version, '1.5.0');
+  assert.equal(pkg.version, pluginVersion('marketing'));
   assert.equal(pkg.type, 'module');
   assert.equal(pkg.publishConfig.registry, 'https://npm.pkg.github.com');
   assert.equal(pkg.exports['.'].import, './dist/index.js');
@@ -126,9 +134,9 @@ test('generated index type-checks against a consumer smoke file', () => {
 test('meta package pins exact vertical versions and declares subpaths', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir('orbitant-os'), 'package.json'), 'utf-8'));
   assert.equal(pkg.name, '@weorbitant/orbitant-os');
-  assert.equal(pkg.dependencies['@weorbitant/orbitant-marketing'], '1.5.0');
-  assert.equal(pkg.dependencies['@weorbitant/orbitant-operations'], '1.0.0');
-  assert.equal(pkg.dependencies['@weorbitant/orbitant-engineering'], '0.2.0');
+  assert.equal(pkg.dependencies['@weorbitant/orbitant-marketing'], pluginVersion('marketing'));
+  assert.equal(pkg.dependencies['@weorbitant/orbitant-operations'], pluginVersion('operations'));
+  assert.equal(pkg.dependencies['@weorbitant/orbitant-engineering'], pluginVersion('engineering'));
   assert.equal(pkg.exports['./marketing'].import, './dist/marketing.js');
   assert.equal(pkg.exports['.'].import, './dist/index.js');
 });
@@ -215,7 +223,7 @@ test('meta aggregate module loads at runtime and resolves each vertical brain', 
   const brain = mod.default;
 
   assert.deepEqual(Object.keys(brain).sort(), [...VERTICALS].sort());
-  assert.deepEqual(brain.marketing.meta, { name: 'orbitant-marketing', version: '1.5.0', vertical: 'marketing' });
+  assert.deepEqual(brain.marketing.meta, { name: 'orbitant-marketing', version: pluginVersion('marketing'), vertical: 'marketing' });
   assert.equal(typeof brain.marketing.skills['orbitant-tone'].content, 'string');
   assert.ok(brain.marketing.skills['orbitant-tone'].content.length > 0);
 });
