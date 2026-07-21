@@ -33,5 +33,8 @@ jobs:
 
       - name: Publish package for tag
         env:
+          # Pass the tag through the environment instead of interpolating ${{ }} directly into the
+          # run script — the GitHub-recommended way to avoid shell injection via a crafted ref name.
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node --import tsx scripts/publish-package.ts "${{ github.event.inputs.tag || github.ref_name }}"
+        run: node --import tsx scripts/publish-package.ts "$TAG"
