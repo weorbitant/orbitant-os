@@ -1,34 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
+import type { SkillEntry, AgentEntry, CommandEntry } from '../templates/npm/index.js';
 
-export interface ParsedSkill {
-  name: string;
-  folder: string;
-  description: string;
-  version: string;
-  tags: string[];
-  content: string;
-  frontmatter: Record<string, unknown>;
-  relDir: string;
-}
-
-export interface ParsedAgent {
-  name: string;
-  description: string;
-  allowedTools?: string;
-  content: string;
-  frontmatter: Record<string, unknown>;
-  relPath: string;
-}
-
-export interface ParsedCommand {
-  name: string;
-  description: string;
-  content: string;
-  frontmatter: Record<string, unknown>;
-  relPath: string;
-}
+// The parser emits RELATIVE paths (relDir/relPath); the shipped index.js resolves them to the
+// ABSOLUTE dir/path at load time. Each Parsed* type is therefore its public *Entry counterpart
+// (the single source of truth for the shared fields, shipped in every package) with the
+// resolved-path field swapped for the relative one. Type-only import — erased at runtime.
+export type ParsedSkill = Omit<SkillEntry, 'dir'> & { relDir: string };
+export type ParsedAgent = Omit<AgentEntry, 'path'> & { relPath: string };
+export type ParsedCommand = Omit<CommandEntry, 'path'> & { relPath: string };
 
 export interface ParsedPlugin {
   name: string;
