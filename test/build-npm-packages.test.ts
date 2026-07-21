@@ -228,6 +228,20 @@ test('meta aggregate module loads at runtime and resolves each vertical brain', 
   assert.ok(brain.marketing.skills['orbitant-tone'].content.length > 0);
 });
 
+test('npm pack --dry-run ships dist/manifest/skills/package.json and excludes junk', () => {
+  const out = execFileSync('npm', ['pack', '--dry-run', '--json'], {
+    cwd: pkgDir('orbitant-marketing'),
+    encoding: 'utf-8',
+  });
+  const files: string[] = JSON.parse(out)[0].files.map((f: { path: string }) => f.path);
+  assert.ok(files.includes('dist/index.js'), 'ships the entry point');
+  assert.ok(files.includes('manifest.json'), 'ships the manifest');
+  assert.ok(files.includes('package.json'), 'ships package.json');
+  assert.ok(files.some((f) => f.startsWith('skills/')), 'ships skill content');
+  assert.ok(!files.some((f) => f.includes('node_modules')), 'never ships node_modules');
+  assert.ok(!files.some((f) => f.endsWith('.env')), 'never ships a .env');
+});
+
 test('build throws (never silently drops a skill) when a SKILL.md has broken frontmatter', () => {
   // A skill whose frontmatter cannot be parsed is dropped to null upstream; without the integrity
   // guard it would just vanish from the published package. Create one with malformed YAML, confirm
