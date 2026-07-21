@@ -35,7 +35,44 @@ function readPluginJson(vertical: string): Record<string, unknown> {
   return JSON.parse(fs.readFileSync(path.join(PLUGINS_DIR, `orbitant-${vertical}`, '.claude-plugin', 'plugin.json'), 'utf-8'));
 }
 
+// Fail the build (rather than the shared parser's warn-and-skip, which is fine for the website)
+// before anything is published, so a broken SKILL.md or a duplicate name can never ship as a
+// package that silently misses entries.
+function assertPluginIntegrity(plugin: ParsedPlugin): void {
+  // 1. No skill silently dropped: a SKILL.md on disk that the parser could not read (e.g. broken
+  //    frontmatter) is filtered to null upstream and would just vanish from the package.
+  const skillsDir = path.join(PLUGINS_DIR, plugin.name, 'skills');
+  if (fs.existsSync(skillsDir)) {
+    const onDisk = fs
+      .readdirSync(skillsDir)
+      .filter((d) => fs.existsSync(path.join(skillsDir, d, 'SKILL.md')));
+    const parsed = new Set(plugin.skills.map((s) => s.folder));
+    const dropped = onDisk.filter((d) => !parsed.has(d));
+    if (dropped.length > 0) {
+      throw new Error(`${plugin.name}: SKILL.md present but not parsed (broken frontmatter?): ${dropped.join(', ')}`);
+    }
+  }
+
+  // 2. Names must be unique per vertical — the catalog is keyed by name, so a collision would
+  //    silently drop an entry (last one wins) in the published package.
+  const groups: Array<[string, Array<{ name: string }>]> = [
+    ['skill', plugin.skills],
+    ['agent', plugin.agents],
+    ['command', plugin.commands],
+  ];
+  for (const [kind, items] of groups) {
+    const seen = new Set<string>();
+    for (const item of items) {
+      if (seen.has(item.name)) {
+        throw new Error(`${plugin.name}: duplicate ${kind} name "${item.name}" — names must be unique within a vertical`);
+      }
+      seen.add(item.name);
+    }
+  }
+}
+
 function buildVertical(plugin: ParsedPlugin): void {
+  assertPluginIntegrity(plugin);
   const pkgName = `${SCOPE}/${plugin.name}`;
   const pkgDir = path.join(DIST_DIR, SCOPE, plugin.name);
   fs.rmSync(pkgDir, { recursive: true, force: true });
@@ -64,7 +101,12 @@ function buildVertical(plugin: ParsedPlugin): void {
     version: plugin.version,
     description: plugin.description,
     type: 'module',
-    exports: { '.': { types: './dist/index.d.ts', import: './dist/index.js' } },
+    main: './dist/index.js',
+    types: './dist/index.d.ts',
+    exports: {
+      '.': { types: './dist/index.d.ts', import: './dist/index.js', default: './dist/index.js' },
+      './package.json': './package.json',
+    },
     author: source.author ?? { name: 'Orbitant' },
     license: source.license ?? 'MIT',
     repository: { type: 'git', url: 'https://github.com/weorbitant/orbitant-os.git' },
@@ -89,8 +131,8 @@ function buildMeta(plugins: ParsedPlugin[]): void {
   fs.mkdirSync(path.join(pkgDir, 'dist'), { recursive: true });
 
   const dependencies: Record<string, string> = {};
-  const exportsMap: Record<string, { types: string; import: string }> = {
-    '.': { types: './dist/index.d.ts', import: './dist/index.js' },
+  const exportsMap: Record<string, { types: string; import: string; default: string } | string> = {
+    '.': { types: './dist/index.d.ts', import: './dist/index.js', default: './dist/index.js' },
   };
 
   const namedExports: string[] = [];
@@ -115,13 +157,15 @@ function buildMeta(plugins: ParsedPlugin[]): void {
       path.join(pkgDir, 'dist', `${v}.d.ts`),
       `export * from '${dep}';\nexport { default } from '${dep}';\n`,
     );
-    exportsMap[`./${v}`] = { types: `./dist/${v}.d.ts`, import: `./dist/${v}.js` };
+    exportsMap[`./${v}`] = { types: `./dist/${v}.d.ts`, import: `./dist/${v}.js`, default: `./dist/${v}.js` };
 
     namedExports.push(`export { default as ${v} } from '${dep}';`);
     namedImports.push(`import ${v} from '${dep}';`);
     brainProps.push(v);
     dtsBrainProps.push(`  ${v}: typeof ${v};`);
   }
+
+  exportsMap['./package.json'] = './package.json';
 
   // aggregate index.js
   fs.writeFileSync(
@@ -156,6 +200,8 @@ function buildMeta(plugins: ParsedPlugin[]): void {
     version: META.version,
     description: 'Orbitant OS — all vertical brains aggregated',
     type: 'module',
+    main: './dist/index.js',
+    types: './dist/index.d.ts',
     exports: exportsMap,
     dependencies,
     author: { name: 'Orbitant' },

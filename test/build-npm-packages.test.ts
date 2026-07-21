@@ -227,3 +227,19 @@ test('meta aggregate module loads at runtime and resolves each vertical brain', 
   assert.equal(typeof brain.marketing.skills['orbitant-tone'].content, 'string');
   assert.ok(brain.marketing.skills['orbitant-tone'].content.length > 0);
 });
+
+test('build throws (never silently drops a skill) when a SKILL.md has broken frontmatter', () => {
+  // A skill whose frontmatter cannot be parsed is dropped to null upstream; without the integrity
+  // guard it would just vanish from the published package. Create one with malformed YAML, confirm
+  // the build fails loudly, then restore a clean dist for any later run.
+  const brokenDir = path.join(ROOT, 'plugins/orbitant-marketing/skills/__broken_frontmatter__');
+  fs.mkdirSync(brokenDir, { recursive: true });
+  fs.writeFileSync(path.join(brokenDir, 'SKILL.md'), '---\nname: [unterminated flow sequence\n---\nbody\n');
+  try {
+    assert.throws(() => buildAll(), /present but not parsed/);
+  } finally {
+    fs.rmSync(brokenDir, { recursive: true, force: true });
+    fs.rmSync(DIST_DIR, { recursive: true, force: true });
+    buildAll();
+  }
+});
