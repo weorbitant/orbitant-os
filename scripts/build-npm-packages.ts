@@ -95,7 +95,6 @@ function buildMeta(plugins: ParsedPlugin[]): void {
   const namedExports: string[] = [];
   const namedImports: string[] = [];
   const brainProps: string[] = [];
-  const dtsImports: string[] = [];
   const dtsBrainProps: string[] = [];
 
   for (const plugin of plugins) {
@@ -117,7 +116,6 @@ function buildMeta(plugins: ParsedPlugin[]): void {
     namedExports.push(`export { default as ${v} } from '${dep}';`);
     namedImports.push(`import ${v} from '${dep}';`);
     brainProps.push(v);
-    dtsImports.push(`import type ${v} from '${dep}';`);
     dtsBrainProps.push(`  ${v}: typeof ${v};`);
   }
 
@@ -133,12 +131,14 @@ function buildMeta(plugins: ParsedPlugin[]): void {
     ].join('\n'),
   );
 
-  // aggregate index.d.ts
+  // aggregate index.d.ts — mirrors index.js exactly: value re-exports + value imports (so a
+  // named import like `import { marketing } from '@weorbitant/orbitant-os'` type-checks as a
+  // value, not just a type), plus the `typeof`-derived brain shape for the default export.
   fs.writeFileSync(
     path.join(pkgDir, 'dist', 'index.d.ts'),
     [
-      ...dtsImports,
-      `export { ${brainProps.join(', ')} };`,
+      ...namedExports,
+      ...namedImports,
       `declare const brain: {`,
       ...dtsBrainProps,
       `};`,

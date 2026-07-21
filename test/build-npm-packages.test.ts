@@ -20,6 +20,23 @@ function pkgDir(name: string): string {
   return path.join(DIST_DIR, SCOPE, name);
 }
 
+// Symlinks every vertical package into the meta package's own node_modules, so the meta's
+// generated dist/index.js and dist/index.d.ts can resolve their bare `@weorbitant/orbitant-*`
+// specifiers both at runtime (Node) and at type-check time (tsc). Idempotent — safe to call
+// from multiple tests regardless of execution order.
+function linkVerticalsIntoMeta(): void {
+  const metaDir = pkgDir('orbitant-os');
+  const scopeNodeModules = path.join(metaDir, 'node_modules', SCOPE);
+  fs.mkdirSync(scopeNodeModules, { recursive: true });
+
+  for (const v of VERTICALS) {
+    const linkPath = path.join(scopeNodeModules, `orbitant-${v}`);
+    const target = pkgDir(`orbitant-${v}`);
+    fs.rmSync(linkPath, { force: true }); // idempotent: drop any stale link from a prior run first
+    fs.symlinkSync(target, linkPath, 'dir');
+  }
+}
+
 test('marketing package.json has version from plugin.json', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir('orbitant-marketing'), 'package.json'), 'utf-8'));
   assert.equal(pkg.name, '@weorbitant/orbitant-marketing');
@@ -147,35 +164,52 @@ test('meta aggregate index.js declares exports, imports, and the brain object fo
   assert.match(js, /^export default brain;$/m);
 });
 
-test('meta aggregate index.d.ts declares the brain shape for every vertical', () => {
+test('meta aggregate index.d.ts mirrors index.js: value re-exports and value imports, never import-only types', () => {
+  // A named import like `import { marketing } from '@weorbitant/orbitant-os'` is a VALUE use
+  // (documented in the consumer docs). If the generated types re-export it via `import type`,
+  // that named import becomes type-only and TS1361s at any real usage site — see the
+  // `generated meta index.d.ts type-checks as a value import` test below for the end-to-end guard.
   const dts = fs.readFileSync(path.join(pkgDir('orbitant-os'), 'dist', 'index.d.ts'), 'utf-8');
 
   for (const v of VERTICALS) {
     const dep = `${SCOPE}/orbitant-${v}`;
-    assert.match(dts, new RegExp(`^import type ${v} from '${dep}';$`, 'm'));
+    assert.match(dts, new RegExp(`^export \\{ default as ${v} \\} from '${dep}';$`, 'm'), `${v} must be re-exported as a value, not a type`);
+    assert.match(dts, new RegExp(`^import ${v} from '${dep}';$`, 'm'), `${v} must be a value import for the \`typeof\` in the brain shape`);
     assert.match(dts, new RegExp(`^\\s*${v}: typeof ${v};$`, 'm'));
   }
 
-  const exportLineMatch = dts.match(/^export \{ (.+) \};$/m);
-  assert.ok(exportLineMatch, 'a top-level `export { ... };` line re-exporting the vertical types must be present');
-  const exportedNames = exportLineMatch![1].split(',').map((s) => s.trim());
-  assert.deepEqual(exportedNames.sort(), [...VERTICALS].sort(), 'must re-export exactly the three verticals, no more no less');
+  assert.ok(!dts.includes('import type '), 'must contain no `import type` — those make named re-exports unusable as values');
 
   assert.match(dts, /^declare const brain: \{$/m);
   assert.match(dts, /^export default brain;$/m);
 });
 
+test('generated meta index.d.ts type-checks as a value import (guards TS1361)', () => {
+  linkVerticalsIntoMeta(); // so the meta's own '@weorbitant/orbitant-*' specifiers resolve
+
+  // Make '@weorbitant/orbitant-os' itself resolvable from the fixture: a symlink under a
+  // node_modules next to the fixture, mirroring how a real consumer would have it installed.
+  const fixtureNodeModules = path.join(ROOT, 'test/fixtures/node_modules', SCOPE);
+  fs.mkdirSync(fixtureNodeModules, { recursive: true });
+  const metaLinkPath = path.join(fixtureNodeModules, 'orbitant-os');
+  fs.rmSync(metaLinkPath, { force: true });
+  fs.symlinkSync(pkgDir('orbitant-os'), metaLinkPath, 'dir');
+
+  try {
+    execFileSync(
+      'npx',
+      // See the comment on the vertical smoke test above re: --skipLibCheck.
+      ['tsc', '--noEmit', '--strict', '--skipLibCheck', '--moduleResolution', 'bundler', '--module', 'esnext', 'test/fixtures/smoke-meta.ts'],
+      { cwd: ROOT, stdio: 'pipe' },
+    );
+  } finally {
+    fs.rmSync(path.join(ROOT, 'test/fixtures/node_modules'), { recursive: true, force: true });
+  }
+});
+
 test('meta aggregate module loads at runtime and resolves each vertical brain', async () => {
   const metaDir = pkgDir('orbitant-os');
-  const scopeNodeModules = path.join(metaDir, 'node_modules', SCOPE);
-  fs.mkdirSync(scopeNodeModules, { recursive: true });
-
-  for (const v of VERTICALS) {
-    const linkPath = path.join(scopeNodeModules, `orbitant-${v}`);
-    const target = pkgDir(`orbitant-${v}`);
-    fs.rmSync(linkPath, { force: true }); // idempotent: drop any stale link from a prior run first
-    fs.symlinkSync(target, linkPath, 'dir');
-  }
+  linkVerticalsIntoMeta();
 
   const mod = await import(pathToFileURL(path.join(metaDir, 'dist', 'index.js')).href);
   const brain = mod.default;
