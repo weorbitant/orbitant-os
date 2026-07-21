@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
 import { parseAllPlugins, type ParsedPlugin } from './lib/parse-plugin.ts';
 import { ROOT, PLUGINS_DIR, DIST_DIR, SCOPE, REGISTRY, META } from './lib/npm-packages.config.ts';
 
@@ -97,6 +98,9 @@ function buildMeta(plugins: ParsedPlugin[]): void {
   const brainProps: string[] = [];
   const dtsBrainProps: string[] = [];
 
+  // Vertical deps are pinned to EXACT versions, so at release time all three vertical packages
+  // must be published BEFORE the meta — otherwise `npm install @weorbitant/orbitant-os` cannot
+  // resolve them. Publish order: verticals first, meta last.
   for (const plugin of plugins) {
     const dep = `${SCOPE}/${plugin.name}`;
     dependencies[dep] = plugin.version; // exact pin
@@ -170,7 +174,8 @@ export function buildAll(): void {
   buildMeta(plugins);
 }
 
-// Executed directly (not imported by a test).
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Executed directly (not imported by a test). pathToFileURL handles paths with spaces/special
+// characters and Windows drive letters, which a hand-built `file://` string does not.
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   buildAll();
 }
