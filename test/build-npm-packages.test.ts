@@ -52,6 +52,46 @@ test('local-only ignored artifacts are not shipped', () => {
   assert.ok(!fs.existsSync(path.join(pkgDir('orbitant-marketing'), 'skills/image-creation/scripts/.env')));
 });
 
+test('a freshly created git-ignored file is never shipped, whatever pattern ignores it', () => {
+  // Non-vacuous version of the test above: those paths don't exist on disk in a clean checkout,
+  // so a hardcoded denylist that merely happens to list them would pass trivially. Here we create
+  // git-ignored files that are NOT on any hardcoded list — matched only by the generic *.log and
+  // *.tmp patterns in .gitignore — rebuild, and assert they were excluded. This proves exclusion
+  // is driven by .gitignore itself, not a partial hand-maintained mirror of it.
+  const debugLog = path.join(ROOT, 'plugins/orbitant-marketing/skills/tone/debug.log'); // matched by `*.log`
+  const scratchTmp = path.join(ROOT, 'plugins/orbitant-marketing/skills/tone/scratch.tmp'); // matched by `*.tmp`
+
+  try {
+    fs.writeFileSync(debugLog, 'debug output, must never ship\n');
+    fs.writeFileSync(scratchTmp, 'scratch, must never ship\n');
+
+    // Precondition: confirm git itself considers both files ignored (throws / non-zero exit otherwise).
+    const ignored = execFileSync('git', ['check-ignore', debugLog, scratchTmp], { cwd: ROOT, encoding: 'utf-8' });
+    assert.equal(ignored.trim().split('\n').filter(Boolean).length, 2);
+
+    fs.rmSync(DIST_DIR, { recursive: true, force: true });
+    buildAll();
+
+    assert.ok(
+      !fs.existsSync(path.join(pkgDir('orbitant-marketing'), 'skills/tone/debug.log')),
+      '*.log files must never be copied into the staged package',
+    );
+    assert.ok(
+      !fs.existsSync(path.join(pkgDir('orbitant-marketing'), 'skills/tone/scratch.tmp')),
+      '*.tmp files must never be copied into the staged package',
+    );
+    assert.ok(
+      fs.existsSync(path.join(pkgDir('orbitant-marketing'), 'skills/tone/SKILL.md')),
+      'sanity check: the real, tracked SKILL.md must still be copied',
+    );
+  } finally {
+    fs.rmSync(debugLog, { force: true });
+    fs.rmSync(scratchTmp, { force: true });
+    fs.rmSync(DIST_DIR, { recursive: true, force: true });
+    buildAll(); // restore a clean dist for the remaining tests in this file
+  }
+});
+
 test('generated index type-checks against a consumer smoke file', () => {
   execFileSync(
     'npx',

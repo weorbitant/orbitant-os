@@ -10,10 +10,3 @@ export const REGISTRY = 'https://npm.pkg.github.com';
 
 // Meta-package version — single source of truth, bumped here and tagged as orbitant-os-v<version>.
 export const META = { name: 'orbitant-os', version: '1.0.0' };
-
-// Relative source paths (repo .gitignore) that must never be published.
-export const IGNORED_REL_PATHS = [
-  'orbitant-marketing/skills/image-creation/assets/reference',
-  'orbitant-marketing/skills/image-creation/output',
-  'orbitant-marketing/skills/image-creation/scripts/.env',
-];

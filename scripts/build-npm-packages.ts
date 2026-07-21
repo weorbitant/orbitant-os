@@ -1,27 +1,32 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { parseAllPlugins, type ParsedPlugin } from './lib/parse-plugin.ts';
-import { ROOT, PLUGINS_DIR, DIST_DIR, SCOPE, REGISTRY, META, IGNORED_REL_PATHS } from './lib/npm-packages.config.ts';
+import { ROOT, PLUGINS_DIR, DIST_DIR, SCOPE, REGISTRY, META } from './lib/npm-packages.config.ts';
 
 const TEMPLATES = path.join(ROOT, 'scripts/templates/npm');
 
-function isIgnored(absPath: string): boolean {
-  const rel = path.relative(PLUGINS_DIR, absPath).split(path.sep).join('/');
-  if (path.basename(absPath) === '.DS_Store') return true;
-  return IGNORED_REL_PATHS.some((ignored) => rel === ignored || rel.startsWith(`${ignored}/`));
+// Source of truth for "what may ship" is git itself: tracked files, plus untracked files that
+// are NOT git-ignored. Anything git-ignores (.env, *.log, *.tmp, Thumbs.db, local-only output
+// dirs, ...) is excluded automatically — no hand-maintained denylist to keep in sync.
+function listPluginFiles(pluginFolder: string): string[] {
+  const pluginRelDir = path.posix.join('plugins', pluginFolder);
+  const out = execFileSync(
+    'git',
+    ['ls-files', '--cached', '--others', '--exclude-standard', '-z', '--', pluginRelDir],
+    { cwd: ROOT, encoding: 'utf-8' },
+  );
+  return out.split('\0').filter(Boolean);
 }
 
-function copyDir(src: string, dest: string): void {
-  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
-    const from = path.join(src, entry.name);
-    const to = path.join(dest, entry.name);
-    if (isIgnored(from)) continue;
-    if (entry.isDirectory()) {
-      fs.mkdirSync(to, { recursive: true });
-      copyDir(from, to);
-    } else if (entry.isFile()) {
-      fs.copyFileSync(from, to);
-    }
+function copyPluginFiles(pluginFolder: string, destDir: string): void {
+  const pluginRelDir = path.posix.join('plugins', pluginFolder);
+  for (const relFile of listPluginFiles(pluginFolder)) {
+    const relWithinPlugin = path.posix.relative(pluginRelDir, relFile);
+    const from = path.join(ROOT, ...relFile.split('/'));
+    const to = path.join(destDir, ...relWithinPlugin.split('/'));
+    fs.mkdirSync(path.dirname(to), { recursive: true });
+    fs.copyFileSync(from, to);
   }
 }
 
@@ -35,8 +40,8 @@ function buildVertical(plugin: ParsedPlugin): void {
   fs.rmSync(pkgDir, { recursive: true, force: true });
   fs.mkdirSync(path.join(pkgDir, 'dist'), { recursive: true });
 
-  // 1. Verbatim content copy.
-  copyDir(path.join(PLUGINS_DIR, plugin.name), pkgDir);
+  // 1. Verbatim content copy (git-tracked + untracked-not-ignored files only).
+  copyPluginFiles(plugin.name, pkgDir);
 
   // 2. manifest.json
   const manifest = {
