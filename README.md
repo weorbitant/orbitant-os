@@ -159,6 +159,52 @@ npm run website:dev      # Dev server
 npm run website:build    # Build static site
 ```
 
+## Consume a brain as an npm package
+
+Each vertical is also published as a private npm package under `@weorbitant` on
+GitHub Packages, so a TypeScript app can vendor a version-pinned "brain".
+
+### Setup
+
+Add an `.npmrc` to the consuming repo:
+
+```
+@weorbitant:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
+```
+
+`GITHUB_TOKEN` needs the `read:packages` scope.
+
+### Install
+
+```bash
+npm install @weorbitant/orbitant-marketing@^1.5.0   # one vertical
+npm install @weorbitant/orbitant-os                 # all verticals (meta-package)
+```
+
+`node_modules` + `package-lock.json` is the vendored, pinned copy. Update the
+brain by bumping the range and running `npm update`.
+
+### Use
+
+```ts
+import marketing from '@weorbitant/orbitant-marketing';
+
+// the whole vertical in one import — never skill-by-skill
+Object.values(marketing.skills).map((s) => s.content);
+marketing.skills['orbitant-tone'].content;   // one skill's instructions
+marketing.skills['orbitant-tone'].dir;        // absolute path for references/assets/scripts
+
+// meta-package: all verticals at once
+import brain from '@weorbitant/orbitant-os';
+brain.marketing; brain.operations; brain.engineering;
+```
+
+Each entry exposes `{ name, description, version, tags, content, frontmatter, dir }`
+for skills (and the analogous shape for agents/commands). Package versions track
+the vertical's `plugin.json`; publishing happens on the `orbitant-{vertical}-v{X.Y.Z}`
+release tag.
+
 ## Documentation
 
 Full documentation is available at **<https://weorbitant.github.io/orbitant-os>**
