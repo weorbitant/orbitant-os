@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { buildAll } from './build-npm-packages.ts';
 import { resolvePackageFromTag } from './lib/resolve-package-from-tag.ts';
-import { SCOPE, META } from './lib/npm-packages.config.ts';
+import { SCOPE, META, REGISTRY } from './lib/npm-packages.config.ts';
 
 export interface BuiltPackage {
   name: string;
@@ -37,10 +37,9 @@ export function preparePublish(
   return { pkgName: target.pkgName, version: target.version, dir: target.dir, pkg };
 }
 
-// Returns the pinned dependencies that are NOT yet available in the registry, per the injected
-// checker. Publishing the meta while any of these is missing creates a package that no consumer
-// can install, so callers must fail-closed on a non-empty result. Pure + checker-injected so it is
-// unit-testable without a live registry.
+// Returns the pinned dependencies that are NOT yet in the registry, per the injected checker.
+// Callers MUST fail-closed on a non-empty result: publishing the meta while any dep is missing
+// creates a package no consumer can install.
 export function missingDependencies(
   dependencies: Record<string, string>,
   isPublished: (name: string, version: string) => boolean,
@@ -52,7 +51,7 @@ export function missingDependencies(
 
 function isPublishedViaNpmView(name: string, version: string): boolean {
   try {
-    const out = execFileSync('npm', ['view', `${name}@${version}`, 'version'], {
+    const out = execFileSync('npm', ['view', `${name}@${version}`, 'version', '--registry', REGISTRY], {
       encoding: 'utf-8',
       stdio: ['ignore', 'pipe', 'ignore'],
     });
@@ -103,8 +102,7 @@ function main() {
   execFileSync('npm', ['publish'], { cwd: dir, stdio: 'inherit' });
 }
 
-// Only run when invoked directly (node scripts/publish-package.ts ...), not when a test imports it.
-// pathToFileURL handles paths with spaces/special chars and Windows drives that a raw file:// won't.
+// Run only when invoked directly, not when a test imports this module.
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   main();
 }
