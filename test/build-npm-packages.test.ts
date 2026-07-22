@@ -257,3 +257,15 @@ test('build throws (never silently drops a skill) when a SKILL.md has broken fro
     buildAll();
   }
 });
+
+test('build throws when an agent .md has broken frontmatter (completeness covers agents too)', () => {
+  const brokenAgent = path.join(ROOT, 'plugins/orbitant-operations/agents/__broken_frontmatter__.md');
+  fs.writeFileSync(brokenAgent, '---\nname: [unterminated flow sequence\n---\nrole\n');
+  try {
+    assert.throws(() => buildAll(), /agents\/\*\.md present but not parsed/);
+  } finally {
+    fs.rmSync(brokenAgent, { force: true });
+    fs.rmSync(DIST_DIR, { recursive: true, force: true });
+    buildAll();
+  }
+});

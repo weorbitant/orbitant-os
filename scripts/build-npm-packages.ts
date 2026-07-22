@@ -53,6 +53,23 @@ function assertPluginIntegrity(plugin: ParsedPlugin): void {
     }
   }
 
+  // 1b. Same silent-drop risk for agents/commands: an *.md whose frontmatter can't be parsed is
+  //     filtered to null upstream and would vanish from the package.
+  const mdGroups: Array<[string, Array<{ relPath: string }>]> = [
+    ['agents', plugin.agents],
+    ['commands', plugin.commands],
+  ];
+  for (const [dir, items] of mdGroups) {
+    const abs = path.join(PLUGINS_DIR, plugin.name, dir);
+    if (!fs.existsSync(abs)) continue;
+    const onDisk = fs.readdirSync(abs).filter((f) => f.endsWith('.md'));
+    const parsed = new Set(items.map((i) => path.posix.basename(i.relPath)));
+    const dropped = onDisk.filter((f) => !parsed.has(f));
+    if (dropped.length > 0) {
+      throw new Error(`${plugin.name}: ${dir}/*.md present but not parsed (broken frontmatter?): ${dropped.join(', ')}`);
+    }
+  }
+
   // 2. Names must be unique per vertical — the catalog is keyed by name, so a collision would
   //    silently drop an entry (last one wins) in the published package.
   const groups: Array<[string, Array<{ name: string }>]> = [
@@ -220,8 +237,7 @@ export function buildAll(): void {
   buildMeta(plugins);
 }
 
-// Executed directly (not imported by a test). pathToFileURL handles paths with spaces/special
-// characters and Windows drive letters, which a hand-built `file://` string does not.
+// Run only when invoked directly, not when a test imports this module.
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   buildAll();
 }
