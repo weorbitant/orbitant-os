@@ -37,3 +37,7 @@ plugins/orbitant-marketing/skills/image-creation/scripts/.env
 
 # npm package build output
 dist/
+
+# Transient fixtures written by the broken-frontmatter integrity tests (cleaned up in finally;
+# ignored so a mid-test crash cannot leave a committable orphan)
+__broken_frontmatter__*
