@@ -95,6 +95,15 @@ export function parsePlugin(pluginDir: string): ParsedPlugin | null {
 
   const pluginJson = JSON.parse(fs.readFileSync(pluginJsonPath, 'utf-8'));
   const name: string = pluginJson.name;
+
+  // The build and packaging reconstruct disk paths from `name` (copyPluginFiles,
+  // assertPluginIntegrity, readPluginJson), so the folder must equal the name. Enforce it here — the
+  // one place both are known — rather than let a mismatch ship a package with no content files.
+  const folder = path.basename(pluginDir);
+  if (folder !== name) {
+    throw new Error(`Plugin folder "${folder}" does not match its plugin.json name "${name}"; they must be identical.`);
+  }
+
   const vertical = name.replace(/^orbitant-/, '');
 
   const skills: ParsedSkill[] = [];

@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parsePlugin, parseAllPlugins } from '../scripts/lib/parse-plugin.ts';
@@ -47,4 +48,20 @@ test('parseAllPlugins returns all three verticals', () => {
   const all = parseAllPlugins(PLUGINS);
   const names = all.map((p) => p.name).sort();
   assert.deepEqual(names, ['orbitant-engineering', 'orbitant-marketing', 'orbitant-operations']);
+});
+
+test('parsePlugin throws when the folder name does not match plugin.json name', () => {
+  // build/packaging resolve disk paths from `name`; a folder/name mismatch would otherwise ship a
+  // package with no content files. The parser must reject it at the source.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'plugin-mismatch-'));
+  fs.mkdirSync(path.join(dir, '.claude-plugin'), { recursive: true });
+  fs.writeFileSync(
+    path.join(dir, '.claude-plugin', 'plugin.json'),
+    JSON.stringify({ name: 'orbitant-something-else', version: '1.0.0' }),
+  );
+  try {
+    assert.throws(() => parsePlugin(dir), /does not match its plugin\.json name/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
