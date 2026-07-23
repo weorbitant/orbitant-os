@@ -1,0 +1,44 @@
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - 'orbitant-*-v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to publish (e.g. orbitant-marketing-v1.5.0)'
+        required: true
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    name: Build and publish to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      # Intentionally NO `ref:` here. On push:tags the tag's own commit is already checked out;
+      # for workflow_dispatch we build from the default branch on purpose — some existing release
+      # tags predate this build tooling, so checking them out would leave scripts/ missing.
+      # The tag<->built-version guard in publish-package.ts covers version correctness.
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@weorbitant'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish package for tag
+        env:
+          # Pass the tag through the environment instead of interpolating ${{ }} directly into the
+          # run script — the GitHub-recommended way to avoid shell injection via a crafted ref name.
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node --import tsx scripts/publish-package.ts "$TAG"

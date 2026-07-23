@@ -138,6 +138,15 @@ When you create a GitHub release with tag `orbitant-{plugin}-v{X.Y.Z}`:
 5. On next website build, release appears as blog post
 6. **Manual step (org admin only)**: upload the plugin zip to <https://claude.ai/admin-settings/plugins> to propagate the new version internally.
 
+#### Publishing the npm packages
+
+Each vertical is also published as a private npm package under `@weorbitant` on GitHub Packages (see `.github/workflows/publish-packages.yml`).
+
+- Pushing a release tag `orbitant-{vertical}-v{X.Y.Z}` also triggers the npm publish for that vertical.
+- The meta-package `@weorbitant/orbitant-os` carries its own version in `scripts/lib/meta-package.json` — bump it there and tag `orbitant-os-v{X.Y.Z}`.
+- **Publish order:** publish the three vertical packages before the meta. The meta pins them at exact versions, and its publish step refuses to run until they exist in the registry.
+- To publish an already-tagged version (e.g. a backfill, since the tag exists from a prior marketplace release), run the workflow manually — no new tag needed: `gh workflow run publish-packages.yml -f tag=orbitant-{vertical}-v{X.Y.Z}` (builds from `main`).
+
 #### Tag Filtering
 
 Blog supports filtering by tags via URL: `/blog/?tag=release`

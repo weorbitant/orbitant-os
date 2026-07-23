@@ -22,14 +22,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint Markdown
-        run: npm run lint
+      - name: Lint & validate
+        run: npm run lint && npm run validate
 
-      - name: Validate marketplace.json
-        run: npm run validate:marketplace
+      - name: Test
+        run: npm run test
 
-      - name: Validate plugin.json files
-        run: npm run validate:plugins
+      - name: Build packages
+        run: npm run build:packages
 
-      - name: Validate SKILL.md frontmatter
-        run: npm run validate:skills
+      # The website parses plugins through the same shared module (scripts/lib/parse-plugin.ts);
+      # run its parse step so a change that breaks the website adapter surfaces on the PR, not at deploy.
+      - name: Website parse
+        run: npm run website:parse
