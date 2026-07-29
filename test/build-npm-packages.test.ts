@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
-import { buildAll } from '../scripts/build-npm-packages.ts';
+import { buildAll, shipsVerbatim } from '../scripts/build-npm-packages.ts';
 import { DIST_DIR, SCOPE } from '../scripts/lib/npm-packages.config.ts';
 
 const VERTICALS = ['marketing', 'operations', 'engineering'];
@@ -237,9 +237,58 @@ test('npm pack --dry-run ships dist/manifest/skills/package.json and excludes ju
   assert.ok(files.includes('dist/index.js'), 'ships the entry point');
   assert.ok(files.includes('manifest.json'), 'ships the manifest');
   assert.ok(files.includes('package.json'), 'ships package.json');
+  assert.ok(files.includes('README.md'), 'ships the README the registry renders on the package page');
   assert.ok(files.some((f) => f.startsWith('skills/')), 'ships skill content');
   assert.ok(!files.some((f) => f.includes('node_modules')), 'never ships node_modules');
   assert.ok(!files.some((f) => f.endsWith('.env')), 'never ships a .env');
+});
+
+test('every staged package leads with a README titled after itself', () => {
+  for (const name of [...VERTICALS.map((v) => `orbitant-${v}`), 'orbitant-os']) {
+    const readme = fs.readFileSync(path.join(pkgDir(name), 'README.md'), 'utf-8');
+    assert.equal(readme.split('\n')[0], `# ${SCOPE}/${name}`);
+  }
+});
+
+test('the marketing README states the version from plugin.json', () => {
+  const readme = fs.readFileSync(path.join(pkgDir('orbitant-marketing'), 'README.md'), 'utf-8');
+  assert.ok(readme.includes(`**v${pluginVersion('marketing')}**`), 'a bump must reach the page, not just package.json');
+});
+
+// The manifest is verified against the skills on disk by the test above, so matching the Keys
+// section to the manifest transitively pins it to disk.
+test('the README Keys section lists exactly the shipped skills', () => {
+  const dir = pkgDir('orbitant-marketing');
+  const manifest = JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'), 'utf-8'));
+  const readme = fs.readFileSync(path.join(dir, 'README.md'), 'utf-8');
+
+  const line = readme.split('\n').find((l) => l.startsWith('- **skills** —'));
+  assert.ok(line, 'a skills line must be present');
+  const listed = [...line!.matchAll(/`([^`]+)`/g)].map((m) => m[1]);
+  assert.deepEqual(listed, manifest.skills.map((s: { name: string }) => s.name));
+});
+
+// The generated README is written after the verbatim copy, so it wins on order alone. shipsVerbatim
+// is what makes that independent of order — assert it directly, or the guard is untestable.
+test('a plugin root README is excluded from the verbatim copy, a skill README is not', () => {
+  assert.equal(shipsVerbatim('README.md'), false);
+  assert.equal(shipsVerbatim('skills/image-creation/README.md'), true);
+});
+
+test("the staged operations README is the generated one, not the plugin's own doc", () => {
+  const handWritten = path.join(ROOT, 'plugins/orbitant-operations/README.md');
+  assert.ok(fs.existsSync(handWritten), 'precondition: operations still documents itself in-repo');
+
+  const staged = fs.readFileSync(path.join(pkgDir('orbitant-operations'), 'README.md'), 'utf-8');
+  assert.notEqual(staged.split('\n')[0], fs.readFileSync(handWritten, 'utf-8').split('\n')[0]);
+  assert.ok(!staged.includes('/plugin install'), 'the package README documents importing, not installing a plugin');
+});
+
+test('the meta README tabulates every vertical it pins', () => {
+  const readme = fs.readFileSync(path.join(pkgDir('orbitant-os'), 'README.md'), 'utf-8');
+  for (const v of VERTICALS) {
+    assert.ok(readme.includes(`| \`${v}\` | \`${SCOPE}/orbitant-${v}\` | ${pluginVersion(v)} |`), `${v} must be listed with its pinned version`);
+  }
 });
 
 test('build throws (never silently drops a skill) when a SKILL.md has broken frontmatter', () => {

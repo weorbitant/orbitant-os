@@ -3,6 +3,7 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { parseAllPlugins, type ParsedPlugin } from './lib/parse-plugin.ts';
+import { renderVerticalReadme, renderMetaReadme } from './lib/render-readme.ts';
 import { ROOT, PLUGINS_DIR, DIST_DIR, SCOPE, REGISTRY, META } from './lib/npm-packages.config.ts';
 
 const TEMPLATES = path.join(ROOT, 'scripts/templates/npm');
@@ -20,10 +21,19 @@ function listPluginFiles(pluginFolder: string): string[] {
   return out.split('\0').filter(Boolean);
 }
 
+// A plugin's root README documents installing it into Claude Code, so it is the wrong page for an
+// npm consumer, and it targets the exact path the generated README writes. Excluding it keeps that
+// outcome independent of the order of the two writes. A README deeper in the tree (a skill's own)
+// still ships: it is part of that skill's content.
+export function shipsVerbatim(relWithinPlugin: string): boolean {
+  return relWithinPlugin !== 'README.md';
+}
+
 function copyPluginFiles(pluginFolder: string, destDir: string): void {
   const pluginRelDir = path.posix.join('plugins', pluginFolder);
   for (const relFile of listPluginFiles(pluginFolder)) {
     const relWithinPlugin = path.posix.relative(pluginRelDir, relFile);
+    if (!shipsVerbatim(relWithinPlugin)) continue;
     const from = path.join(ROOT, ...relFile.split('/'));
     const to = path.join(destDir, ...relWithinPlugin.split('/'));
     fs.mkdirSync(path.dirname(to), { recursive: true });
@@ -131,6 +141,9 @@ function buildVertical(plugin: ParsedPlugin): void {
   };
   fs.writeFileSync(path.join(pkgDir, 'package.json'), JSON.stringify(pkgJson, null, 2));
 
+  // 5. README.md — what the registry shows on the package page.
+  fs.writeFileSync(path.join(pkgDir, 'README.md'), renderVerticalReadme(plugin));
+
   console.log(`  - ${pkgName}@${plugin.version} (${plugin.skills.length} skills, ${plugin.agents.length} agents, ${plugin.commands.length} commands)`);
 }
 
@@ -227,6 +240,7 @@ function buildMeta(plugins: ParsedPlugin[]): void {
     publishConfig: { registry: REGISTRY },
   };
   fs.writeFileSync(path.join(pkgDir, 'package.json'), JSON.stringify(pkgJson, null, 2));
+  fs.writeFileSync(path.join(pkgDir, 'README.md'), renderMetaReadme(plugins, META));
 
   console.log(`  - ${pkgName}@${META.version} (meta → ${plugins.map((p) => p.vertical).join(', ')})`);
 }
