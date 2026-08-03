@@ -12,11 +12,11 @@ on:
 
 permissions:
   contents: read
-  packages: write
+  id-token: write # OIDC token for npm provenance
 
 jobs:
   publish:
-    name: Build and publish to GitHub Packages
+    name: Build and publish to npm
     runs-on: ubuntu-latest
     steps:
       # Intentionally NO `ref:` here. On push:tags the tag's own commit is already checked out;
@@ -29,8 +29,8 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@weorbitant'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@orbitant'
 
       - name: Install dependencies
         run: npm ci
@@ -40,5 +40,9 @@ jobs:
           # Pass the tag through the environment instead of interpolating ${{ }} directly into the
           # run script — the GitHub-recommended way to avoid shell injection via a crafted ref name.
           TAG: ${{ github.event.inputs.tag || github.ref_name }}
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Signed build attestation on npmjs.com, linking the published tarball to this workflow
+          # run and commit. Set here rather than as a `npm publish --provenance` flag so a local
+          # run of the same script — where there is no OIDC token — does not fail.
+          NPM_CONFIG_PROVENANCE: true
         run: node --import tsx scripts/publish-package.ts "$TAG"

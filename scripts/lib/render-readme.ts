@@ -1,8 +1,7 @@
 import type { ParsedPlugin } from './parse-plugin.ts';
-import { SCOPE, REGISTRY } from './npm-packages.config.ts';
+import { SCOPE, npmName } from './npm-packages.config.ts';
 
 const MARKETPLACE = 'weorbitant/orbitant-os';
-const AUTH_HOST = REGISTRY.replace(/^https:/, '');
 
 function plural(count: number, noun: string): string {
   return `${count} ${noun}${count === 1 ? '' : 's'}`;
@@ -12,22 +11,11 @@ function installSection(pkgName: string): string[] {
   return [
     '## Install',
     '',
-    'Hosted on GitHub Packages, whose npm registry asks for a credential even though this package is public.',
-    '',
-    '```ini',
-    '# .npmrc — commit the scope mapping, never the token',
-    `${SCOPE}:registry=${REGISTRY}`,
-    '',
-    '# ~/.npmrc, or a build secret',
-    `${AUTH_HOST}/:_authToken=<classic PAT with read:packages>`,
-    '```',
-    '',
     '```bash',
     `npm install ${pkgName}`,
     '```',
     '',
-    'Only a **classic** personal access token works: fine-grained tokens and GitHub App installation',
-    "tokens are refused, and Actions' `GITHUB_TOKEN` works only inside a workflow.",
+    'Public on npm: no `.npmrc`, no registry mapping and no token.',
   ];
 }
 
@@ -44,7 +32,7 @@ function keysSection(plugin: ParsedPlugin): string[] {
 }
 
 export function renderVerticalReadme(plugin: ParsedPlugin): string {
-  const pkgName = `${SCOPE}/${plugin.name}`;
+  const pkgName = `${SCOPE}/${npmName(plugin.name)}`;
   const alias = plugin.vertical;
   const sampleSkill = plugin.skills[0]?.name;
   const hasPaths = plugin.agents.length > 0 || plugin.commands.length > 0;
@@ -107,7 +95,7 @@ export function renderVerticalReadme(plugin: ParsedPlugin): string {
 }
 
 export function renderMetaReadme(plugins: ParsedPlugin[], meta: { name: string; version: string }): string {
-  const pkgName = `${SCOPE}/${meta.name}`;
+  const pkgName = `${SCOPE}/${npmName(meta.name)}`;
   const sample = plugins.find((p) => p.skills.length > 0);
 
   const usage = [`import brain from '${pkgName}';`, ''];
@@ -123,7 +111,7 @@ export function renderMetaReadme(plugins: ParsedPlugin[], meta: { name: string; 
     '| Vertical | Package | Version | Subpath |',
     '| --- | --- | --- | --- |',
     ...plugins.map(
-      (p) => `| \`${p.vertical}\` | \`${SCOPE}/${p.name}\` | ${p.version} | \`${pkgName}/${p.vertical}\` |`,
+      (p) => `| \`${p.vertical}\` | \`${SCOPE}/${npmName(p.name)}\` | ${p.version} | \`${pkgName}/${p.vertical}\` |`,
     ),
   ];
 

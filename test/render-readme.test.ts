@@ -65,15 +65,15 @@ test('the API table documents `path` only when agents or commands ship', () => {
 
 test('usage imports the real package name and indexes a real skill key', () => {
   const readme = renderVerticalReadme(plugin());
-  assert.match(readme, /^import marketing from '@weorbitant\/orbitant-marketing';$/m);
+  assert.match(readme, /^import marketing from '@orbitant\/brain-marketing';$/m);
   assert.match(readme, /^const skill = marketing\.skills\['orbitant-tone'\];$/m);
 });
 
-test('install documents the scope mapping and the classic-PAT constraint', () => {
+test('install is a plain public npm install, with no registry or token setup', () => {
   const readme = renderVerticalReadme(plugin());
-  assert.match(readme, /^@weorbitant:registry=https:\/\/npm\.pkg\.github\.com$/m);
-  assert.match(readme, /^\/\/npm\.pkg\.github\.com\/:_authToken=/m);
-  assert.ok(readme.includes('**classic** personal access token'));
+  assert.match(readme, /^npm install @orbitant\/brain-marketing$/m);
+  assert.ok(!readme.includes('_authToken'), 'a public package needs no token');
+  assert.ok(!readme.includes('registry='), 'a public package needs no scope-to-registry mapping');
 });
 
 test('meta README tabulates every vertical with its pinned version and subpath', () => {
@@ -84,7 +84,7 @@ test('meta README tabulates every vertical with its pinned version and subpath',
   const readme = renderMetaReadme(plugins, { name: 'orbitant-os', version: '4.5.6' });
 
   assert.match(readme, /^\*\*v4\.5\.6\*\* · 2 verticals$/m);
-  assert.match(readme, /^\| `marketing` \| `@weorbitant\/orbitant-marketing` \| 9\.9\.9 \| `@weorbitant\/orbitant-os\/marketing` \|$/m);
-  assert.match(readme, /^\| `operations` \| `@weorbitant\/orbitant-operations` \| 1\.2\.3 \| `@weorbitant\/orbitant-os\/operations` \|$/m);
-  assert.match(readme, /^import marketing from '@weorbitant\/orbitant-os\/marketing';$/m);
+  assert.match(readme, /^\| `marketing` \| `@orbitant\/brain-marketing` \| 9\.9\.9 \| `@orbitant\/brain\/marketing` \|$/m);
+  assert.match(readme, /^\| `operations` \| `@orbitant\/brain-operations` \| 1\.2\.3 \| `@orbitant\/brain\/operations` \|$/m);
+  assert.match(readme, /^import marketing from '@orbitant\/brain\/marketing';$/m);
 });

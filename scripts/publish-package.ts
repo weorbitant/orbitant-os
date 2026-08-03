@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { buildAll } from './build-npm-packages.ts';
 import { resolvePackageFromTag } from './lib/resolve-package-from-tag.ts';
-import { SCOPE, META, REGISTRY } from './lib/npm-packages.config.ts';
+import { SCOPE, META, REGISTRY, npmName } from './lib/npm-packages.config.ts';
 
 export interface BuiltPackage {
   name: string;
@@ -90,7 +90,7 @@ function main() {
 
   // Meta preflight: its pinned vertical deps must already exist in the registry, or the published
   // meta is uninstallable for everyone. Fail-closed — publish the vertical packages first.
-  if (pkg.name === `${SCOPE}/${META.name}` && pkg.dependencies) {
+  if (pkg.name === `${SCOPE}/${npmName(META.name)}` && pkg.dependencies) {
     const missing = missingDependencies(pkg.dependencies, isPublishedViaNpmView);
     if (missing.length > 0) {
       console.error(`Refusing to publish ${pkg.name}: dependencies not yet in the registry: ${missing.join(', ')}. Publish the vertical packages first.`);

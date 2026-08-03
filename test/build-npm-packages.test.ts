@@ -5,9 +5,18 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { buildAll, shipsVerbatim } from '../scripts/build-npm-packages.ts';
-import { DIST_DIR, SCOPE } from '../scripts/lib/npm-packages.config.ts';
+import { DIST_DIR, SCOPE, npmName } from '../scripts/lib/npm-packages.config.ts';
 
 const VERTICALS = ['marketing', 'operations', 'engineering'];
+
+// Source name (plugin folder, plugin.json, git tag) -> published npm name. Spelled out as
+// literals so a change to the naming rule has to be made here on purpose.
+const PACKAGES: Array<[source: string, published: string]> = [
+  ['orbitant-marketing', 'brain-marketing'],
+  ['orbitant-operations', 'brain-operations'],
+  ['orbitant-engineering', 'brain-engineering'],
+  ['orbitant-os', 'brain'],
+];
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -16,8 +25,10 @@ before(() => {
   buildAll();
 });
 
-function pkgDir(name: string): string {
-  return path.join(DIST_DIR, SCOPE, name);
+// Staged dirs are keyed by the PUBLISHED name (brain-marketing); everything else in the repo is
+// keyed by the source name (orbitant-marketing), so take the source name and translate.
+function pkgDir(sourceName: string): string {
+  return path.join(DIST_DIR, SCOPE, npmName(sourceName));
 }
 
 // Read a vertical's version from its own plugin.json (the single source of truth) instead of
@@ -29,7 +40,7 @@ function pluginVersion(vertical: string): string {
 }
 
 // Symlinks every vertical package into the meta package's own node_modules, so the meta's
-// generated dist/index.js and dist/index.d.ts can resolve their bare `@weorbitant/orbitant-*`
+// generated dist/index.js and dist/index.d.ts can resolve their bare `@orbitant/brain-*`
 // specifiers both at runtime (Node) and at type-check time (tsc). Idempotent — safe to call
 // from multiple tests regardless of execution order.
 function linkVerticalsIntoMeta(): void {
@@ -38,7 +49,7 @@ function linkVerticalsIntoMeta(): void {
   fs.mkdirSync(scopeNodeModules, { recursive: true });
 
   for (const v of VERTICALS) {
-    const linkPath = path.join(scopeNodeModules, `orbitant-${v}`);
+    const linkPath = path.join(scopeNodeModules, `brain-${v}`);
     const target = pkgDir(`orbitant-${v}`);
     fs.rmSync(linkPath, { force: true }); // idempotent: drop any stale link from a prior run first
     fs.symlinkSync(target, linkPath, 'dir');
@@ -47,10 +58,12 @@ function linkVerticalsIntoMeta(): void {
 
 test('marketing package.json has version from plugin.json', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir('orbitant-marketing'), 'package.json'), 'utf-8'));
-  assert.equal(pkg.name, '@weorbitant/orbitant-marketing');
+  assert.equal(pkg.name, '@orbitant/brain-marketing');
   assert.equal(pkg.version, pluginVersion('marketing'));
   assert.equal(pkg.type, 'module');
-  assert.equal(pkg.publishConfig.registry, 'https://npm.pkg.github.com');
+  assert.equal(pkg.publishConfig.registry, 'https://registry.npmjs.org');
+  // Without this npm defaults a scoped package to restricted and the publish is rejected.
+  assert.equal(pkg.publishConfig.access, 'public');
   assert.equal(pkg.exports['.'].import, './dist/index.js');
   assert.equal(pkg.exports['.'].types, './dist/index.d.ts');
 });
@@ -133,17 +146,18 @@ test('generated index type-checks against a consumer smoke file', () => {
 
 test('meta package pins exact vertical versions and declares subpaths', () => {
   const pkg = JSON.parse(fs.readFileSync(path.join(pkgDir('orbitant-os'), 'package.json'), 'utf-8'));
-  assert.equal(pkg.name, '@weorbitant/orbitant-os');
-  assert.equal(pkg.dependencies['@weorbitant/orbitant-marketing'], pluginVersion('marketing'));
-  assert.equal(pkg.dependencies['@weorbitant/orbitant-operations'], pluginVersion('operations'));
-  assert.equal(pkg.dependencies['@weorbitant/orbitant-engineering'], pluginVersion('engineering'));
+  assert.equal(pkg.name, '@orbitant/brain');
+  assert.equal(pkg.publishConfig.access, 'public');
+  assert.equal(pkg.dependencies['@orbitant/brain-marketing'], pluginVersion('marketing'));
+  assert.equal(pkg.dependencies['@orbitant/brain-operations'], pluginVersion('operations'));
+  assert.equal(pkg.dependencies['@orbitant/brain-engineering'], pluginVersion('engineering'));
   assert.equal(pkg.exports['./marketing'].import, './dist/marketing.js');
   assert.equal(pkg.exports['.'].import, './dist/index.js');
 });
 
 test('meta package emits a re-export module per vertical (exact content)', () => {
   for (const v of VERTICALS) {
-    const dep = `${SCOPE}/orbitant-${v}`;
+    const dep = `${SCOPE}/brain-${v}`;
     const expected = `export * from '${dep}';\nexport { default } from '${dep}';\n`;
     const js = fs.readFileSync(path.join(pkgDir('orbitant-os'), 'dist', `${v}.js`), 'utf-8');
     const dts = fs.readFileSync(path.join(pkgDir('orbitant-os'), 'dist', `${v}.d.ts`), 'utf-8');
@@ -156,7 +170,7 @@ test('meta aggregate index.js declares exports, imports, and the brain object fo
   const js = fs.readFileSync(path.join(pkgDir('orbitant-os'), 'dist', 'index.js'), 'utf-8');
 
   for (const v of VERTICALS) {
-    const dep = `${SCOPE}/orbitant-${v}`;
+    const dep = `${SCOPE}/brain-${v}`;
     assert.match(js, new RegExp(`^export \\{ default as ${v} \\} from '${dep}';$`, 'm'));
     assert.match(js, new RegExp(`^import ${v} from '${dep}';$`, 'm'));
   }
@@ -173,14 +187,14 @@ test('meta aggregate index.js declares exports, imports, and the brain object fo
 });
 
 test('meta aggregate index.d.ts mirrors index.js: value re-exports and value imports, never import-only types', () => {
-  // A named import like `import { marketing } from '@weorbitant/orbitant-os'` is a VALUE use
+  // A named import like `import { marketing } from '@orbitant/brain'` is a VALUE use
   // (documented in the consumer docs). If the generated types re-export it via `import type`,
   // that named import becomes type-only and TS1361s at any real usage site — see the
   // `generated meta index.d.ts type-checks as a value import` test below for the end-to-end guard.
   const dts = fs.readFileSync(path.join(pkgDir('orbitant-os'), 'dist', 'index.d.ts'), 'utf-8');
 
   for (const v of VERTICALS) {
-    const dep = `${SCOPE}/orbitant-${v}`;
+    const dep = `${SCOPE}/brain-${v}`;
     assert.match(dts, new RegExp(`^export \\{ default as ${v} \\} from '${dep}';$`, 'm'), `${v} must be re-exported as a value, not a type`);
     assert.match(dts, new RegExp(`^import ${v} from '${dep}';$`, 'm'), `${v} must be a value import for the \`typeof\` in the brain shape`);
     assert.match(dts, new RegExp(`^\\s*${v}: typeof ${v};$`, 'm'));
@@ -193,13 +207,13 @@ test('meta aggregate index.d.ts mirrors index.js: value re-exports and value imp
 });
 
 test('generated meta index.d.ts type-checks as a value import (guards TS1361)', () => {
-  linkVerticalsIntoMeta(); // so the meta's own '@weorbitant/orbitant-*' specifiers resolve
+  linkVerticalsIntoMeta(); // so the meta's own '@orbitant/brain-*' specifiers resolve
 
-  // Make '@weorbitant/orbitant-os' itself resolvable from the fixture: a symlink under a
+  // Make '@orbitant/brain' itself resolvable from the fixture: a symlink under a
   // node_modules next to the fixture, mirroring how a real consumer would have it installed.
   const fixtureNodeModules = path.join(ROOT, 'test/fixtures/node_modules', SCOPE);
   fs.mkdirSync(fixtureNodeModules, { recursive: true });
-  const metaLinkPath = path.join(fixtureNodeModules, 'orbitant-os');
+  const metaLinkPath = path.join(fixtureNodeModules, 'brain');
   fs.rmSync(metaLinkPath, { force: true });
   fs.symlinkSync(pkgDir('orbitant-os'), metaLinkPath, 'dir');
 
@@ -244,9 +258,9 @@ test('npm pack --dry-run ships dist/manifest/skills/package.json and excludes ju
 });
 
 test('every staged package leads with a README titled after itself', () => {
-  for (const name of [...VERTICALS.map((v) => `orbitant-${v}`), 'orbitant-os']) {
-    const readme = fs.readFileSync(path.join(pkgDir(name), 'README.md'), 'utf-8');
-    assert.equal(readme.split('\n')[0], `# ${SCOPE}/${name}`);
+  for (const [source, published] of PACKAGES) {
+    const readme = fs.readFileSync(path.join(pkgDir(source), 'README.md'), 'utf-8');
+    assert.equal(readme.split('\n')[0], `# ${SCOPE}/${published}`);
   }
 });
 
@@ -287,7 +301,7 @@ test("the staged operations README is the generated one, not the plugin's own do
 test('the meta README tabulates every vertical it pins', () => {
   const readme = fs.readFileSync(path.join(pkgDir('orbitant-os'), 'README.md'), 'utf-8');
   for (const v of VERTICALS) {
-    assert.ok(readme.includes(`| \`${v}\` | \`${SCOPE}/orbitant-${v}\` | ${pluginVersion(v)} |`), `${v} must be listed with its pinned version`);
+    assert.ok(readme.includes(`| \`${v}\` | \`${SCOPE}/brain-${v}\` | ${pluginVersion(v)} |`), `${v} must be listed with its pinned version`);
   }
 });
 

@@ -4,14 +4,14 @@ import { resolvePackageFromTag } from '../scripts/lib/resolve-package-from-tag.t
 
 test('resolves a vertical tag', () => {
   const r = resolvePackageFromTag('orbitant-marketing-v1.5.0');
-  assert.equal(r?.pkgName, '@weorbitant/orbitant-marketing');
+  assert.equal(r?.pkgName, '@orbitant/brain-marketing');
   assert.equal(r?.version, '1.5.0');
-  assert.ok(r?.dir.endsWith('/@weorbitant/orbitant-marketing'));
+  assert.ok(r?.dir.endsWith('/@orbitant/brain-marketing'));
 });
 
 test('resolves the meta tag', () => {
   const r = resolvePackageFromTag('orbitant-os-v1.0.0');
-  assert.equal(r?.pkgName, '@weorbitant/orbitant-os');
+  assert.equal(r?.pkgName, '@orbitant/brain');
   assert.equal(r?.version, '1.0.0');
 });
 

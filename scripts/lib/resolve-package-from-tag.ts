@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { SCOPE, DIST_DIR } from './npm-packages.config.ts';
+import { SCOPE, DIST_DIR, npmName } from './npm-packages.config.ts';
 
 // Matches orbitant-<name>-v<semver>, e.g. orbitant-marketing-v1.5.0 or orbitant-os-v1.0.0
 const TAG_RE = /^(orbitant-[a-z-]+)-v(\d+\.\d+\.\d+)$/;
@@ -9,8 +9,8 @@ export function resolvePackageFromTag(tag: string): { pkgName: string; version: 
   if (!match) return null;
   const [, name, version] = match;
   return {
-    pkgName: `${SCOPE}/${name}`,
+    pkgName: `${SCOPE}/${npmName(name)}`,
     version,
-    dir: path.join(DIST_DIR, SCOPE, name),
+    dir: path.join(DIST_DIR, SCOPE, npmName(name)),
   };
 }
