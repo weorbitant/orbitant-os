@@ -25,11 +25,8 @@ jobs:
       # The tag<->built-version guard in publish-package.ts covers version correctness.
       - uses: actions/checkout@v4
 
-      # Node 24 for its bundled npm 11: trusted publishing needs npm >= 11.5.1 and Node >= 22.14.
-      # Deliberately NO `registry-url` / `scope`: those make setup-node write an .npmrc with an
-      # `_authToken=${NODE_AUTH_TOKEN}` line, and a configured (here, empty) credential is exactly
-      # what stops npm from falling back to the OIDC exchange. The registry each package goes to
-      # is pinned in its own generated package.json `publishConfig`.
+      # Node 24 for its bundled npm 11 (OIDC needs npm >= 11.5.1). No `registry-url` / `scope`:
+      # they write an .npmrc whose `_authToken` line suppresses the OIDC exchange.
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -38,19 +35,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # No npm token anywhere: npm authenticates by exchanging the workflow's OIDC token, so the
-      # package must have this repo and this workflow filename registered as a trusted publisher
-      # on npmjs.com before its first CI publish. A package that has never been published cannot
-      # be configured there, so version one of each package is published by hand from a laptop.
+      # Auth is the OIDC exchange, so each package needs this repo and workflow registered as its
+      # trusted publisher on npmjs.com. See CLAUDE.md for bootstrapping a brand new package.
       - name: Publish package for tag
         env:
           # Pass the tag through the environment instead of interpolating ${{ }} directly into the
           # run script — the GitHub-recommended way to avoid shell injection via a crafted ref name.
           TAG: ${{ github.event.inputs.tag || github.ref_name }}
-          # Signed build attestation on npmjs.com, linking the published tarball to this workflow
-          # run and commit. Trusted publishing is documented as generating it on its own, but that
-          # has proven unreliable, so ask for it explicitly. Set as config rather than as a
-          # `npm publish --provenance` flag so a local run of the same script, where there is no
-          # OIDC token to attest with, does not fail.
+          # Config, not a `--provenance` flag, so the same script still runs locally without OIDC.
           NPM_CONFIG_PROVENANCE: true
         run: node --import tsx scripts/publish-package.ts "$TAG"

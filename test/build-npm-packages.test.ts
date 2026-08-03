@@ -9,8 +9,7 @@ import { DIST_DIR, SCOPE, npmName } from '../scripts/lib/npm-packages.config.ts'
 
 const VERTICALS = ['marketing', 'operations', 'engineering'];
 
-// Source name (plugin folder, plugin.json, git tag) -> published npm name. Spelled out as
-// literals so a change to the naming rule has to be made here on purpose.
+// Literals, so a change to the naming rule has to be made here on purpose.
 const PACKAGES: Array<[source: string, published: string]> = [
   ['orbitant-marketing', 'brain-marketing'],
   ['orbitant-operations', 'brain-operations'],
@@ -25,8 +24,7 @@ before(() => {
   buildAll();
 });
 
-// Staged dirs are keyed by the PUBLISHED name (brain-marketing); everything else in the repo is
-// keyed by the source name (orbitant-marketing), so take the source name and translate.
+// Staged dirs are keyed by the published name; callers pass the source name.
 function pkgDir(sourceName: string): string {
   return path.join(DIST_DIR, SCOPE, npmName(sourceName));
 }
@@ -62,7 +60,6 @@ test('marketing package.json has version from plugin.json', () => {
   assert.equal(pkg.version, pluginVersion('marketing'));
   assert.equal(pkg.type, 'module');
   assert.equal(pkg.publishConfig.registry, 'https://registry.npmjs.org');
-  // Without this npm defaults a scoped package to restricted and the publish is rejected.
   assert.equal(pkg.publishConfig.access, 'public');
   assert.equal(pkg.exports['.'].import, './dist/index.js');
   assert.equal(pkg.exports['.'].types, './dist/index.d.ts');

@@ -15,10 +15,7 @@ export const META: { name: string; version: string } = JSON.parse(
   fs.readFileSync(new URL('./meta-package.json', import.meta.url), 'utf-8'),
 );
 
-// Git tags, plugin folders and plugin.json all carry the `orbitant-` prefix. On npm the scope
-// already says "orbitant", so the published name drops it and says what the package IS instead —
-// a brain, the same word the docs and the aggregate default export already use:
-// orbitant-marketing -> brain-marketing, and the meta orbitant-os -> brain.
+// Source name -> published name: orbitant-marketing -> brain-marketing, orbitant-os -> brain.
 export function npmName(sourceName: string): string {
   const short = sourceName.replace(/^orbitant-/, '');
   return short === 'os' ? 'brain' : `brain-${short}`;

@@ -137,8 +137,7 @@ function buildVertical(plugin: ParsedPlugin): void {
     author: source.author ?? { name: 'Orbitant' },
     license: source.license ?? 'MIT',
     repository: { type: 'git', url: 'https://github.com/weorbitant/orbitant-os.git' },
-    // `access: public` is mandatory, not decorative: npm defaults scoped packages to restricted,
-    // and a restricted publish is rejected outright on a free org.
+    // Without `access`, npm defaults a scoped package to restricted and rejects the publish.
     publishConfig: { registry: REGISTRY, access: 'public' },
   };
   fs.writeFileSync(path.join(pkgDir, 'package.json'), JSON.stringify(pkgJson, null, 2));
