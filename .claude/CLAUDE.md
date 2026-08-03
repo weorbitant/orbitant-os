@@ -140,12 +140,21 @@ When you create a GitHub release with tag `orbitant-{plugin}-v{X.Y.Z}`:
 
 #### Publishing the npm packages
 
-Each vertical is also published as a private npm package under `@weorbitant` on GitHub Packages (see `.github/workflows/publish-packages.yml`).
+Each vertical is also published as a public npm package under `@orbitant` on npmjs.com (see `.github/workflows/publish-packages.yml`).
 
+- **Naming:** git tags and plugin folders keep the `orbitant-` prefix; the published package drops it and becomes a brain — `orbitant-marketing` -> `@orbitant/brain-marketing`, and the meta `orbitant-os` -> `@orbitant/brain`. The rule lives in `npmName()` in `scripts/lib/npm-packages.config.ts`.
 - Pushing a release tag `orbitant-{vertical}-v{X.Y.Z}` also triggers the npm publish for that vertical.
-- The meta-package `@weorbitant/orbitant-os` carries its own version in `scripts/lib/meta-package.json` — bump it there and tag `orbitant-os-v{X.Y.Z}`.
+- The meta-package `@orbitant/brain` carries its own version in `scripts/lib/meta-package.json` — bump it there and tag `orbitant-os-v{X.Y.Z}`.
 - **Publish order:** publish the three vertical packages before the meta. The meta pins them at exact versions, and its publish step refuses to run until they exist in the registry.
 - To publish an already-tagged version (e.g. a backfill, since the tag exists from a prior marketplace release), run the workflow manually — no new tag needed: `gh workflow run publish-packages.yml -f tag=orbitant-{vertical}-v{X.Y.Z}` (builds from `main`).
+- **Auth is trusted publishing (OIDC), not a token.** There is no npm credential in the repo: the workflow exchanges its GitHub OIDC token, which is why it declares `id-token: write`.
+- **Bootstrapping a package that has never been published:** npmjs only lets you configure a trusted publisher for a package that already exists, so version one goes out by hand. Log in with `npm login` (2FA prompts as usual) and run the same script CI runs, which builds, checks the tag against the built version and applies the meta preflight:
+
+  ```bash
+  node --import tsx scripts/publish-package.ts orbitant-{vertical}-v{X.Y.Z}
+  ```
+
+  Then, on npmjs, register `weorbitant/orbitant-os` and the `publish-packages.yml` workflow as the package's trusted publisher. From that point on the tag push publishes it. A package without that configuration fails in CI, so do this once per package.
 
 #### Tag Filtering
 

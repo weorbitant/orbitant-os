@@ -1,4 +1,4 @@
-import marketing, { skills, agents, commands, meta } from '../../dist/npm/@weorbitant/orbitant-marketing/dist/index.js';
+import marketing, { skills, agents, commands, meta } from '../../dist/npm/@orbitant/brain-marketing/dist/index.js';
 
 const _tone: string = skills['orbitant-tone'].content;
 const _dir: string = skills['orbitant-tone'].dir;

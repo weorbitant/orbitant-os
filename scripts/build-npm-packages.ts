@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { parseAllPlugins, type ParsedPlugin } from './lib/parse-plugin.ts';
 import { renderVerticalReadme, renderMetaReadme } from './lib/render-readme.ts';
-import { ROOT, PLUGINS_DIR, DIST_DIR, SCOPE, REGISTRY, META } from './lib/npm-packages.config.ts';
+import { ROOT, PLUGINS_DIR, DIST_DIR, SCOPE, REGISTRY, META, npmName } from './lib/npm-packages.config.ts';
 
 const TEMPLATES = path.join(ROOT, 'scripts/templates/npm');
 
@@ -100,8 +100,8 @@ function assertPluginIntegrity(plugin: ParsedPlugin): void {
 
 function buildVertical(plugin: ParsedPlugin): void {
   assertPluginIntegrity(plugin);
-  const pkgName = `${SCOPE}/${plugin.name}`;
-  const pkgDir = path.join(DIST_DIR, SCOPE, plugin.name);
+  const pkgName = `${SCOPE}/${npmName(plugin.name)}`;
+  const pkgDir = path.join(DIST_DIR, SCOPE, npmName(plugin.name));
   fs.rmSync(pkgDir, { recursive: true, force: true });
   fs.mkdirSync(path.join(pkgDir, 'dist'), { recursive: true });
 
@@ -137,7 +137,8 @@ function buildVertical(plugin: ParsedPlugin): void {
     author: source.author ?? { name: 'Orbitant' },
     license: source.license ?? 'MIT',
     repository: { type: 'git', url: 'https://github.com/weorbitant/orbitant-os.git' },
-    publishConfig: { registry: REGISTRY },
+    // Without `access`, npm defaults a scoped package to restricted and rejects the publish.
+    publishConfig: { registry: REGISTRY, access: 'public' },
   };
   fs.writeFileSync(path.join(pkgDir, 'package.json'), JSON.stringify(pkgJson, null, 2));
 
@@ -155,8 +156,8 @@ export function buildVerticalPackages(): ParsedPlugin[] {
 }
 
 function buildMeta(plugins: ParsedPlugin[]): void {
-  const pkgName = `${SCOPE}/${META.name}`;
-  const pkgDir = path.join(DIST_DIR, SCOPE, META.name);
+  const pkgName = `${SCOPE}/${npmName(META.name)}`;
+  const pkgDir = path.join(DIST_DIR, SCOPE, npmName(META.name));
   fs.rmSync(pkgDir, { recursive: true, force: true });
   fs.mkdirSync(path.join(pkgDir, 'dist'), { recursive: true });
 
@@ -171,10 +172,10 @@ function buildMeta(plugins: ParsedPlugin[]): void {
   const dtsBrainProps: string[] = [];
 
   // Vertical deps are pinned to EXACT versions, so at release time all three vertical packages
-  // must be published BEFORE the meta — otherwise `npm install @weorbitant/orbitant-os` cannot
-  // resolve them. Publish order: verticals first, meta last.
+  // must be published BEFORE the meta — otherwise `npm install @orbitant/brain` cannot resolve
+  // them. Publish order: verticals first, meta last.
   for (const plugin of plugins) {
-    const dep = `${SCOPE}/${plugin.name}`;
+    const dep = `${SCOPE}/${npmName(plugin.name)}`;
     dependencies[dep] = plugin.version; // exact pin
     const v = plugin.vertical;
 
@@ -210,8 +211,8 @@ function buildMeta(plugins: ParsedPlugin[]): void {
   );
 
   // aggregate index.d.ts — mirrors index.js exactly: value re-exports + value imports (so a
-  // named import like `import { marketing } from '@weorbitant/orbitant-os'` type-checks as a
-  // value, not just a type), plus the `typeof`-derived brain shape for the default export.
+  // named import like `import { marketing } from '@orbitant/brain'` type-checks as a value, not
+  // just a type), plus the `typeof`-derived brain shape for the default export.
   fs.writeFileSync(
     path.join(pkgDir, 'dist', 'index.d.ts'),
     [
@@ -237,7 +238,7 @@ function buildMeta(plugins: ParsedPlugin[]): void {
     author: { name: 'Orbitant' },
     license: 'MIT',
     repository: { type: 'git', url: 'https://github.com/weorbitant/orbitant-os.git' },
-    publishConfig: { registry: REGISTRY },
+    publishConfig: { registry: REGISTRY, access: 'public' },
   };
   fs.writeFileSync(path.join(pkgDir, 'package.json'), JSON.stringify(pkgJson, null, 2));
   fs.writeFileSync(path.join(pkgDir, 'README.md'), renderMetaReadme(plugins, META));

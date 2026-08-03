@@ -12,11 +12,11 @@ on:
 
 permissions:
   contents: read
-  packages: write
+  id-token: write # OIDC token: the only credential this workflow has
 
 jobs:
   publish:
-    name: Build and publish to GitHub Packages
+    name: Build and publish to npm
     runs-on: ubuntu-latest
     steps:
       # Intentionally NO `ref:` here. On push:tags the tag's own commit is already checked out;
@@ -25,20 +25,23 @@ jobs:
       # The tag<->built-version guard in publish-package.ts covers version correctness.
       - uses: actions/checkout@v4
 
+      # Node 24 for its bundled npm 11 (OIDC needs npm >= 11.5.1). No `registry-url` / `scope`:
+      # they write an .npmrc whose `_authToken` line suppresses the OIDC exchange.
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@weorbitant'
 
       - name: Install dependencies
         run: npm ci
 
+      # Auth is the OIDC exchange, so each package needs this repo and workflow registered as its
+      # trusted publisher on npmjs.com. See CLAUDE.md for bootstrapping a brand new package.
       - name: Publish package for tag
         env:
           # Pass the tag through the environment instead of interpolating ${{ }} directly into the
           # run script — the GitHub-recommended way to avoid shell injection via a crafted ref name.
           TAG: ${{ github.event.inputs.tag || github.ref_name }}
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Config, not a `--provenance` flag, so the same script still runs locally without OIDC.
+          NPM_CONFIG_PROVENANCE: true
         run: node --import tsx scripts/publish-package.ts "$TAG"
