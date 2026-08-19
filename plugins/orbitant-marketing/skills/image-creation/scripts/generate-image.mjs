@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Generates Orbitant blog thumbnails using Google's Imagen API
- * and composites the Orbitant watermark automatically.
+ * Generates Orbitant blog thumbnails using Google's Gemini image
+ * generation API (Nano Banana) and composites the Orbitant watermark
+ * automatically.
  *
  * Usage:
  *   node scripts/generate-image.mjs --prompt "..." --output path/to/image.png [OPTIONS]
@@ -12,7 +13,7 @@
  *   --output FILE        Output file path, .png (required)
  *   --negative TEXT      Negative prompt (optional)
  *   --aspect RATIO       1:1, 3:4, 4:3, 9:16, 16:9 (default: 16:9)
- *   --model MODEL        Model ID (default: imagen-4.0-generate-001)
+ *   --model MODEL        Model ID (default: gemini-3.1-flash-image)
  *   --count N            Number of images, 1-4 (default: 1)
  *   --watermark TONE     Watermark variant: white, black, none (default: auto-detect)
  *   --help               Show this help
@@ -62,7 +63,7 @@ Options:
   --output FILE        Output file path, .png (required)
   --negative TEXT      Negative prompt (optional)
   --aspect RATIO       1:1, 3:4, 4:3, 9:16, 16:9 (default: 16:9)
-  --model MODEL        Model ID (default: imagen-4.0-generate-001)
+  --model MODEL        Model ID (default: gemini-3.1-flash-image)
   --count N            Number of images, 1-4 (default: 1)
   --watermark TONE     white, black, or none (default: auto-detect from image brightness)
   --help               Show this help
@@ -77,7 +78,7 @@ function parseCliArgs() {
       output: { type: "string" },
       negative: { type: "string", default: "" },
       aspect: { type: "string", default: "16:9" },
-      model: { type: "string", default: "imagen-4.0-generate-001" },
+      model: { type: "string", default: "gemini-3.1-flash-image" },
       count: { type: "string", default: "3" },
       watermark: { type: "string", default: "auto" },
       help: { type: "boolean", default: false },
@@ -224,38 +225,46 @@ async function main() {
   console.error(`Aspect ratio: ${args.aspect}`);
   console.error(`Prompt: ${args.prompt.substring(0, 120)}...`);
 
-  let response;
-  try {
-    const config = {
-      numberOfImages: count,
-      aspectRatio: args.aspect,
-    };
-    if (args.negative) {
-      config.negativePrompt = args.negative;
-    }
-    response = await ai.models.generateImages({
-      model: args.model,
-      prompt: args.prompt,
-      config,
-    });
-  } catch (err) {
-    console.error(`API error: ${err.message}`);
-    process.exit(3);
+  if (args.negative) {
+    console.error(
+      "Warning: --negative is not supported by Gemini image models and will be ignored. " +
+        "Put negative constraints directly in the prompt instead."
+    );
   }
 
-  if (!response.generatedImages || response.generatedImages.length === 0) {
-    console.error(
-      "Error: API returned no images. The prompt may have been blocked by safety filters."
-    );
-    process.exit(3);
+  // Gemini image models return a single image per generateContent call,
+  // so request `count` times to keep the multi-image contract.
+  const imageBuffers = [];
+  for (let i = 0; i < count; i++) {
+    try {
+      const response = await ai.models.generateContent({
+        model: args.model,
+        contents: args.prompt,
+        config: {
+          responseModalities: ["IMAGE"],
+          imageConfig: { aspectRatio: args.aspect },
+        },
+      });
+      const parts = response.candidates?.[0]?.content?.parts ?? [];
+      const imagePart = parts.find((part) => part.inlineData?.data);
+      if (!imagePart) {
+        console.error(
+          "Error: API returned no images. The prompt may have been blocked by safety filters."
+        );
+        process.exit(3);
+      }
+      imageBuffers.push(Buffer.from(imagePart.inlineData.data, "base64"));
+    } catch (err) {
+      console.error(`API error: ${err.message}`);
+      process.exit(3);
+    }
   }
 
   await mkdir(dirname(args.output), { recursive: true });
 
   const results = [];
-  for (let i = 0; i < response.generatedImages.length; i++) {
-    const imgBytes = response.generatedImages[i].image.imageBytes;
-    const originalBuffer = Buffer.from(imgBytes, "base64");
+  for (let i = 0; i < imageBuffers.length; i++) {
+    const originalBuffer = imageBuffers[i];
 
     // Determine output paths
     const basePath =
