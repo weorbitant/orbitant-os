@@ -24,7 +24,7 @@ Orbitant's plugin marketplace — skills, agents, and commands organized by vert
 
 | Plugin | Version | Skills | Commands |
 |--------|---------|--------|----------|
-| **orbitant-marketing** | v1.5.0 | `blog-post-review`, `blog-post-create`, `blog-post-translate`, `tone`, `yt-description`, `linkedin-post`, `image-creation`, `newsletter` | — |
+| **orbitant-marketing** | v1.5.1 | `blog-post-review`, `blog-post-create`, `blog-post-translate`, `tone`, `yt-description`, `linkedin-post`, `image-creation`, `newsletter` | — |
 | **orbitant-operations** | v1.0.0 | `graceful-degradation`, `goal-alignment`, `voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
 | **orbitant-engineering** | v0.2.0 | `orbitant-ai-readiness`, `orbitant-git-hygiene`, `orbitant-owasp-scan`, `orbitant-12-factor`, `orbitant-debrief`, `orbitant-learn`, `orbitant-new-learning`, `orbitant-init-learning`, `orbitant-learning-status`, `orbitant-learning-insights`, `orbitant-learning-report`, `orbitant-end-learn` | `/ground-control` |
 
@@ -169,7 +169,7 @@ TypeScript app can vendor a version-pinned "brain".
 No `.npmrc` and no token: the packages are public on npm.
 
 ```bash
-npm install @orbitant/brain-marketing@^1.5.0   # one vertical
+npm install @orbitant/brain-marketing@^1.5.1   # one vertical
 npm install @orbitant/brain                    # all verticals (meta-package)
 ```
 

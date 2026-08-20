@@ -2,7 +2,7 @@
 name: orbitant-image-creation
 description: |
   Generates blog post thumbnail images for Orbitant following the brand's visual
-  identity, using Google's Imagen API (Nano Banana 2). Activates when creating
+  identity, using Google's Gemini image API (Nano Banana 2). Activates when creating
   blog images, generating thumbnails, designing featured images for articles, or
   when someone needs a visual for an Orbitant insight/blog post. Use this skill
   even if the user just says "I need an image for this article", "create a
@@ -10,7 +10,7 @@ description: |
   when the user mentions "Nano Banana 2", "image generation", or asks for a
   prompt for an AI image tool.
 license: MIT
-version: "1.0.0"
+version: "1.0.1"
 metadata:
   author: orbitant
   tags: marketing, image, thumbnail, blog, visual, prompt, nano-banana-2, ai-image, imagen
@@ -21,7 +21,7 @@ metadata:
 You are a visual prompt engineer and image generator for the Orbitant engineering blog. Your job is to:
 
 1. Craft a prompt matching Orbitant's visual identity
-2. Generate the image by running the bundled script against Google's Imagen API
+2. Generate the image by running the bundled script against Google's Gemini image API
 3. Deliver the final image file to the user
 
 Respond in the same language as the user's request.
@@ -51,12 +51,12 @@ npm install @google/genai sharp
 
 ### Google API Key
 
-You need a `GOOGLE_API_KEY` to call the Imagen API. There are two ways to get one:
+You need a `GOOGLE_API_KEY` to call the Gemini image API. There are two ways to get one:
 
 | Option | How | Cost |
 |--------|-----|------|
 | **Google AI Studio** | Go to <https://aistudio.google.com/apikey> and create a key with your personal Google account | Free tier with daily limits |
-| **Google Workspace** | Same link, but sign in with your organization's Workspace account. Many Workspace plans include Gemini/Imagen API access with generous quotas (check your admin console under **Apps → Additional Google services → Google AI Studio**) | Included in Workspace plans that have Gemini enabled |
+| **Google Workspace** | Same link, but sign in with your organization's Workspace account. Many Workspace plans include Gemini API access with generous quotas (check your admin console under **Apps → Additional Google services → Google AI Studio**) | Included in Workspace plans that have Gemini enabled |
 
 > **Tip:** If your organization uses Google Workspace with Gemini enabled, you likely already have API access at no extra cost — ask your Workspace admin if unsure.
 
@@ -101,7 +101,7 @@ node plugins/orbitant-marketing/skills/image-creation/scripts/generate-image.mjs
 
 If the API key is not set, the skill will craft the prompt and show it to the user so they can use it manually in AI Studio or another tool.
 
-> **Note:** The `--negative` flag is accepted by the script but **not supported by the current Imagen API** (`imagen-4.0-generate-001`). Instead of using `--negative`, incorporate negative constraints directly into the main prompt (e.g., "No red, orange, or yellow fire. No text, no words, no logos.").
+> **Note:** The `--negative` flag is accepted by the script but **not supported by Gemini image models** (`gemini-3.1-flash-image`) and is ignored with a warning. Instead of using `--negative`, incorporate negative constraints directly into the main prompt (e.g., "No red, orange, or yellow fire. No text, no words, no logos.").
 
 ### Reference Images Setup
 
@@ -121,7 +121,7 @@ Once available, **browse a few reference images** from `assets/reference/` befor
 
 ## Available Scripts
 
-- **`scripts/generate-image.mjs`** — Generates images via Google's Imagen API and automatically composites the Orbitant watermark. Accepts prompt, output path, aspect ratio, model, count, and watermark tone. Returns JSON with file paths on success.
+- **`scripts/generate-image.mjs`** — Generates images via Google's Gemini image API and automatically composites the Orbitant watermark. Accepts prompt, output path, aspect ratio, model, count, and watermark tone. Returns JSON with file paths on success.
 - **`scripts/scrape-insights-images.mjs`** — Downloads curated reference images from orbitant.com into `assets/reference/`. Skips existing files. Use `--force` to re-download.
 
 Run `node scripts/generate-image.mjs --help` or `node scripts/scrape-insights-images.mjs --help` for full usage.

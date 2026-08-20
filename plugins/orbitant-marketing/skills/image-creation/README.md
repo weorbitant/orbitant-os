@@ -1,6 +1,6 @@
 # Image Creation Skill
 
-Generates blog post thumbnails for the Orbitant engineering blog using Google's Imagen API, following the brand's visual identity system.
+Generates blog post thumbnails for the Orbitant engineering blog using Google's Gemini image API (Nano Banana 2), following the brand's visual identity system.
 
 ## Quick Start
 
@@ -32,7 +32,7 @@ Or just ask Claude: _"Generate a blog image about microservices"_ — the skill 
 | `--aspect` | Aspect ratio: `1:1`, `3:4`, `4:3`, `9:16`, `16:9` | `16:9` |
 | `--count` | Number of variants (1–4) | `3` |
 | `--watermark` | `white`, `black`, `none`, or `auto` | `auto` |
-| `--model` | Imagen model ID | `imagen-4.0-generate-001` |
+| `--model` | Gemini image model ID | `gemini-3.1-flash-image` |
 
 > **Note:** `--negative` is accepted but not supported by the current API. Bake negative constraints directly into the prompt instead.
 
