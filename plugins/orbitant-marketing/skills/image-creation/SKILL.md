@@ -140,8 +140,9 @@ The script auto-detects which watermark to use based on the bottom strip brightn
 ### Step 0 — Load Visual References
 
 1. Read `references/visual-identity.md` for the brand rules.
-2. Check if `assets/reference/` contains images. If empty, ask the user to run `node scripts/scrape-insights-images.mjs` and wait before continuing.
-3. Browse 3–5 reference images from `assets/reference/` to calibrate your sense of the brand's visual style.
+2. Read `references/presets.md`. If the user's request names a preset (e.g. "el planeta Orbitant") or one of its aliases, that element is pre-defined — you will inject its fragment verbatim in Step 4 and skip metaphor-hunting for it (see Step 2).
+3. Check if `assets/reference/` contains images. If empty, ask the user to run `node scripts/scrape-insights-images.mjs` and wait before continuing.
+4. Browse 3–5 reference images from `assets/reference/` to calibrate your sense of the brand's visual style.
 
 ### Step 1 — Choose the Category
 
@@ -150,6 +151,8 @@ Based on the article topic, decide between:
 - **Category B — Real Photography** (~30%): Team photos for culture/event articles — cannot be generated, tell the user to pick from their photo library
 
 ### Step 2 — Find the Metaphor (Category A only)
+
+> **Preset shortcut:** if the request matched a named preset in `references/presets.md`, that preset *is* the subject — skip metaphor-hunting and go straight to Step 4 using its fragment verbatim.
 
 Identify a **physical object or scene** that metaphorically represents the article's core concept:
 - Immediately recognizable (not too abstract)
@@ -218,6 +221,14 @@ Key points:
 - **Watermark**: Composited automatically — never include text/logos in the prompt, always leave clean bottom-center space
 - **Signature look**: Shallow DoF, minimalist, studio-lit, desaturated premium aesthetic
 - **Format**: 16:9 landscape, 1440x810, PNG from API
+
+---
+
+## Named Presets
+
+Recurring visual elements (like the Orbitant planet) are defined as **text presets** in **`references/presets.md`**. When a request names a preset or one of its aliases, inject its prompt fragment **verbatim** instead of inventing a new description — this keeps the element consistent across images.
+
+Text presets give a *consistent, on-brand* element, **not a pixel-identical copy** (sufficient for thumbnails). Read `references/presets.md` for the current list, how to use a preset, and how to add new ones.
 
 ---
 
