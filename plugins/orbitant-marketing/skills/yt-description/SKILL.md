@@ -111,13 +111,13 @@ Open with:
 - Spanish: `ℹ️ En esta sesión descubrirás:`
 - English: `ℹ️ In this session you'll discover:`
 
-Follow with 4–7 bullet points, each starting with `→`. Each point should:
+Follow with 4–7 bullet points, each starting with `—` (em dash, no space before the text). Each point should:
 - Describe something concrete and actionable
 - Reference real tools, techniques, or decisions from the session
 - Include secondary keywords naturally where they fit
 
-> Correct: `→ Cómo estructurar un pipeline de Claude para generar borradores de blog posts desde transcripts`
-> Incorrect: `→ Técnicas de productividad con IA`
+> Correct: `—Cómo estructurar un pipeline de Claude para generar borradores de blog posts desde transcripts`
+> Incorrect: `—Técnicas de productividad con IA`
 
 ### 5. Resources section
 
@@ -125,7 +125,10 @@ Only include if there are actual resources to list. Open with:
 - Spanish: `🔗 Recursos mencionados en la sesión:`
 - English: `🔗 Resources mentioned in the session:`
 
-List each resource on its own line. If a URL isn't available yet, use a placeholder: `Blog post: [link próximamente]`.
+List each resource on its own line using the format `Nombre: descripción` (colon, not dash). If a URL isn't available yet, use a placeholder: `Blog post: [link próximamente]`.
+
+> Correct: `Langfuse: trazabilidad de agentes`
+> Incorrect: `Langfuse — trazabilidad de agentes`
 
 ---
 
@@ -166,14 +169,14 @@ Deliver as **plain text**, ready to paste directly into YouTube. YouTube does no
 [Overview — Spanish, primary + secondary keywords woven in naturally]
 
 ℹ️ En esta sesión descubrirás:
-→ [specific takeaway with secondary keyword]
-→ [specific takeaway]
-→ [specific takeaway]
-→ [specific takeaway]
+—[specific takeaway with secondary keyword]
+—[specific takeaway]
+—[specific takeaway]
+—[specific takeaway]
 
 🔗 Recursos mencionados en la sesión:
-[resource 1]
-[resource 2]
+[Nombre recurso 1]: [descripción]
+[Nombre recurso 2]: [descripción]
 
 ________________________________________________
 
@@ -184,14 +187,14 @@ ________________________________________________
 [Overview — English, adapted for English search intent]
 
 ℹ️ In this session you'll discover:
-→ [specific takeaway]
-→ [specific takeaway]
-→ [specific takeaway]
-→ [specific takeaway]
+—[specific takeaway]
+—[specific takeaway]
+—[specific takeaway]
+—[specific takeaway]
 
 🔗 Resources mentioned in the session:
-[resource 1]
-[resource 2]
+[Resource name 1]: [description]
+[Resource name 2]: [description]
 
 #tag1 #tag2 #Orbitant
 
