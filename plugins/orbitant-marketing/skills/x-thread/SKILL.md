@@ -4,8 +4,8 @@ description: |
   X (Twitter) thread writer for Orbitant. Turns a published blog post OR native
   material — a Knowledge Sharing transcript, a Slack thread, a feature just
   shipped, a build-in-public moment — into a thread ready to post: an opening
-  post that stands alone, 4 to 8 body posts of one idea each, and a closing
-  post, every one annotated with its character count against X's 280 limit.
+  post that stands alone, body posts of one idea each, and a closing post,
+  every one annotated with its character count against X's 280 limit.
 
   Activate when the user asks for a thread, an X post or a Twitter post, or says
   "haz un hilo", "convierte esto en un hilo", "esto da para un hilo", "thread
@@ -119,7 +119,7 @@ Don't:
 
 ---
 
-## Step 3 — The body posts (4 to 8)
+## Step 3 — The body posts (1 to 8)
 
 ### Rules
 
@@ -127,6 +127,7 @@ Don't:
 - **Every post must parse alone.** No post may depend on having read the previous one. Openers that dangle — "And that is when we realised", "This is why it matters" — are meaningless in a timeline.
 - **Every post should be quotable.** Assume any one of them gets quoted with no context attached.
 - **Report the character count** for each, and keep every one under 280.
+- **Vary the length on purpose.** Length is a rhythm instrument: a 90-character post lands a beat, a 250-character one carries the detail an argument needs. Do not let every post settle into the same band — a thread where all posts measure roughly the same reads as something generated, not written. Put the short ones where you want the reader to stop.
 - **Use short lines and blank lines** as the structure. That is the whole formatting toolkit.
 - **Lists inside a post:** one item per line, three items maximum, no bullet characters. More than three means it should be several posts.
 - **Numbering:** only if the thread is genuinely enumerable. Numbering a narrative turns it into a listicle. Never hardcode a total (`1/7`) — you will add or cut a post.
@@ -189,6 +190,10 @@ On X the brand appears as **`@WeOrbitant`**, which is a mention, and mentions do
 
 Plain text, ready to paste into X, Typefully or n8n. No markdown in the post bodies.
 
+**The `POST n — c/280` line is the delimiter, and that is a contract.** One header line per post, one blank line between posts, nothing else at that level: a scheduler or an n8n step splits the thread deterministically on it, and a reviewer reads the same artifact. Do not emit a second, undivided copy of the thread alongside it — the split IS the work, and two copies drift the moment a reviewer corrects one.
+
+**Never hand a thread to a tool that splits by length.** An auto-splitter cuts at 280 characters wherever that falls, which undoes every rule above: posts stop being one idea each, stop parsing alone and stop being quotable. The boundaries here are decided, not incidental.
+
 ```text
 THREAD — [spine in one sentence]
 
@@ -215,13 +220,14 @@ IMAGE — attach to POST [n]
 [what it shows, one line]
 ```
 
-Total: 6 to 10 posts — one opening, 4 to 8 body, one closing. More than 10 means the spine is carrying too much.
+**Length is whatever the spine needs.** Three posts is a thread; ten is the ceiling, and more than that means the spine is carrying too much. There is no floor to reach: if the argument is spent after one body post, the thread is three posts. If it fits in a single post, deliver one post and say it is not a thread.
 
 ### Self-check before delivering
 
 Verify each of these. Do not deliver a thread that fails one.
 
 - [ ] A character count reported for every post, none over 280
+- [ ] The post lengths vary; they have not all settled into the same band
 - [ ] The opening post has no link
 - [ ] The opening post delivers value standing alone
 - [ ] Every body post parses with no prior context
@@ -231,7 +237,7 @@ Verify each of these. Do not deliver a thread that fails one.
 - [ ] The spine is a concept or principle, not a tool or a client
 - [ ] The pronoun matches the account
 - [ ] The thread language matches the source language
-- [ ] 6 to 10 posts total
+- [ ] No more than 10 posts, and none of them padding
 
 ---
 
