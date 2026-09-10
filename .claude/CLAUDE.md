@@ -23,7 +23,7 @@ orbitant-os/
 ├── .claude-plugin/
 │   └── marketplace.json            <- THE marketplace manifest (lists all plugins)
 ├── plugins/
-│   ├── orbitant-marketing/         <- v1.4.0 — blog-post-review, blog-post-create, blog-post-translate, tone, yt-description, linkedin-post, image-creation, newsletter
+│   ├── orbitant-marketing/         <- v1.6.0 — blog-post-review, blog-post-create, blog-post-translate, tone, yt-description, linkedin-post, image-creation, newsletter, x-thread
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   └── skills/
@@ -223,9 +223,13 @@ metadata:
 1. Create folder: `plugins/orbitant-{vertical}/skills/{skill-name}/`
 2. Write `SKILL.md` with proper frontmatter (see above)
 3. Optionally add `README.md`, `scripts/`, `references/`, `assets/`
-4. Add the skill path to `marketplace.json` -> corresponding plugin's `skills` array
-5. Bump version in `plugin.json`
-6. Open a PR
+4. Bump the **MINOR** version in `plugins/orbitant-{vertical}/.claude-plugin/plugin.json` — this file is the single source of truth for the version, and `semver-check.yml` requires a MINOR bump for a new skill
+5. Set the **same** version on that plugin's entry in `.claude-plugin/marketplace.json`. That file lists plugins only — it has no `skills` array, so there is no skill path to add — and `scripts/validate-versions.cjs` fails CI if the two versions differ
+6. Bump the version in `scripts/lib/meta-package.json` so `@orbitant/brain` ships the new skill. The meta's exact pin on the vertical is recalculated from `plugin.json` at build time, but the meta's own version is manual. Bump it in the same PR even when you are not releasing the meta yet
+7. Add the skill to the plugin's row in the `README.md` table and in the Current State table below
+8. Open a PR
+
+Nothing to do for the npm package version: `build-npm-packages.ts` derives `@orbitant/brain-{vertical}` from `plugin.json`.
 
 ### When Adding a New Vertical
 1. Create `plugins/orbitant-{vertical}/` with full structure (`.claude-plugin/plugin.json`, `skills/`, `agents/`, `commands/`)
@@ -261,7 +265,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 
 | Plugin | Version | Status | Skills | Commands |
 |--------|---------|--------|--------|----------|
-| orbitant-marketing | 1.4.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter` | — |
+| orbitant-marketing | 1.6.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter`, `orbitant-x-thread` | — |
 | orbitant-operations | 1.0.0 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
 | orbitant-engineering | 0.1.1 | Active | `orbitant-ai-readiness`, `orbitant-git-hygiene`, `orbitant-owasp-scan`, `orbitant-12-factor`, `orbitant-debrief` | `/ground-control` |
 
