@@ -1,3 +1,4 @@
 {
+  "gitignore": true,
   "ignores": ["docs/plans/**"]
 }

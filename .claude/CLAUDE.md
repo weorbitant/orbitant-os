@@ -23,7 +23,7 @@ orbitant-os/
 ├── .claude-plugin/
 │   └── marketplace.json            <- THE marketplace manifest (lists all plugins)
 ├── plugins/
-│   ├── orbitant-marketing/         <- v1.4.0 — blog-post-review, blog-post-create, blog-post-translate, tone, yt-description, linkedin-post, image-creation, newsletter
+│   ├── orbitant-marketing/         <- v1.6.0 — blog-post-review, blog-post-create, blog-post-translate, tone, yt-description, linkedin-post, image-creation, newsletter, x-thread
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   └── skills/
@@ -138,6 +138,24 @@ When you create a GitHub release with tag `orbitant-{plugin}-v{X.Y.Z}`:
 5. On next website build, release appears as blog post
 6. **Manual step (org admin only)**: upload the plugin zip to <https://claude.ai/admin-settings/plugins> to propagate the new version internally.
 
+#### Publishing the npm packages
+
+Each vertical is also published as a public npm package under `@orbitant` on npmjs.com (see `.github/workflows/publish-packages.yml`).
+
+- **Naming:** git tags and plugin folders keep the `orbitant-` prefix; the published package drops it and becomes a brain — `orbitant-marketing` -> `@orbitant/brain-marketing`, and the meta `orbitant-os` -> `@orbitant/brain`. The rule lives in `npmName()` in `scripts/lib/npm-packages.config.ts`.
+- Pushing a release tag `orbitant-{vertical}-v{X.Y.Z}` also triggers the npm publish for that vertical.
+- The meta-package `@orbitant/brain` carries its own version in `scripts/lib/meta-package.json` — bump it there and tag `orbitant-os-v{X.Y.Z}`.
+- **Publish order:** publish the three vertical packages before the meta. The meta pins them at exact versions, and its publish step refuses to run until they exist in the registry.
+- To publish an already-tagged version (e.g. a backfill, since the tag exists from a prior marketplace release), run the workflow manually — no new tag needed: `gh workflow run publish-packages.yml -f tag=orbitant-{vertical}-v{X.Y.Z}` (builds from `main`).
+- **Auth is trusted publishing (OIDC), not a token.** There is no npm credential in the repo: the workflow exchanges its GitHub OIDC token, which is why it declares `id-token: write`.
+- **Bootstrapping a package that has never been published:** npmjs only lets you configure a trusted publisher for a package that already exists, so version one goes out by hand. Log in with `npm login` (2FA prompts as usual) and run the same script CI runs, which builds, checks the tag against the built version and applies the meta preflight:
+
+  ```bash
+  node --import tsx scripts/publish-package.ts orbitant-{vertical}-v{X.Y.Z}
+  ```
+
+  Then, on npmjs, register `weorbitant/orbitant-os` and the `publish-packages.yml` workflow as the package's trusted publisher. From that point on the tag push publishes it. A package without that configuration fails in CI, so do this once per package.
+
 #### Tag Filtering
 
 Blog supports filtering by tags via URL: `/blog/?tag=release`
@@ -205,9 +223,13 @@ metadata:
 1. Create folder: `plugins/orbitant-{vertical}/skills/{skill-name}/`
 2. Write `SKILL.md` with proper frontmatter (see above)
 3. Optionally add `README.md`, `scripts/`, `references/`, `assets/`
-4. Add the skill path to `marketplace.json` -> corresponding plugin's `skills` array
-5. Bump version in `plugin.json`
-6. Open a PR
+4. Bump the **MINOR** version in `plugins/orbitant-{vertical}/.claude-plugin/plugin.json` — this file is the single source of truth for the version, and `semver-check.yml` requires a MINOR bump for a new skill
+5. Set the **same** version on that plugin's entry in `.claude-plugin/marketplace.json`. That file lists plugins only — it has no `skills` array, so there is no skill path to add — and `scripts/validate-versions.cjs` fails CI if the two versions differ
+6. Bump the version in `scripts/lib/meta-package.json` so `@orbitant/brain` ships the new skill. The meta's exact pin on the vertical is recalculated from `plugin.json` at build time, but the meta's own version is manual. Bump it in the same PR even when you are not releasing the meta yet
+7. Add the skill to the plugin's row in the `README.md` table and in the Current State table below
+8. Open a PR
+
+Nothing to do for the npm package version: `build-npm-packages.ts` derives `@orbitant/brain-{vertical}` from `plugin.json`.
 
 ### When Adding a New Vertical
 1. Create `plugins/orbitant-{vertical}/` with full structure (`.claude-plugin/plugin.json`, `skills/`, `agents/`, `commands/`)
@@ -243,7 +265,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 
 | Plugin | Version | Status | Skills | Commands |
 |--------|---------|--------|--------|----------|
-| orbitant-marketing | 1.4.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter` | — |
+| orbitant-marketing | 1.6.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter`, `orbitant-x-thread` | — |
 | orbitant-operations | 1.0.0 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
 | orbitant-engineering | 0.1.1 | Active | `orbitant-ai-readiness`, `orbitant-git-hygiene`, `orbitant-owasp-scan`, `orbitant-12-factor`, `orbitant-debrief` | `/ground-control` |
 

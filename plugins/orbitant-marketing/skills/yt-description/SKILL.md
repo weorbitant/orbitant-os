@@ -12,7 +12,7 @@ description: |
   session". Also trigger when given a transcript and asked to prepare anything for a
   video upload.
 license: MIT
-version: "1.0.0"
+version: "1.0.1"
 metadata:
   author: orbitant
   tags: marketing, youtube, seo, video, content, ks-sessions, description, bilingual, keywords
