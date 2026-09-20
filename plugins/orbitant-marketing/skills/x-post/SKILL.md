@@ -4,10 +4,10 @@ description: |
   Single standalone X (Twitter) post writer for Orbitant. Takes one piece of
   material — a Knowledge Sharing session, an interview, a blog post just
   published, a feature just shipped, a decision taken or reversed, a measurement
-  that surprised us, a build-in-public moment — and returns two or three
-  numbered variants of the same post: different angles on the same material,
-  ordered strongest first, each annotated with its weighted character count
-  against X's 280 limit.
+  that surprised us, a build-in-public moment — and returns numbered variants
+  of the same post, three by default and two when the material holds only two
+  angles: different ways into the same material, ordered strongest first, each
+  with its weighted character count against X's 280 limit.
 
   Activate when the user asks for a post, a tweet or a single piece for X, or
   says "un post para X", "un tuit", "algo suelto para X", "esto no da para un
@@ -39,7 +39,7 @@ This skill writes **one standalone post, never a thread**, and it delivers sever
 |---|---|---|
 | Shape | One post that stands alone | One argument spread across several posts |
 | The material holds | One thing worth saying | A claim plus the evidence it needs |
-| Output | Two or three variants of one post, pick one | One thread, every post ships together |
+| Output | Several variants of one post, pick one | One thread, every post ships together |
 
 **Hand the material to `x-thread` when it holds a real argument that needs unpacking.** The signals are concrete: you cannot state the point without a "because" that itself needs a "because"; you keep wanting a second post to justify the first; the honest version needs evidence that will not fit in 280 characters. That is a thread. Say so and stop. Do not compress an argument into one post, and never deliver a post and a thread in the same answer.
 
@@ -52,7 +52,8 @@ This skill writes **one standalone post, never a thread**, and it delivers sever
 Platform facts. They are not style preferences and you cannot write around them.
 
 - **280 characters per post, hard.** A post at 281 does not post.
-- **The limit is weighted, not a plain character count.** Most Latin text weighs 1 per character, and that includes Spanish accents and ñ. **Emoji and CJK characters weigh 2**, so three emoji cost six.
+- **The limit is weighted, and weight 2 is the default.** Only a short allowlist of Unicode ranges weighs 1: `U+0000-U+10FF`, `U+2000-U+200D`, `U+2010-U+201F` and `U+2032-U+2037`. Latin text, Spanish accents, ñ, the line break and the ordinary punctuation you type all fall inside it and weigh 1.
+- **Everything outside that allowlist weighs 2.** Emoji and CJK, and also the typographic ellipsis `…` (U+2026), which is the one that catches Spanish copy: three of them cost six characters, not three. A compound emoji — a skin tone modifier, a ZWJ sequence like `👩‍💻` — costs more than 2, so never try to budget one precisely.
 - **A URL always counts as 23**, however short or long it is. X rewrites every link through its own shortener before counting it.
 - **No text formatting.** X renders no markdown. `**bold**` shows up as literal asterisks, `##` as literal hashes. The line break is the only formatting tool you have.
 - **The post is read with no context around it**, by people who have never heard of Orbitant.
@@ -161,20 +162,20 @@ Fewer variants that genuinely differ always beat more that nearly match.
 - **It has to deliver value standing alone.** Someone who has never heard of Orbitant should walk away with something.
 - **No link by default.** See the Links section.
 - **Target 150 to 240 of the 280.** Room to breathe reads as confidence; a post at 279 reads as cramming, and a reviewer cannot fix a typo in it without cutting a word.
-- **Do not open with "We", "Our" or "Orbitant".** Open with the anchor. Exception: naming a teammate is encouraged, to give them credit.
+- **Do not open with "We", "Our" or "Orbitant" introducing themselves.** Open with the anchor. A "we" that is the subject of a finished, concrete action is not a self-introduction: "We put the repo back together three weeks later" opens with the anchor, "We are excited to share" does not. Exception: naming a teammate is encouraged, to give them credit.
 - **Concrete beats clever.** A number, a measurement or a named consequence outperforms wordplay.
-- **Report the weighted character count** for every variant.
+- **Report the weighted character count** for every variant, and treat your own number as an estimate. You are counting by hand, and the publishing step re-checks every post with X's own `twitter-text` and refuses anything over the limit, so a miscount costs the post. Leave margin instead of writing 279.
 - **Plain text in the post itself.** Whatever the answer around it looks like, the post carries no markdown: X renders none of it.
 - **Short lines and blank lines** are the whole formatting toolkit. Three lines of text at most.
-- **Lists inside a post:** one item per line, three items maximum, no bullet characters. More than three means it is a thread.
+- **Lists inside a post:** two items at most, one per line, no bullet characters. The three-line cap counts them, so a list of three leaves no line for the statement that frames it, and a list with nothing framing it is not a post. Three items or more is a thread.
 - **No engagement bait.** Not "Agree?", not "What do you think?", not "Follow for more", not "Bookmark this". Traction is the post being worth stopping for, not the reader being asked to react.
 
 ### Examples
 
 Do:
 
-- `Our pipeline took 22 minutes. One integration test was eating 13 of them, because it started a real Postgres on every run.`
-- `We split the repo in three. Three weeks later we put it back together, and we wrote down what the round trip cost us.`
+- `The pipeline took 22 minutes. One integration test was eating 13 of them, because it started a real Postgres on every run.`
+- `We split the repo in three. Three weeks later we put it back together, and we wrote down what the round trip cost us.` — a "we" that did something, not a "we" introducing itself
 
 Don't:
 
@@ -191,6 +192,46 @@ Don't:
 The order is load-bearing. Whoever reads the answer picks one of them, and the order is your recommendation: it saves them re-reading three posts to work out which one you believe in. **Variant 1 is the one you would publish if the decision were yours.** Do not lead with the safe one out of caution — if the sharp variant is the best post, it goes first.
 
 Close with one line saying why the order is what it is, so a reviewer can argue with the reasoning and not only with the copy.
+
+---
+
+## A worked example
+
+The four steps on real material. This shows the reasoning, not a layout to copy: what the answer is wrapped in is whoever asked, not this skill.
+
+**Material:** a Slack thread where the team worked out why CI was slow, with the before and after numbers in it. Company account, English source, no public URL.
+
+**Anchor:** the pipeline went from 22 minutes to 8 after we replaced one integration test.
+
+**Angles:** the number first / the admission / the wrong assumption. Three ways in: the measurement carrying the post on its own, what we did badly before we measured, and the belief the anchor contradicts.
+
+**Variant 1, the number first.** 153 characters.
+
+```text
+The pipeline took 22 minutes. One integration test was eating 13 of them, because it started a real Postgres on every run.
+
+We mocked it. It now takes 8.
+```
+
+**Variant 2, the admission.** 209 characters.
+
+```text
+We spent months blaming the runner, the cache, the dependency install. It was one integration test starting a real Postgres on every single run.
+
+Nobody had profiled it. 22 minutes down to 8 once somebody did.
+```
+
+**Variant 3, the wrong assumption.** 168 characters.
+
+```text
+A slow pipeline is rarely slow everywhere. Ours took 22 minutes and 13 of them lived inside one integration test.
+
+Before you pay for faster runners, profile the suite.
+```
+
+**Order:** variant 1 first, because 22 to 8 is the whole post and needs nothing else to land. The admission second: it earns more trust, but it asks the reader to care about us before it pays out. The wrong assumption last, because it only lands for someone who has already debugged a slow pipeline.
+
+**Image:** none. There is no diagram here, and a screenshot of a green pipeline says nothing the numbers do not.
 
 ---
 
@@ -258,9 +299,9 @@ Propose **at most one**, in one line, and say which variant it belongs to or tha
 
 Verify each of these. Do not deliver an answer that fails one.
 
-- [ ] Two or three variants, each a different angle, none of them another one reworded
+- [ ] Three variants, or two when the material only holds two angles, each a different angle and none of them another one reworded
 - [ ] Numbered, ordered by preference, strongest first, with one line saying why
-- [ ] A weighted count on every variant, none over 280, emoji counted as 2, any URL counted as 23
+- [ ] A weighted count on every variant, with margin under 280: weight 1 only inside the allowlisted ranges, 2 for anything else including `…`, 23 for any URL
 - [ ] Every variant stands alone, with no context and nothing to open
 - [ ] Every variant is anchored in something concrete and checkable
 - [ ] No rhetorical question, no engagement bait, no thread announcement
