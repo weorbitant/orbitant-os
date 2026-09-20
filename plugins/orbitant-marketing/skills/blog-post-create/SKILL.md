@@ -395,17 +395,13 @@ Include 2–3 FAQs at the end only if the topic lends itself to common reader qu
 
 ### Keyword
 
-**Research the primary keyword before writing — do not invent it purely from your own read of the topic.** The `Keyword` field in Notion's "Content Progress" database is a record filled in *after* the post is written, not a source to pull a pre-assigned keyword from — don't query it for this.
+**Choose the primary keyword before writing, from the material itself and the reader's likely search intent.** The `Keyword` field in Notion's "Content Progress" database is a record filled in *after* the post is written, not a source to pull a pre-assigned keyword from — don't query it for this.
 
 1. **Draft 2–4 candidate long-tail phrases** (in Spanish) from the topic and the reader's likely search intent.
-2. **Try Google Keyword Planner for real search-volume data**, using the `claude-in-chrome` browser tools: navigate to Google Ads → Keyword Planner (ads.google.com) and enter the candidates. This needs a connected browser that's logged into a Google Ads account with Keyword Planner access — not everyone running this skill will have that set up.
-   - **If it works**: record the search volume, competition level, and any related-keyword suggestions it surfaces for each candidate. If it only shows bucketed volume ranges (common on accounts without active ad spend) rather than an exact figure, note that as a range, not as a precise number.
-   - **If it doesn't** — no browser connected, not logged in, no Google Ads account, access denied, or any other failure — **don't block on it and don't ask the person to go set one up.** Note in one line that Keyword Planner wasn't available for this run, and go straight to step 3 as the primary research method rather than a cross-check.
-3. **Research via manual Google search with `WebSearch`.** Always run this step — it's the cross-check when step 2 worked, and the primary (only) method when it didn't. Check the SERP for each candidate — what's already ranking (direct competitors vs. generic/low-quality content), and whether Orbitant can plausibly compete on page 1 for that exact phrase — and read the "la gente también pregunta" / "people also ask" box and autocomplete suggestions, which often reveal a sharper long-tail variant than the original candidate.
-4. **Pick the candidate whose search intent matches what the article actually delivers** (informational/how-to vs. comparison vs. definitional). Weigh Keyword Planner volume against realistic ranking chances (step 3) when volume data exists; when it doesn't, decide on search intent and SERP competition alone — not just the highest-volume or most obvious phrasing.
-5. State which keyword was chosen and why, in one line, when handing off the draft — include the Keyword Planner volume figure if you got one, or say plainly that the pick is based on manual research only.
-6. It must appear in: the **SEO Title**, the **Slug**, and the **meta description** (see the metadata table below — these three fields must open with the exact keyword), at least one H2, and the first 100 words of the body. **The H1 (the article's actual title) does not need to contain the keyword.** The H1 is meant to be creative — the keyword requirement lives in the SEO Title, Slug, and meta description, not the H1.
-7. Use it naturally. No keyword stuffing.
+2. **Pick the candidate whose search intent matches what the article actually delivers** (informational/how-to vs. comparison vs. definitional) — not the most obvious phrasing, and not a broad head term the blog has no realistic chance of ranking for.
+3. State which keyword was chosen and why, in one line, when handing off the draft, and name the candidates that were discarded. The pick is made without search-volume data, so say so plainly: whoever receives the draft can check it against a keyword tool and swap it before publishing.
+4. It must appear in: the **SEO Title**, the **Slug**, and the **meta description** (see the metadata table below — these three fields must open with the exact keyword), at least one H2, and the first 100 words of the body. **The H1 (the article's actual title) does not need to contain the keyword.** The H1 is meant to be creative — the keyword requirement lives in the SEO Title, Slug, and meta description, not the H1.
+5. Use it naturally. No keyword stuffing.
 
 ### SEO Metadata (always include at the end of the article)
 
