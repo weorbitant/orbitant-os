@@ -130,7 +130,8 @@ When reviewing an article generated from a multi-participant input, check:
 - **Anchor text**: Links must span the natural phrase in which the topic appears, not just the topic noun. Flag anchor text that is too narrow (e.g., linking only the noun when the surrounding phrase would be more natural and informative).
 
 ### Images
-- Alt text must be descriptive, SEO-friendly, and include the primary keyword naturally.
+- A draft coming out of `blog-post-create` carries no alt text on purpose: it is written once the image exists, so do not flag its absence in a draft.
+- If the article already has its image and its alt text, check that the alt text is descriptive, SEO-friendly, and includes the primary keyword naturally.
 
 ---
 
@@ -185,7 +186,7 @@ Evaluate with checkmarks or crosses:
 - [ ] Internal links (1–2)
 - [ ] External links (1–2, authoritative)
 - [ ] Anchor text spans natural phrase (not just the noun)
-- [ ] Image alt text: descriptive and keyword-aware
+- [ ] Image alt text, only if the image already exists: descriptive and keyword-aware
 - [ ] Cluster and category correctly assigned
 
 ### 5. Sugerencias accionables
