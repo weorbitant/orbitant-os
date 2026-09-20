@@ -121,7 +121,7 @@ When reviewing an article generated from a multi-participant input, check:
 | Meta descripción | 130–140 characters including spaces. Must **begin with the exact primary keyword**. |
 
 ### Keyword Distribution
-- Primary keyword in: H1, at least one H2, meta description (as the opening), and first 100 words of the body.
+- Primary keyword in: at least one H2, the meta description (as the opening), and the first 100 words of the body. **The H1 does not need to contain it** — the H1 is the creative title, and the keyword requirement lives in the Título SEO, the Slug and the meta description.
 - Natural usage — flag any keyword stuffing.
 
 ### Links
@@ -181,7 +181,7 @@ Evaluate with checkmarks or crosses:
 - [ ] Título SEO: length (55–60 chars) and begins with exact primary keyword
 - [ ] Slug: length (65–70 chars), format correct, contains keyword
 - [ ] Meta descripción: length (130–140 chars), begins with exact keyword
-- [ ] Keyword in H1, at least one H2, first 100 words
+- [ ] Keyword in at least one H2 and in the first 100 words (the H1 does not need it)
 - [ ] Internal links (2–4)
 - [ ] External links (3–5, authoritative)
 - [ ] Anchor text spans natural phrase (not just the noun)
