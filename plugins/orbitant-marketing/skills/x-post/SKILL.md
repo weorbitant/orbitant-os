@@ -66,21 +66,30 @@ Platform facts. They are not style preferences and you cannot write around them.
 
 ### Source material
 
-Read it in full before writing anything. Then identify which kind you have: it decides what you are looking for, and whether there is a link at all.
+Read it in full before writing anything. What you are looking for is the **anchor**: the one concrete, checkable thing a post can stand on (Step 1). It hides in a different place depending on what you were handed.
 
-| Source | What makes it postable |
+| Material | Where the anchor usually hides |
 |---|---|
 | **Knowledge Sharing session** | The one claim the room pushed back on. Not the agenda, not what was covered |
 | **An interview with someone** | A sentence only that person could say, because of what they have lived |
-| **A blog post just published** | The single finding the post is built on. This is the one source that arrives with a public URL |
+| **A blog post just published** | The single finding the post is built on. This is the one kind that arrives with a public URL |
 | **A feature just shipped** | What is possible now that was not possible last week. A changelog line is not a post |
 | **A decision taken or reversed** | The reason and what it cost. A reversal beats a decision: saying what you stopped doing is rarer than saying what you started |
 | **A measurement that surprised us** | The number and the expectation it broke. The surprise is the post, not the metric |
 | **A build-in-public moment** | The unfinished state, said plainly, while it is still unfinished |
+| **Something moving in the field** | What actually changed, and when. Not that the topic is hot |
 
-No row outranks another. An interview is one source among seven, and a post built on one is not automatically better than a post built on a measurement or on a feature that shipped on Thursday.
+No row outranks another. An interview is one row of eight, and a post built on one is not automatically better than a post built on a measurement or on a feature that shipped on Thursday.
 
-If the material holds nothing from the right-hand column — only that something exists, or that a session took place — say so. There is no post in it yet, and inventing a reason to care is how an account loses the people it already has.
+**The table is a map, not a gate.** Material that fits none of these rows is not a refusal — plenty of good posts are a comment on something outside our own work. The requirement is the anchor, never the category. "Google changed how it surfaces sources on Tuesday, and this is what it breaks for anyone who optimised for the old behaviour" is a post, because it is anchored. "GEO is the new SEO" is a slogan, and you turn it down for the missing anchor, not for the missing row.
+
+So when the material holds no anchor — only that something exists, that a session took place, or that a topic is being talked about — say so. There is no post in it yet, and inventing a reason to care is how an account loses the people it already has.
+
+### When you are handed a topic instead of material
+
+A request can arrive as a subject rather than as something to read: "un tuit sobre los últimos movimientos de posicionamiento GEO". A subject contains no anchor, and this skill does not go looking for one.
+
+Ask for the material, or for what the person who asked already found: the change, the date, the source, the number. One concrete fact is enough to start from. Whoever invokes the skill resolves the research; the skill writes the post.
 
 ### Account and voice
 
@@ -155,6 +164,7 @@ Fewer variants that genuinely differ always beat more that nearly match.
 - **Do not open with "We", "Our" or "Orbitant".** Open with the anchor. Exception: naming a teammate is encouraged, to give them credit.
 - **Concrete beats clever.** A number, a measurement or a named consequence outperforms wordplay.
 - **Report the weighted character count** for every variant.
+- **Plain text in the post itself.** Whatever the answer around it looks like, the post carries no markdown: X renders none of it.
 - **Short lines and blank lines** are the whole formatting toolkit. Three lines of text at most.
 - **Lists inside a post:** one item per line, three items maximum, no bullet characters. More than three means it is a thread.
 - **No engagement bait.** Not "Agree?", not "What do you think?", not "Follow for more", not "Bookmark this". Traction is the post being worth stopping for, not the reader being asked to react.
@@ -178,12 +188,9 @@ Don't:
 
 **Number the variants and order them by your own preference, strongest first.** Not by length, and not in the order the angles occurred to you.
 
-The order is load-bearing, for two reasons:
+The order is load-bearing. Whoever reads the answer picks one of them, and the order is your recommendation: it saves them re-reading three posts to work out which one you believe in. **Variant 1 is the one you would publish if the decision were yours.** Do not lead with the safe one out of caution — if the sharp variant is the best post, it goes first.
 
-- A human picks one with a reaction in Slack. The order is your recommendation, and it saves them re-reading three posts to work out which one you believe in.
-- **An automated run takes the first one** and posts it. Variant 1 is what ships when nobody chooses.
-
-So variant 1 is the one you would publish if the decision were yours. Do not lead with the safe one out of caution: if the sharp variant is the best post, it goes first. Close with one line saying why the order is what it is, so a reviewer can argue with the reasoning and not only with the copy.
+Close with one line saying why the order is what it is, so a reviewer can argue with the reasoning and not only with the copy.
 
 ---
 
@@ -247,40 +254,12 @@ Propose **at most one**, in one line, and say which variant it belongs to or tha
 
 ---
 
-## Output format
-
-Plain text, ready to paste into X, Typefully or n8n. No markdown in the post bodies.
-
-**The `VARIANT n — [angle] — c/280` line is the delimiter, and that is a contract.** One header line per variant, one blank line between variants, nothing else at that level: a reviewer reacts to one of them in Slack, and an automated step takes the body under `VARIANT 1`. Do not repeat the posts in prose alongside the block — two copies drift the moment someone corrects one.
-
-```text
-X POST — [the anchor in one sentence]
-
-Account:  @WeOrbitant (company) | personal — [name]
-Language: [es | en]
-Source:   [KS session | interview with (name) | blog post | shipped feature | decision | measurement | build-in-public]
-Link:     none | [url], in VARIANT [n] only
-
-VARIANT 1 — [angle, 3 to 6 words] — [n]/280
-[post]
-
-VARIANT 2 — [angle] — [n]/280
-[post]
-
-VARIANT 3 — [angle] — [n]/280
-[post]
-
-ORDER — [one sentence: why VARIANT 1 is first]
-
-IMAGE — [what it shows, one line, and which variant] | none
-```
-
-### Self-check before delivering
+## Self-check before delivering
 
 Verify each of these. Do not deliver an answer that fails one.
 
 - [ ] Two or three variants, each a different angle, none of them another one reworded
-- [ ] Ordered by preference, strongest first, and `ORDER` says why
+- [ ] Numbered, ordered by preference, strongest first, with one line saying why
 - [ ] A weighted count on every variant, none over 280, emoji counted as 2, any URL counted as 23
 - [ ] Every variant stands alone, with no context and nothing to open
 - [ ] Every variant is anchored in something concrete and checkable
