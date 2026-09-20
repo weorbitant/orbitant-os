@@ -64,12 +64,12 @@ Flag the following patterns as issues if found:
 - **Past tense for ongoing work**: Flag use of past tense ("construimos", "fue", "era") to describe workflows, tools, or features that are currently active.
 - **Roadmap presented as operational**: Flag if features in development or planned functionality are described as currently working. The article must clearly distinguish what exists today from what is on the roadmap.
 - **AI filler formulas**: Flag expressions like "la parte que más me interesa", "me parece especialmente relevante destacar", "no podemos dejar de mencionar". These read as AI-generated filler, not as a person writing.
+- **Rhetorical questions**: Flag any rhetorical question, anywhere in the article — the hook, a transition, or the closing. It is a common AI-generated pattern, not an engagement device, and it must be restated as a declarative sentence.
 
 ### Formatting Conventions
 
 | Element | Usage |
 |---------|-------|
-| Rhetorical questions | Hooks, transitions, and engagement devices |
 | Blockquotes | Opening hooks, attributed quotes, external citations, pull quotes as visual reinforcement |
 | Admonitions | GitHub-flavored: `> [!IMPORTANT]`, `> [!TIP]` for callouts |
 | Bold | Key insights (scannable) |
@@ -84,7 +84,7 @@ Flag the following patterns as issues if found:
 
 Review against the following expected structure:
 
-1. **Hook**: Blockquote or rhetorical question that immediately engages the reader.
+1. **Hook**: An opening line that names the pain or problem the article addresses and immediately engages the reader. A blockquote is optional, never a requirement; a rhetorical question is never acceptable.
 2. **Opening paragraph**: Establishes the topic and why it matters. Primary keyword must appear within the first 100 words.
 3. **Body (H2 sections)**:
    - Minimum 3 H2 sections.
