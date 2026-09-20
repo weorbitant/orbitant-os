@@ -116,9 +116,9 @@ When reviewing an article generated from a multi-participant input, check:
 
 | Field | Standard |
 |---|---|
-| Título SEO | 55–60 characters including spaces. Must **begin with the exact primary keyword** — not a paraphrase, the exact keyword. |
-| Slug | 65–70 characters including spaces. Lowercase, hyphens, no accents or special characters. Must contain the primary keyword. |
-| Meta descripción | 130–140 characters including spaces. Must **begin with the exact primary keyword**. |
+| Título SEO | 50–56 characters including spaces. Must **begin with the exact primary keyword** — not a paraphrase, the exact keyword. |
+| Slug | 65–69 characters including spaces. Lowercase, hyphens, no accents or special characters. Must **begin with the exact primary keyword**. |
+| Meta descripción | 130–135 characters including spaces. Must **begin with the exact primary keyword**. |
 
 ### Keyword Distribution
 - Primary keyword in: at least one H2, the meta description (as the opening), and the first 100 words of the body. **The H1 does not need to contain it** — the H1 is the creative title, and the keyword requirement lives in the Título SEO, the Slug and the meta description.
@@ -178,9 +178,9 @@ Produce feedback with these sections:
 
 ### 4. Revisión SEO
 Evaluate with checkmarks or crosses:
-- [ ] Título SEO: length (55–60 chars) and begins with exact primary keyword
-- [ ] Slug: length (65–70 chars), format correct, contains keyword
-- [ ] Meta descripción: length (130–140 chars), begins with exact keyword
+- [ ] Título SEO: length (50–56 chars) and begins with exact primary keyword
+- [ ] Slug: length (65–69 chars), format correct, begins with exact keyword
+- [ ] Meta descripción: length (130–135 chars), begins with exact keyword
 - [ ] Keyword in at least one H2 and in the first 100 words (the H1 does not need it)
 - [ ] Internal links (2–4)
 - [ ] External links (3–5, authoritative)
