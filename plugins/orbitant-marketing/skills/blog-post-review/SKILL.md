@@ -125,8 +125,8 @@ When reviewing an article generated from a multi-participant input, check:
 - Natural usage — flag any keyword stuffing.
 
 ### Links
-- **Internal**: 2–4 links to other Orbitant blog posts. Flag if missing or excessive.
-- **External**: 3–5 links to authoritative sources (MDN, official docs, GitHub, research). Flag if linking to competitors or low-authority sources.
+- **Internal**: 1–2 links to other Orbitant blog posts. Flag if missing or excessive.
+- **External**: 1–2 links to authoritative sources (MDN, official docs, GitHub, research). Flag if linking to competitors or low-authority sources.
 - **Anchor text**: Links must span the natural phrase in which the topic appears, not just the topic noun. Flag anchor text that is too narrow (e.g., linking only the noun when the surrounding phrase would be more natural and informative).
 
 ### Images
@@ -182,8 +182,8 @@ Evaluate with checkmarks or crosses:
 - [ ] Slug: length (65–69 chars), format correct, begins with exact keyword
 - [ ] Meta descripción: length (130–135 chars), begins with exact keyword
 - [ ] Keyword in at least one H2 and in the first 100 words (the H1 does not need it)
-- [ ] Internal links (2–4)
-- [ ] External links (3–5, authoritative)
+- [ ] Internal links (1–2)
+- [ ] External links (1–2, authoritative)
 - [ ] Anchor text spans natural phrase (not just the noun)
 - [ ] Image alt text: descriptive and keyword-aware
 - [ ] Cluster and category correctly assigned
