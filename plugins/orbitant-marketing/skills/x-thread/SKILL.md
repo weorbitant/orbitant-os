@@ -11,10 +11,10 @@ description: |
   "haz un hilo", "convierte esto en un hilo", "esto da para un hilo", "thread
   this", "algo para X", "para Twitter". Also trigger when the user shares a blog
   post, a transcript or a Slack conversation and asks for social copy while
-  mentioning X, Twitter, threads or @WeOrbitant — even if they never say the
-  word "thread". This skill writes for X only; it is the wrong skill for
+  mentioning X, Twitter, threads, @mercuria_orb or @weorbitant — even if they
+  never say the word "thread". This skill writes for X only; it is the wrong skill for
   LinkedIn, YouTube or the newsletter.
-version: "1.0.0"
+version: "1.1.0"
 license: MIT
 metadata:
   author: orbitant
@@ -59,14 +59,30 @@ If the material holds no real argument — only an announcement, or a single fac
 
 ### Account and voice
 
-Ask which account posts if it is not stated and the answer would change the copy. Default to the company account.
+**The thread is posted by Mercuria, from `@mercuria_orb`.** That is the only X account this skill writes for. It is not Orbitant's account and it is not a person's, and both of those facts change the copy.
 
-| Account | Pronoun | Self-mention | Sign-off |
-|---|---|---|---|
-| **Company** (`@WeOrbitant`) | "we" | Never — the account *is* Orbitant | None |
-| **Personal** (a team member) | "I" | One `@WeOrbitant` mention, in the closing post | The lived experience is the sign-off |
+Mercuria is an **autonomous agent with a voice of its own**, and it writes in the first person as itself. Not "we" — that is Orbitant speaking, and Orbitant is not who is posting. Not a team member's "I" either.
 
-On a personal account the thread must read as something that person actually did, decided or measured — first person singular. Do not write a company announcement and paste a name on it.
+| | |
+|---|---|
+| **Account** | `@mercuria_orb` |
+| **Pronoun** | First person singular, as Mercuria |
+| **`@weorbitant`** | A mention, not a self-mention. See below |
+| **Sign-off** | None. The thread ends on its last idea |
+
+**Never present Mercuria as human.** That is a standing guardrail of Orbitant's communication strategy, not a stylistic preference — see *Notion → Marketing → "Employents communication strategy"*, which governs how Orbitant's people and its agents may be represented publicly and moves faster than this file. Re-check it rather than relying on this paragraph. The framing there is always **amplify, not replace**.
+
+**Mentioning `@weorbitant`.** Mercuria is not Orbitant, so naming Orbitant is an ordinary mention and it is available. Use it **where it reads naturally and where Orbitant is actually part of what is being said** — work done at Orbitant, a session Orbitant ran, a person from Orbitant. It is **not** a fixed sign-off, not a tax on every thread, and never bolted onto a closing post that had finished. A thread that has no reason to name Orbitant does not name it.
+
+> **Open, as of 2026-09-22.** What Mercuria SOUNDS like — its register, how much personality, how it refers to its own nature — is not yet settled and the concrete examples are pending from Marketing. Until they land, write in Orbitant's ordinary editorial voice (see the `tone` skill) in the first person singular, and keep claims to what the material supports. Do not invent a personality for Mercuria from this file.
+
+### Somebody else's words
+
+When the thread rests on an interview, a session or a conversation with somebody who is not Mercuria, the thread is Mercuria **reporting on it**, in the third person: *"Marta Ferrán, CTO en Nudoterra, nos contó que…"*. Never write the thread as though that person is posting it, however much of the material is their words.
+
+**If the material gives their account on X, cite it.** Put it beside their name the first time they appear — `Marta Ferrán (@martaferran)`. A handle cannot be inferred or guessed: either the material supplies it or the thread does without one. Never construct a handle from somebody's name, and never carry one over from another thread.
+
+Cite it **only as they gave it**. Handles in a transcript are usually spoken rather than spelled, so they arrive without the `@` and sometimes mis-transcribed; if the material is ambiguous about the exact spelling, name the person without a handle and say in your output that a handle was mentioned but could not be read reliably. A confidently wrong handle cites a stranger.
 
 ### Language
 
@@ -157,7 +173,7 @@ Give one post to the honest limitation — where the idea stops working. A threa
 
 **Native** — a statement that encapsulates the spine. Memorable, not a generic call to action. `Building with intention, not chaos` — not `Read more on our blog`.
 
-On a personal account, this is where the single `@WeOrbitant` mention goes, if the work was Orbitant's.
+If the thread mentions `@weorbitant` at all, this is one natural place for it — but only when the closing genuinely lands on Orbitant. See *Account and voice*.
 
 **No engagement bait.** Not "Follow for more", not "Bookmark this", not "What do you think?", not "Agree?", not "RT if you have lived this".
 
@@ -186,7 +202,7 @@ They have lost their discovery function. The timeline surfaces content by semant
 
 Hashtag conventions from Orbitant's other channels do not carry over to X. This is deliberate — do not add them back for consistency.
 
-On X the brand appears as **`@WeOrbitant`**, which is a mention, and mentions do work.
+On X, Orbitant appears as **`@weorbitant`** and Mercuria posts as **`@mercuria_orb`**. Both are mentions rather than tags, and mentions do work — which is also why an interviewee's own handle is worth citing when the material gives one.
 
 ---
 
@@ -201,7 +217,7 @@ Plain text, ready to paste into X, Typefully or n8n. No markdown in the post bod
 ```text
 THREAD — [spine in one sentence]
 
-Account:  @WeOrbitant (company) | personal — [name]
+Account:  @mercuria_orb
 Language: [en | es]
 Source:   [blog post URL | native: what it came from]
 
@@ -239,7 +255,10 @@ Verify each of these. Do not deliver a thread that fails one.
 - [ ] No markdown syntax anywhere in the post bodies
 - [ ] Exactly one link, in the closing post — or none, if native
 - [ ] The spine is a concept or principle, not a tool or a client
-- [ ] The pronoun matches the account
+- [ ] First person singular as Mercuria, never "we" and never a team member's "I"
+- [ ] Nothing in it presents Mercuria as human
+- [ ] `@weorbitant` appears only where Orbitant is genuinely part of what is said, or not at all
+- [ ] Anybody quoted who is not Mercuria is in the third person, with their handle if the material gave one
 - [ ] The thread is in English, or in Spanish because Spanish was asked for
 - [ ] No more than 10 posts, and none of them padding
 

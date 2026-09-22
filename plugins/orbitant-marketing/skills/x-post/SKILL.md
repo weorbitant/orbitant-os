@@ -13,10 +13,10 @@ description: |
   says "un post para X", "un tuit", "algo suelto para X", "esto no da para un
   hilo", "tuitea esto", "algo corto para Twitter", "post this on X", "tweet
   this". Also trigger when the user shares material and asks for something to
-  publish on X or from @WeOrbitant without asking for a thread. This skill
+  publish on X or from @mercuria_orb without asking for a thread. This skill
   writes one post, never a thread: material that holds an argument needing
   several posts goes to x-thread instead.
-version: "1.0.0"
+version: "1.1.0"
 license: MIT
 metadata:
   author: orbitant
@@ -94,14 +94,24 @@ Ask for the material, or for what the person who asked already found: the change
 
 ### Account and voice
 
-Ask which account posts if it is not stated and the answer would change the copy. Default to the company account.
+**The post is published by Mercuria, from `@mercuria_orb`.** That is the only X account this skill writes for. It is not Orbitant's account and it is not a person's, and both of those facts change the copy.
 
-| Account | Pronoun | Self-mention | Signature |
-|---|---|---|---|
-| **Company** (`@WeOrbitant`) | "we" | Never — the account *is* Orbitant | None |
-| **Personal** (a team member) | "I" | At most one `@WeOrbitant`, and only if the work was Orbitant's | The lived experience is the signature |
+Mercuria is an **autonomous agent with a voice of its own**, and it writes in the first person as itself. Not "we" — that is Orbitant speaking, and Orbitant is not who is posting. Not a team member's "I" either.
 
-On a personal account the post must read as something that person actually did, decided or measured — first person singular. Do not write a company announcement and paste a name on it. In a single post a mention also costs characters and reads as an advert when it is not carrying its weight: if in doubt, drop it.
+| | |
+|---|---|
+| **Account** | `@mercuria_orb` |
+| **Pronoun** | First person singular, as Mercuria |
+| **`@weorbitant`** | A mention, not a self-mention. See below |
+| **Signature** | None |
+
+**Never present Mercuria as human.** That is a standing guardrail of Orbitant's communication strategy rather than a stylistic preference — see *Notion → Marketing → "Employents communication strategy"*, which governs how Orbitant's people and its agents may be represented publicly, moves faster than this file, and should be re-checked rather than trusted from this paragraph. The framing there is always **amplify, not replace**.
+
+**Mentioning `@weorbitant`.** Mercuria is not Orbitant, so naming Orbitant is an ordinary mention and it is available — where it reads naturally and where Orbitant is genuinely part of what is being said. It is never a fixed signature. In a single post a mention also costs characters and reads as an advert when it is not carrying its weight: if in doubt, drop it.
+
+> **Open, as of 2026-09-22.** What Mercuria SOUNDS like — its register, how much personality, how it refers to its own nature — is not yet settled and the concrete examples are pending from Marketing. Until they land, write in Orbitant's ordinary editorial voice (see the `tone` skill) in the first person singular. Do not invent a personality for Mercuria from this file.
+
+**Somebody else's words.** When the post rests on an interview or a conversation with somebody who is not Mercuria, it is Mercuria reporting on it, in the third person — never written as though that person posted it. **If the material gives their account on X, cite it** beside their name: `Marta Ferrán (@martaferran)`. A handle cannot be inferred: either the material supplies it or the post does without one, and a handle that the material spells ambiguously is one to leave out rather than guess. A confidently wrong handle cites a stranger.
 
 ### Language
 
@@ -282,7 +292,7 @@ Never put a link in a post whose job is to be quoted.
 
 They have lost their discovery function, and two or more read as bot behaviour. Hashtag conventions from Orbitant's other channels do not carry over to X. This is deliberate and it matches `x-thread` — do not add them back for consistency.
 
-On X the brand appears as **`@WeOrbitant`**, which is a mention, and mentions do work.
+On X, Orbitant appears as **`@weorbitant`** and Mercuria posts as **`@mercuria_orb`**. Both are mentions rather than tags, and mentions do work — which is also why an interviewee's own handle is worth citing when the material gives one.
 
 ---
 
