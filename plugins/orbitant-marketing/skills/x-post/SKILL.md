@@ -11,12 +11,11 @@ description: |
 
   Activate when the user asks for a post, a tweet or a single piece for X, or
   says "un post para X", "un tuit", "algo suelto para X", "esto no da para un
-  hilo", "tuitea esto", "algo corto para Twitter", "post this on X", "tweet
-  this". Also trigger when the user shares material and asks for something to
-  publish on X, or from @mercuria_orb or @weorbitant, without asking for a
-  thread. This skill
-  writes one post, never a thread: material that holds an argument needing
-  several posts goes to x-thread instead.
+  hilo", "tuitea esto", "post this on X", "tweet this". Also trigger when the
+  user shares material and asks for something to publish on X, or from
+  @mercuria_orb or @weorbitant, without asking for a thread. This skill writes
+  one post, never a thread: material holding an argument that needs several
+  posts goes to x-thread instead.
 version: "1.0.1"
 license: MIT
 metadata:
