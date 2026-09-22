@@ -70,9 +70,13 @@ On a personal account the thread must read as something that person actually did
 
 ### Language
 
-**Follow the language of the source.** Spanish material, Spanish thread. English material, English thread. One version — never both, and never a translation alongside.
+**English by default** — every thread, whatever language the material is in. Spanish material, English thread.
 
-If the source mixes languages, use the language of the bulk of it. Keep technical English terms in English even in a Spanish thread: *framework*, *pipeline*, *deployment*, *token*.
+Write the thread in Spanish only when whoever asked for it asks for Spanish. Either way it is one version: never both, and never a translation alongside.
+
+Material in Spanish and a thread in English means anything you quote is being translated. Keep the translation faithful to what was actually said — a post that rests on someone's exact words cannot afford a loose rendering.
+
+In a Spanish thread, keep technical English terms in English: *framework*, *pipeline*, *deployment*, *token*.
 
 ---
 
@@ -198,7 +202,7 @@ Plain text, ready to paste into X, Typefully or n8n. No markdown in the post bod
 THREAD — [spine in one sentence]
 
 Account:  @WeOrbitant (company) | personal — [name]
-Language: [es | en]
+Language: [en | es]
 Source:   [blog post URL | native: what it came from]
 
 POST 1 — [n]/280
@@ -236,7 +240,7 @@ Verify each of these. Do not deliver a thread that fails one.
 - [ ] Exactly one link, in the closing post — or none, if native
 - [ ] The spine is a concept or principle, not a tool or a client
 - [ ] The pronoun matches the account
-- [ ] The thread language matches the source language
+- [ ] The thread is in English, or in Spanish because Spanish was asked for
 - [ ] No more than 10 posts, and none of them padding
 
 ---
@@ -250,7 +254,7 @@ Refer to the `tone` skill for Orbitant's voice. On X specifically:
 - **Dry humour is welcome** when it fits naturally. Human, not polished — not forced, not performative.
 - **No buzzwords:** "game-changing", "innovative", "cutting-edge", "empower", "leverage".
 - **No growth-hacker voice.** The fastest way to lose a technical audience: "Here is everything you need to know", "10 lessons I learned", "Most developers get this wrong", "This changed how I think about X forever", "Steal this".
-- **In Spanish, the em dash only marks a two-sided aside.** A single-sided dash used as a continuation is an anglicism.
+- **If the thread is in Spanish, the em dash only marks a two-sided aside.** A single-sided dash used as a continuation is an anglicism. In English it is ordinary punctuation and the rule does not apply.
 
 ---
 

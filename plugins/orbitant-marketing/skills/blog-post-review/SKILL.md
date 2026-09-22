@@ -64,12 +64,12 @@ Flag the following patterns as issues if found:
 - **Past tense for ongoing work**: Flag use of past tense ("construimos", "fue", "era") to describe workflows, tools, or features that are currently active.
 - **Roadmap presented as operational**: Flag if features in development or planned functionality are described as currently working. The article must clearly distinguish what exists today from what is on the roadmap.
 - **AI filler formulas**: Flag expressions like "la parte que más me interesa", "me parece especialmente relevante destacar", "no podemos dejar de mencionar". These read as AI-generated filler, not as a person writing.
+- **Rhetorical questions**: Flag any rhetorical question, anywhere in the article — the hook, a transition, or the closing. It is a common AI-generated pattern, not an engagement device, and it must be restated as a declarative sentence.
 
 ### Formatting Conventions
 
 | Element | Usage |
 |---------|-------|
-| Rhetorical questions | Hooks, transitions, and engagement devices |
 | Blockquotes | Opening hooks, attributed quotes, external citations, pull quotes as visual reinforcement |
 | Admonitions | GitHub-flavored: `> [!IMPORTANT]`, `> [!TIP]` for callouts |
 | Bold | Key insights (scannable) |
@@ -84,7 +84,7 @@ Flag the following patterns as issues if found:
 
 Review against the following expected structure:
 
-1. **Hook**: Blockquote or rhetorical question that immediately engages the reader.
+1. **Hook**: An opening line that names the pain or problem the article addresses and immediately engages the reader. A blockquote is optional, never a requirement; a rhetorical question is never acceptable.
 2. **Opening paragraph**: Establishes the topic and why it matters. Primary keyword must appear within the first 100 words.
 3. **Body (H2 sections)**:
    - Minimum 3 H2 sections.
@@ -116,21 +116,22 @@ When reviewing an article generated from a multi-participant input, check:
 
 | Field | Standard |
 |---|---|
-| Título SEO | 55–60 characters including spaces. Must **begin with the exact primary keyword** — not a paraphrase, the exact keyword. |
-| Slug | 65–70 characters including spaces. Lowercase, hyphens, no accents or special characters. Must contain the primary keyword. |
-| Meta descripción | 130–140 characters including spaces. Must **begin with the exact primary keyword**. |
+| Título SEO | 50–56 characters including spaces. Must **begin with the exact primary keyword** — not a paraphrase, the exact keyword. |
+| Slug | 65–69 characters including spaces. Lowercase, hyphens, no accents or special characters. Must **begin with the exact primary keyword**. |
+| Meta descripción | 130–135 characters including spaces. Must **begin with the exact primary keyword**. |
 
 ### Keyword Distribution
-- Primary keyword in: H1, at least one H2, meta description (as the opening), and first 100 words of the body.
+- Primary keyword in: at least one H2, the meta description (as the opening), and the first 100 words of the body. **The H1 does not need to contain it** — the H1 is the creative title, and the keyword requirement lives in the Título SEO, the Slug and the meta description.
 - Natural usage — flag any keyword stuffing.
 
 ### Links
-- **Internal**: 2–4 links to other Orbitant blog posts. Flag if missing or excessive.
-- **External**: 3–5 links to authoritative sources (MDN, official docs, GitHub, research). Flag if linking to competitors or low-authority sources.
+- **Internal**: 1–2 links to other Orbitant blog posts. Flag if missing or excessive.
+- **External**: 1–2 links to authoritative sources (MDN, official docs, GitHub, research). Flag if linking to competitors or low-authority sources.
 - **Anchor text**: Links must span the natural phrase in which the topic appears, not just the topic noun. Flag anchor text that is too narrow (e.g., linking only the noun when the surrounding phrase would be more natural and informative).
 
 ### Images
-- Alt text must be descriptive, SEO-friendly, and include the primary keyword naturally.
+- A draft coming out of `blog-post-create` carries no alt text on purpose: it is written once the image exists, so do not flag its absence in a draft.
+- If the article already has its image and its alt text, check that the alt text is descriptive, SEO-friendly, and includes the primary keyword naturally.
 
 ---
 
@@ -178,14 +179,14 @@ Produce feedback with these sections:
 
 ### 4. Revisión SEO
 Evaluate with checkmarks or crosses:
-- [ ] Título SEO: length (55–60 chars) and begins with exact primary keyword
-- [ ] Slug: length (65–70 chars), format correct, contains keyword
-- [ ] Meta descripción: length (130–140 chars), begins with exact keyword
-- [ ] Keyword in H1, at least one H2, first 100 words
-- [ ] Internal links (2–4)
-- [ ] External links (3–5, authoritative)
+- [ ] Título SEO: length (50–56 chars) and begins with exact primary keyword
+- [ ] Slug: length (65–69 chars), format correct, begins with exact keyword
+- [ ] Meta descripción: length (130–135 chars), begins with exact keyword
+- [ ] Keyword in at least one H2 and in the first 100 words (the H1 does not need it)
+- [ ] Internal links (1–2)
+- [ ] External links (1–2, authoritative)
 - [ ] Anchor text spans natural phrase (not just the noun)
-- [ ] Image alt text: descriptive and keyword-aware
+- [ ] Image alt text, only if the image already exists: descriptive and keyword-aware
 - [ ] Cluster and category correctly assigned
 
 ### 5. Sugerencias accionables
