@@ -23,7 +23,7 @@ orbitant-os/
 ├── .claude-plugin/
 │   └── marketplace.json            <- THE marketplace manifest (lists all plugins)
 ├── plugins/
-│   ├── orbitant-marketing/         <- v1.9.0 — blog-post-review, blog-post-create, blog-post-translate, tone, yt-description, linkedin-post, image-creation, newsletter, x-thread, x-post
+│   ├── orbitant-marketing/         <- v1.8.1 — blog-post-review, blog-post-create, blog-post-translate, tone, yt-description, linkedin-post, image-creation, newsletter, x-thread, x-post
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json
 │   │   └── skills/
@@ -265,7 +265,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 
 | Plugin | Version | Status | Skills | Commands |
 |--------|---------|--------|--------|----------|
-| orbitant-marketing | 1.9.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter`, `orbitant-x-thread`, `orbitant-x-post` | — |
+| orbitant-marketing | 1.8.1 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter`, `orbitant-x-thread`, `orbitant-x-post` | — |
 | orbitant-operations | 1.0.0 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
 | orbitant-engineering | 0.1.1 | Active | `orbitant-ai-readiness`, `orbitant-git-hygiene`, `orbitant-owasp-scan`, `orbitant-12-factor`, `orbitant-debrief` | `/ground-control` |
 

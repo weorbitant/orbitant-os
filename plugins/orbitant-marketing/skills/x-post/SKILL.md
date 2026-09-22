@@ -17,7 +17,7 @@ description: |
   thread. This skill
   writes one post, never a thread: material that holds an argument needing
   several posts goes to x-thread instead.
-version: "1.1.0"
+version: "1.0.1"
 license: MIT
 metadata:
   author: orbitant

@@ -14,7 +14,7 @@ description: |
   mentioning X, Twitter, threads, @mercuria_orb or @weorbitant — even if they
   never say the word "thread". This skill writes for X only; it is the wrong skill for
   LinkedIn, YouTube or the newsletter.
-version: "1.1.0"
+version: "1.0.1"
 license: MIT
 metadata:
   author: orbitant
