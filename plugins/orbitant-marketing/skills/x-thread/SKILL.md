@@ -11,7 +11,7 @@ description: |
   "haz un hilo", "convierte esto en un hilo", "esto da para un hilo", "thread
   this", "algo para X", "para Twitter". Also trigger when the user shares a blog
   post, a transcript or a Slack conversation and asks for social copy while
-  mentioning X, Twitter, threads, @mercuria_orb or @weorbitant — even if they
+  mentioning X, Twitter, threads, @mercuria_orb or @WeOrbitant — even if they
   never say the word "thread". This skill writes for X only; it is the wrong skill for
   LinkedIn, YouTube or the newsletter.
 version: "1.0.4"
@@ -59,7 +59,7 @@ If the material holds no real argument — only an announcement, or a single fac
 
 ### Account and voice
 
-**Who posts a thread is not decided when it is written.** It may go out from `@weorbitant`, from a team member's own account, or from `@mercuria_orb`. That choice is made later, by a human, on the finished thread — so **never state an account anywhere in the output**, and never write a thread that only works from one of them.
+**Who posts a thread is not decided when it is written.** It may go out from `@WeOrbitant`, from a team member's own account, or from `@mercuria_orb`. That choice is made later, by a human, on the finished thread — so **never state an account anywhere in the output**, and never write a thread that only works from one of them.
 
 What that rules out, concretely:
 
@@ -67,9 +67,9 @@ What that rules out, concretely:
 - **No "we" standing in for whoever posts.** A "we" that means Orbitant-the-company inside a sentence about Orbitant's own work is fine; a "we" that is the account talking about itself is not, because nobody knows yet which account that is.
 - **No sign-off and no signature.** The thread ends on its last idea.
 
-**Naming Orbitant.** `@weorbitant` is a mention like any other and it is available — use it where Orbitant is genuinely part of what is being said (work done there, a session it ran, somebody who works there) and not as a tax on every thread. It reads correctly whoever ends up posting, which is exactly why it is the safe way to put Orbitant in a thread.
+**Naming Orbitant.** `@WeOrbitant` is a mention like any other and it is available — use it where Orbitant is genuinely part of what is being said (work done there, a session it ran, somebody who works there) and not as a tax on every thread. It reads correctly whoever ends up posting, which is exactly why it is the safe way to put Orbitant in a thread.
 
-**Write it as the mention when it appears in the copy.** If a post names Orbitant at all — somebody's employer, where a session happened, who built a thing — `@weorbitant` is the form to use: `software engineer at @weorbitant`, `a team at @weorbitant`. It costs the same characters, it is a live link, and it is the difference between naming the company and reaching it. Not mandatory and not a reason to shoehorn Orbitant into a post that had no reason to mention it — but when the name is already there, mention it.
+**Write it as the mention when it appears in the copy.** If a post names Orbitant at all — somebody's employer, where a session happened, who built a thing — `@WeOrbitant` is the form to use: `software engineer at @WeOrbitant`, `a team at @WeOrbitant`. It costs the same characters, it is a live link, and it is the difference between naming the company and reaching it. Not mandatory and not a reason to shoehorn Orbitant into a post that had no reason to mention it — but when the name is already there, mention it.
 
 **If an agent turns out to be the publisher**, the standing guardrails of Orbitant's communication strategy apply: an agent never presents itself as human, the framing is always **amplify, not replace** (never "fewer humans"), and disclosure that a piece involved an AI agent is required where the strategy calls for it. Writing a thread that presumes no account is what keeps all three satisfiable without knowing.
 
@@ -133,7 +133,7 @@ X surfaces this post on its own. Assume most people read only this one. **It has
 Do:
 
 - `Measured: with hexagonal architecture the agent needed 3 to 5x more context to make the same change.`
-- `A pipeline at @weorbitant took 22 minutes. One integration test was eating 60% of that, because it span up a real Postgres on every run.`
+- `A pipeline at @WeOrbitant took 22 minutes. One integration test was eating 60% of that, because it span up a real Postgres on every run.`
 - `AI is writing malicious npm packages now, and they are harder to spot than the ones humans wrote.`
 
 Don't:
@@ -178,7 +178,7 @@ Give one post to the honest limitation — where the idea stops working. A threa
 
 **Native** — a statement that encapsulates the spine. Memorable, not a generic call to action. `Building with intention, not chaos` — not `Read more on our blog`.
 
-If the thread mentions `@weorbitant` at all, this is one natural place for it — but only when the closing genuinely lands on Orbitant. See *Account and voice*.
+If the thread mentions `@WeOrbitant` at all, this is one natural place for it — but only when the closing genuinely lands on Orbitant. See *Account and voice*.
 
 **No engagement bait.** Not "Follow for more", not "Bookmark this", not "What do you think?", not "Agree?", not "RT if you have lived this".
 
@@ -207,7 +207,7 @@ They have lost their discovery function. The timeline surfaces content by semant
 
 Hashtag conventions from Orbitant's other channels do not carry over to X. This is deliberate — do not add them back for consistency.
 
-On X, Orbitant appears as **`@weorbitant`**. It is a mention rather than a tag, and mentions do work — which is also why an interviewee's own handle is worth citing when the material gives one. Whose account the thread goes out from is a separate question and not one this file answers: see *Account and voice*.
+On X, Orbitant appears as **`@WeOrbitant`**. It is a mention rather than a tag, and mentions do work — which is also why an interviewee's own handle is worth citing when the material gives one. Whose account the thread goes out from is a separate question and not one this file answers: see *Account and voice*.
 
 ---
 
@@ -262,7 +262,7 @@ Verify each of these. Do not deliver a thread that fails one.
 - [ ] No account stated anywhere, and nothing that only works from one of them
 - [ ] No self-introduction and no sign-off, in any voice
 - [ ] No "we" standing in for whoever posts (Orbitant-as-subject is fine)
-- [ ] `@weorbitant` appears only where Orbitant is genuinely part of what is said, or not at all
+- [ ] `@WeOrbitant` appears only where Orbitant is genuinely part of what is said, or not at all
 - [ ] Anybody quoted is in the third person, with their handle if the material gave one
 - [ ] The thread is in English, or in Spanish because Spanish was asked for
 - [ ] No more than 10 posts, and none of them padding
