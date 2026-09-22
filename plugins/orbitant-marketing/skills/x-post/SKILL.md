@@ -16,7 +16,7 @@ description: |
   @mercuria_orb or @weorbitant, without asking for a thread. This skill writes
   one post, never a thread: material holding an argument that needs several
   posts goes to x-thread instead.
-version: "1.0.1"
+version: "1.0.2"
 license: MIT
 metadata:
   author: orbitant
