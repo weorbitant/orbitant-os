@@ -53,7 +53,7 @@ Platform facts. They are not style preferences and you cannot write around them.
 
 - **280 characters per post, hard.** A post at 281 does not post.
 - **The limit is weighted, and weight 2 is the default.** Only a short allowlist of Unicode ranges weighs 1: `U+0000-U+10FF`, `U+2000-U+200D`, `U+2010-U+201F` and `U+2032-U+2037`. Latin text, Spanish accents, ñ, the line break and the ordinary punctuation you type all fall inside it and weigh 1.
-- **Everything outside that allowlist weighs 2.** Emoji and CJK, and also the typographic ellipsis `…` (U+2026), which is the one that catches Spanish copy: three of them cost six characters, not three. A compound emoji — a skin tone modifier, a ZWJ sequence like `👩‍💻` — costs more than 2, so never try to budget one precisely.
+- **Everything outside that allowlist weighs 2.** Emoji and CJK, and also the typographic ellipsis `…` (U+2026), which is the one that slips in unnoticed: three of them cost six characters, not three. A compound emoji — a skin tone modifier, a ZWJ sequence like `👩‍💻` — costs more than 2, so never try to budget one precisely.
 - **A URL always counts as 23**, however short or long it is. X rewrites every link through its own shortener before counting it.
 - **No text formatting.** X renders no markdown. `**bold**` shows up as literal asterisks, `##` as literal hashes. The line break is the only formatting tool you have.
 - **The post is read with no context around it**, by people who have never heard of Orbitant.
@@ -105,9 +105,13 @@ On a personal account the post must read as something that person actually did, 
 
 ### Language
 
-**Follow the language of the source.** Spanish material, Spanish post. English material, English post. One version — never both, and never a translation alongside.
+**English by default** — every post, whatever language the material is in. Spanish material, English post.
 
-If the source mixes languages, use the language of the bulk of it. Keep technical English terms in English even in a Spanish post: *framework*, *pipeline*, *deployment*, *token*.
+Write the post in Spanish only when whoever asked for it asks for Spanish. Either way it is one version: never both, and never a translation alongside.
+
+Material in Spanish and a post in English means anything you quote is being translated. Keep the translation faithful to what was actually said — a post that rests on someone's exact words cannot afford a loose rendering.
+
+In a Spanish post, keep technical English terms in English: *framework*, *pipeline*, *deployment*, *token*.
 
 ---
 
@@ -199,7 +203,7 @@ Close with one line saying why the order is what it is, so a reviewer can argue 
 
 The four steps on real material. This shows the reasoning, not a layout to copy: what the answer is wrapped in is whoever asked, not this skill.
 
-**Material:** a Slack thread where the team worked out why CI was slow, with the before and after numbers in it. Company account, English source, no public URL.
+**Material:** a Slack thread where the team worked out why CI was slow, with the before and after numbers in it. Company account, no public URL.
 
 **Anchor:** the pipeline went from 22 minutes to 8 after we replaced one integration test.
 
@@ -241,9 +245,9 @@ The sharpest single post available is one that names a real person and says what
 
 The line is where the sentence puts its subject. **The subject is the idea. The person is how you got to it.**
 
-> Do: `Le preguntamos a [Nombre] cómo mide el impacto de los agentes. Contestó con latencia y con coste, y ni una sola vez con "productividad". Esa ausencia es la respuesta más honesta que hemos escuchado este año.`
+> Do: `We asked [Name] how they measure the impact of agents. They answered with latency and with cost, and not once with "productivity". That absence is the most honest answer we have heard this year.`
 >
-> Don't: `[Nombre] no supo qué contestar cuando le preguntamos por productividad.`
+> Don't: `[Name] had no answer when we asked them about productivity.`
 
 The first one is about how a practitioner thinks, and the person comes out of it well. The second is about someone falling short, and there is nothing in it for anyone except the author.
 
@@ -309,7 +313,7 @@ Verify each of these. Do not deliver an answer that fails one.
 - [ ] No markdown syntax in any post body
 - [ ] No link, or exactly one link in exactly one variant
 - [ ] The pronoun matches the account
-- [ ] The post language matches the source language
+- [ ] The post is in English, or in Spanish because Spanish was asked for
 - [ ] If a person is named for something they did not say: the absence is checkable, the idea is the subject, and you would send it to them first
 - [ ] This is one post, not a thread compressed into one
 
@@ -324,7 +328,7 @@ Refer to the `tone` skill for Orbitant's voice. On a single X post specifically:
 - **Dry humour is welcome** when it fits naturally. Human, not polished — not forced, not performative.
 - **No buzzwords:** "game-changing", "innovative", "cutting-edge", "empower", "leverage".
 - **No growth-hacker voice:** "Most developers get this wrong", "Here is everything you need to know", "This changed how I think about X forever", "Steal this".
-- **In Spanish, the em dash only marks a two-sided aside.** A single-sided dash used as a continuation is an anglicism.
+- **If the post is in Spanish, the em dash only marks a two-sided aside.** A single-sided dash used as a continuation is an anglicism. In English it is ordinary punctuation and the rule does not apply.
 
 ---
 
