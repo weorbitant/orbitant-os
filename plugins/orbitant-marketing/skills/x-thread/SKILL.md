@@ -11,10 +11,10 @@ description: |
   "haz un hilo", "convierte esto en un hilo", "esto da para un hilo", "thread
   this", "algo para X", "para Twitter". Also trigger when the user shares a blog
   post, a transcript or a Slack conversation and asks for social copy while
-  mentioning X, Twitter, threads, @mercuria_orb or @weorbitant — even if they
+  mentioning X, Twitter, threads, @mercuria_orb or @WeOrbitant — even if they
   never say the word "thread". This skill writes for X only; it is the wrong skill for
   LinkedIn, YouTube or the newsletter.
-version: "1.0.2"
+version: "1.0.4"
 license: MIT
 metadata:
   author: orbitant
@@ -59,32 +59,27 @@ If the material holds no real argument — only an announcement, or a single fac
 
 ### Account and voice
 
-**The thread is posted by Mercuria, from `@mercuria_orb`.** That is the only X account this skill writes for. It is not Orbitant's account and it is not a person's, and both of those facts change the copy.
+**Who posts a thread is not decided when it is written.** It may go out from `@WeOrbitant`, from a team member's own account, or from `@mercuria_orb`. That choice is made later, by a human, on the finished thread — so **never state an account anywhere in the output**, and never write a thread that only works from one of them.
 
-Mercuria is an **autonomous agent with a voice of its own**, and it writes in the first person as itself. Not "we" — that is Orbitant speaking, and Orbitant is not who is posting. Not a team member's "I" either.
+What that rules out, concretely:
 
-| | |
-|---|---|
-| **Account** | `@mercuria_orb` |
-| **Pronoun** | First person singular, as Mercuria |
-| **`@weorbitant`** | A mention, not a self-mention. See below |
-| **Sign-off** | None. The thread ends on its last idea |
+- **No self-introduction, in any voice.** Not "we at Orbitant", not "I'm Mercuria", not a name and a role. Open with the insight.
+- **No "we" standing in for whoever posts.** A "we" that means Orbitant-the-company inside a sentence about Orbitant's own work is fine; a "we" that is the account talking about itself is not, because nobody knows yet which account that is.
+- **No sign-off and no signature.** The thread ends on its last idea.
 
-**Never present Mercuria as human.** That is a standing guardrail of Orbitant's communication strategy, not a stylistic preference, and it comes with two more: the framing is always **amplify, not replace** (never "fewer humans"), and **disclosure that a piece involved an AI agent is required where the strategy calls for it** — which matters more here than on any other channel, because here the agent is the publisher.
+**Naming Orbitant.** `@WeOrbitant` is a mention like any other and it is available — use it where Orbitant is genuinely part of what is being said (work done there, a session it ran, somebody who works there) and not as a tax on every thread. It reads correctly whoever ends up posting, which is exactly why it is the safe way to put Orbitant in a thread.
 
-The strategy is the source of truth and it moves faster than this file: *Notion → Marketing → "Employents communication strategy"*, with its linked documents *"Orbitant — Content Machine (Operating System)"* and *"Orbitant — Plan de Comunicación Sep–Oct 2026"*. Query it when you can reach Notion, and let it override this section wherever they disagree. **When you cannot reach it, do not stall and do not invent a check**: the three guardrails above are the ones that were current when this file was written, so honour those and say in your output that the strategy was not consulted.
+**Write it as the mention when it appears in the copy.** If a post names Orbitant at all — somebody's employer, where a session happened, who built a thing — `@WeOrbitant` is the form to use: `software engineer at @WeOrbitant`, `a team at @WeOrbitant`. It costs the same characters, it is a live link, and it is the difference between naming the company and reaching it. Not mandatory and not a reason to shoehorn Orbitant into a post that had no reason to mention it — but when the name is already there, mention it.
 
-**Mentioning `@weorbitant`.** Mercuria is not Orbitant, so naming Orbitant is an ordinary mention and it is available. Use it **where it reads naturally and where Orbitant is actually part of what is being said** — work done at Orbitant, a session Orbitant ran, a person from Orbitant. It is **not** a fixed sign-off, not a tax on every thread, and never bolted onto a closing post that had finished. A thread that has no reason to name Orbitant does not name it.
+**If an agent turns out to be the publisher**, the standing guardrails of Orbitant's communication strategy apply: an agent never presents itself as human, the framing is always **amplify, not replace** (never "fewer humans"), and disclosure that a piece involved an AI agent is required where the strategy calls for it. Writing a thread that presumes no account is what keeps all three satisfiable without knowing.
 
-**What Mercuria sounds like.** The register is the house one: write as the `tone` skill says, in the first person singular. What makes it Mercuria's rather than Orbitant's is the standpoint, not a costume — an agent that did the reading, watched the session or went through the material, saying what it found and no more than the material supports.
-
-**Do not invent a personality.** No quirks, no catchphrase, no jokes about being a machine, no narrating its own nature unless the post is genuinely about that. Marketing settled the standpoint on 2026-09-22 and deliberately did not hand down a persona; a distinct register is a product decision nobody has taken, and it is not this file's to take by example. If one is ever wanted, it arrives here as its own change with examples attached.
+The strategy is the source of truth and it moves faster than this file: *Notion → Marketing → "Employents communication strategy"*, with its linked documents *"Orbitant — Content Machine (Operating System)"* and *"Orbitant — Plan de Comunicación Sep–Oct 2026"*. Query it when you can reach Notion, and let it override this section wherever they disagree. **When you cannot reach it, do not stall and do not invent a check**: the guardrails above were current when this file was written, so honour those and say in your output that the strategy was not consulted.
 
 ### Somebody else's words
 
-When the thread rests on an interview, a session or a conversation with somebody who is not Mercuria, the thread is Mercuria **reporting on it**, in the third person. Never write the thread as though that person is posting it, however much of the material is their words.
+When the thread rests on an interview, a session or a conversation, it **reports on it**, in the third person. Never write the thread as though the person quoted is posting it, however much of the material is their words.
 
-Report what they said; do not borrow the interviewer's voice. Mercuria did not run the interview, so *"they told us"* is wrong twice over — "us" is Orbitant, who is not posting, and the conversation was not Mercuria's:
+Report what they said; do not borrow the interviewer's voice. *"They told us"* presumes both who ran the conversation and who is posting, and the thread knows neither:
 
 > Do: `Marta Ferrán (@martaferran), CTO at Nudoterra, spent six weeks writing definitions by hand before buying a single tool.`
 >
@@ -138,7 +133,7 @@ X surfaces this post on its own. Assume most people read only this one. **It has
 Do:
 
 - `Measured: with hexagonal architecture the agent needed 3 to 5x more context to make the same change.`
-- `A pipeline at @weorbitant took 22 minutes. One integration test was eating 60% of that, because it span up a real Postgres on every run.`
+- `A pipeline at @WeOrbitant took 22 minutes. One integration test was eating 60% of that, because it span up a real Postgres on every run.`
 - `AI is writing malicious npm packages now, and they are harder to spot than the ones humans wrote.`
 
 Don't:
@@ -183,7 +178,7 @@ Give one post to the honest limitation — where the idea stops working. A threa
 
 **Native** — a statement that encapsulates the spine. Memorable, not a generic call to action. `Building with intention, not chaos` — not `Read more on our blog`.
 
-If the thread mentions `@weorbitant` at all, this is one natural place for it — but only when the closing genuinely lands on Orbitant. See *Account and voice*.
+If the thread mentions `@WeOrbitant` at all, this is one natural place for it — but only when the closing genuinely lands on Orbitant. See *Account and voice*.
 
 **No engagement bait.** Not "Follow for more", not "Bookmark this", not "What do you think?", not "Agree?", not "RT if you have lived this".
 
@@ -212,7 +207,7 @@ They have lost their discovery function. The timeline surfaces content by semant
 
 Hashtag conventions from Orbitant's other channels do not carry over to X. This is deliberate — do not add them back for consistency.
 
-On X, Orbitant appears as **`@weorbitant`** and Mercuria posts as **`@mercuria_orb`**. Both are mentions rather than tags, and mentions do work — which is also why an interviewee's own handle is worth citing when the material gives one.
+On X, Orbitant appears as **`@WeOrbitant`**. It is a mention rather than a tag, and mentions do work — which is also why an interviewee's own handle is worth citing when the material gives one. Whose account the thread goes out from is a separate question and not one this file answers: see *Account and voice*.
 
 ---
 
@@ -227,7 +222,6 @@ Plain text, ready to paste into X, Typefully or n8n. No markdown in the post bod
 ```text
 THREAD — [spine in one sentence]
 
-Account:  @mercuria_orb
 Language: [en | es]
 Source:   [blog post URL | native: what it came from]
 
@@ -265,10 +259,11 @@ Verify each of these. Do not deliver a thread that fails one.
 - [ ] No markdown syntax anywhere in the post bodies
 - [ ] Exactly one link, in the closing post — or none, if native
 - [ ] The spine is a concept or principle, not a tool or a client
-- [ ] First person singular as Mercuria, never "we" and never a team member's "I"
-- [ ] Nothing in it presents Mercuria as human
-- [ ] `@weorbitant` appears only where Orbitant is genuinely part of what is said, or not at all
-- [ ] Anybody quoted who is not Mercuria is in the third person, with their handle if the material gave one
+- [ ] No account stated anywhere, and nothing that only works from one of them
+- [ ] No self-introduction and no sign-off, in any voice
+- [ ] No "we" standing in for whoever posts (Orbitant-as-subject is fine)
+- [ ] `@WeOrbitant` appears only where Orbitant is genuinely part of what is said, or not at all
+- [ ] Anybody quoted is in the third person, with their handle if the material gave one
 - [ ] The thread is in English, or in Spanish because Spanish was asked for
 - [ ] No more than 10 posts, and none of them padding
 
