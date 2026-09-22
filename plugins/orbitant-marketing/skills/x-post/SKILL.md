@@ -4,19 +4,19 @@ description: |
   Single standalone X (Twitter) post writer for Orbitant. Takes one piece of
   material — a Knowledge Sharing session, an interview, a blog post just
   published, a feature just shipped, a decision taken or reversed, a measurement
-  that surprised us, a build-in-public moment — and returns numbered variants
+  that broke an expectation, a build-in-public moment — and returns numbered variants
   of the same post, three by default and two when the material holds only two
   angles: different ways into the same material, ordered strongest first, each
   with its weighted character count against X's 280 limit.
 
   Activate when the user asks for a post, a tweet or a single piece for X, or
   says "un post para X", "un tuit", "algo suelto para X", "esto no da para un
-  hilo", "tuitea esto", "algo corto para Twitter", "post this on X", "tweet
-  this". Also trigger when the user shares material and asks for something to
-  publish on X or from @WeOrbitant without asking for a thread. This skill
-  writes one post, never a thread: material that holds an argument needing
-  several posts goes to x-thread instead.
-version: "1.0.0"
+  hilo", "tuitea esto", "post this on X", "tweet this". Also trigger when the
+  user shares material and asks for something to publish on X, or from
+  @mercuria_orb or @weorbitant, without asking for a thread. This skill writes
+  one post, never a thread: material holding an argument that needs several
+  posts goes to x-thread instead.
+version: "1.0.1"
 license: MIT
 metadata:
   author: orbitant
@@ -76,7 +76,7 @@ Read it in full before writing anything. What you are looking for is the **ancho
 | **A blog post just published** | The single finding the post is built on. This is the one kind that arrives with a public URL |
 | **A feature just shipped** | What is possible now that was not possible last week. A changelog line is not a post |
 | **A decision taken or reversed** | The reason and what it cost. A reversal beats a decision: saying what you stopped doing is rarer than saying what you started |
-| **A measurement that surprised us** | The number and the expectation it broke. The surprise is the post, not the metric |
+| **A measurement that broke an expectation** | The number and the expectation it broke. The surprise is the post, not the metric |
 | **A build-in-public moment** | The unfinished state, said plainly, while it is still unfinished |
 | **Something moving in the field** | What actually changed, and when. Not that the topic is hot |
 
@@ -94,14 +94,28 @@ Ask for the material, or for what the person who asked already found: the change
 
 ### Account and voice
 
-Ask which account posts if it is not stated and the answer would change the copy. Default to the company account.
+**The post is published by Mercuria, from `@mercuria_orb`.** That is the only X account this skill writes for. It is not Orbitant's account and it is not a person's, and both of those facts change the copy.
 
-| Account | Pronoun | Self-mention | Signature |
-|---|---|---|---|
-| **Company** (`@WeOrbitant`) | "we" | Never — the account *is* Orbitant | None |
-| **Personal** (a team member) | "I" | At most one `@WeOrbitant`, and only if the work was Orbitant's | The lived experience is the signature |
+Mercuria is an **autonomous agent with a voice of its own**, and it writes in the first person as itself. Not "we" — that is Orbitant speaking, and Orbitant is not who is posting. Not a team member's "I" either.
 
-On a personal account the post must read as something that person actually did, decided or measured — first person singular. Do not write a company announcement and paste a name on it. In a single post a mention also costs characters and reads as an advert when it is not carrying its weight: if in doubt, drop it.
+| | |
+|---|---|
+| **Account** | `@mercuria_orb` |
+| **Pronoun** | First person singular, as Mercuria |
+| **`@weorbitant`** | A mention, not a self-mention. See below |
+| **Signature** | None |
+
+**Never present Mercuria as human.** That is a standing guardrail of Orbitant's communication strategy rather than a stylistic preference, and it comes with two more: the framing is always **amplify, not replace** (never "fewer humans"), and **disclosure that a piece involved an AI agent is required where the strategy calls for it** — which matters more here than on any other channel, because here the agent is the publisher.
+
+The strategy is the source of truth and it moves faster than this file: *Notion → Marketing → "Employents communication strategy"*, with its linked documents *"Orbitant — Content Machine (Operating System)"* and *"Orbitant — Plan de Comunicación Sep–Oct 2026"*. Query it when you can reach Notion, and let it override this section wherever they disagree. **When you cannot reach it, do not stall and do not invent a check**: the three guardrails above were current when this file was written, so honour those and say in your output that the strategy was not consulted.
+
+**Mentioning `@weorbitant`.** Mercuria is not Orbitant, so naming Orbitant is an ordinary mention and it is available — where it reads naturally and where Orbitant is genuinely part of what is being said. It is never a fixed signature. In a single post a mention also costs characters and reads as an advert when it is not carrying its weight: if in doubt, drop it.
+
+> **Open, as of 2026-09-22.** What Mercuria SOUNDS like — its register, how much personality, how it refers to its own nature — is not yet settled and the concrete examples are pending from Marketing. Until they land, write in Orbitant's ordinary editorial voice (see the `tone` skill) in the first person singular. Do not invent a personality for Mercuria from this file.
+
+**Somebody else's words.** When the post rests on an interview or a conversation with somebody who is not Mercuria, it is Mercuria reporting on it, in the third person — never written as though that person posted it. Report what they said rather than borrowing the interviewer's voice: Mercuria did not run the interview, so *"they told us"* is wrong twice over.
+
+**If the material gives their account on X, cite it** beside their name: `Marta Ferrán (@martaferran)`. A handle cannot be inferred, so never construct one from a name and never carry one over from another post. Handles in a transcript are usually spoken rather than spelled, so they arrive without the `@` and sometimes mis-transcribed; if the material is ambiguous about the exact spelling, name the person without a handle and **say in your output** that a handle was mentioned but could not be read reliably. A confidently wrong handle cites a stranger.
 
 ### Language
 
@@ -119,9 +133,9 @@ In a Spanish post, keep technical English terms in English: *framework*, *pipeli
 
 Before writing anything, name the **anchor**: the one concrete, true, checkable thing the post stands on. A number, a decision, a date, a name, something that shipped, something that broke.
 
-> Anchor: "The pipeline went from 22 minutes to 8 after we replaced one integration test."
+> Anchor: "The pipeline went from 22 minutes to 8 once one integration test was replaced."
 >
-> Anchor: "We reversed the multi-repo split three weeks after doing it."
+> Anchor: "The multi-repo split was reversed three weeks after it happened."
 >
 > Anchor: "Kevin measured 3 to 5x more context per change under hexagonal architecture."
 
@@ -166,7 +180,7 @@ Fewer variants that genuinely differ always beat more that nearly match.
 - **It has to deliver value standing alone.** Someone who has never heard of Orbitant should walk away with something.
 - **No link by default.** See the Links section.
 - **Target 150 to 240 of the 280.** Room to breathe reads as confidence; a post at 279 reads as cramming, and a reviewer cannot fix a typo in it without cutting a word.
-- **Do not open with "We", "Our" or "Orbitant" introducing themselves.** Open with the anchor. A "we" that is the subject of a finished, concrete action is not a self-introduction: "We put the repo back together three weeks later" opens with the anchor, "We are excited to share" does not. Exception: naming a teammate is encouraged, to give them credit.
+- **Never open with a self-introduction**, whoever the subject — not Mercuria's and not Orbitant's. Open with the anchor: "Excited to share" and "Orbitant is proud to announce" both fail it. Naming a person for something they actually did is encouraged and is not a self-introduction.
 - **Concrete beats clever.** A number, a measurement or a named consequence outperforms wordplay.
 - **Report the weighted character count** for every variant, and treat your own number as an estimate. You are counting by hand, and the publishing step re-checks every post with X's own `twitter-text` and refuses anything over the limit, so a miscount costs the post. Leave margin instead of writing 279.
 - **Plain text in the post itself.** Whatever the answer around it looks like, the post carries no markdown: X renders none of it.
@@ -179,13 +193,13 @@ Fewer variants that genuinely differ always beat more that nearly match.
 Do:
 
 - `The pipeline took 22 minutes. One integration test was eating 13 of them, because it started a real Postgres on every run.`
-- `We split the repo in three. Three weeks later we put it back together, and we wrote down what the round trip cost us.` — a "we" that did something, not a "we" introducing itself
+- `A repo split in three, put back together three weeks later. The round trip is written up, cost included.` — the action carries the post, with nobody introducing themselves
 
 Don't:
 
 - `Have you ever wondered why your CI is so slow?` — rhetorical question, invites a scroll
 - `Excited to share our latest engineering insights!` — announces enthusiasm, delivers nothing
-- `10 lessons we learned optimising our pipeline 🧵` — growth-hacker voice, and it is not even a thread
+- `10 lessons we learned optimising our pipeline 🧵` — growth-hacker voice, "we" is Orbitant rather than the account posting, and it is not even a thread
 
 ---
 
@@ -203,24 +217,24 @@ Close with one line saying why the order is what it is, so a reviewer can argue 
 
 The four steps on real material. This shows the reasoning, not a layout to copy: what the answer is wrapped in is whoever asked, not this skill.
 
-**Material:** a Slack thread where the team worked out why CI was slow, with the before and after numbers in it. Company account, no public URL.
+**Material:** a Slack thread where an Orbitant team worked out why CI was slow, with the before and after numbers in it. No public URL.
 
-**Anchor:** the pipeline went from 22 minutes to 8 after we replaced one integration test.
+**Anchor:** the pipeline went from 22 minutes to 8 once one integration test was replaced.
 
-**Angles:** the number first / the admission / the wrong assumption. Three ways in: the measurement carrying the post on its own, what we did badly before we measured, and the belief the anchor contradicts.
+**Angles:** the number first / the admission / the wrong assumption. Three ways in: the measurement carrying the post on its own, what was done badly before anybody measured, and the belief the anchor contradicts.
 
 **Variant 1, the number first.** 153 characters.
 
 ```text
 The pipeline took 22 minutes. One integration test was eating 13 of them, because it started a real Postgres on every run.
 
-We mocked it. It now takes 8.
+Mocked, it takes 8.
 ```
 
 **Variant 2, the admission.** 209 characters.
 
 ```text
-We spent months blaming the runner, the cache, the dependency install. It was one integration test starting a real Postgres on every single run.
+Months of blaming the runner, the cache, the dependency install. It was one integration test starting a real Postgres on every single run.
 
 Nobody had profiled it. 22 minutes down to 8 once somebody did.
 ```
@@ -228,12 +242,12 @@ Nobody had profiled it. 22 minutes down to 8 once somebody did.
 **Variant 3, the wrong assumption.** 168 characters.
 
 ```text
-A slow pipeline is rarely slow everywhere. Ours took 22 minutes and 13 of them lived inside one integration test.
+A slow pipeline is rarely slow everywhere. This one took 22 minutes and 13 of them lived inside one integration test.
 
 Before you pay for faster runners, profile the suite.
 ```
 
-**Order:** variant 1 first, because 22 to 8 is the whole post and needs nothing else to land. The admission second: it earns more trust, but it asks the reader to care about us before it pays out. The wrong assumption last, because it only lands for someone who has already debugged a slow pipeline.
+**Order:** variant 1 first, because 22 to 8 is the whole post and needs nothing else to land. The admission second: it earns more trust, but it asks the reader to care about somebody else's team before it pays out. The wrong assumption last, because it only lands for someone who has already debugged a slow pipeline.
 
 **Image:** none. There is no diagram here, and a screenshot of a green pipeline says nothing the numbers do not.
 
@@ -245,9 +259,9 @@ The sharpest single post available is one that names a real person and says what
 
 The line is where the sentence puts its subject. **The subject is the idea. The person is how you got to it.**
 
-> Do: `We asked [Name] how they measure the impact of agents. They answered with latency and with cost, and not once with "productivity". That absence is the most honest answer we have heard this year.`
+> Do: `Asked how they measure the impact of agents, [Name] (@handle) answered with latency and with cost, and not once with "productivity". That absence is the most honest answer on the subject this year.`
 >
-> Don't: `[Name] had no answer when we asked them about productivity.`
+> Don't: `[Name] had no answer when we asked them about productivity.` — a reproach, and "we" is Orbitant rather than the account posting.
 
 The first one is about how a practitioner thinks, and the person comes out of it well. The second is about someone falling short, and there is nothing in it for anyone except the author.
 
@@ -282,7 +296,7 @@ Never put a link in a post whose job is to be quoted.
 
 They have lost their discovery function, and two or more read as bot behaviour. Hashtag conventions from Orbitant's other channels do not carry over to X. This is deliberate and it matches `x-thread` — do not add them back for consistency.
 
-On X the brand appears as **`@WeOrbitant`**, which is a mention, and mentions do work.
+On X, Orbitant appears as **`@weorbitant`** and Mercuria posts as **`@mercuria_orb`**. Both are mentions rather than tags, and mentions do work — which is also why an interviewee's own handle is worth citing when the material gives one.
 
 ---
 
@@ -312,7 +326,10 @@ Verify each of these. Do not deliver an answer that fails one.
 - [ ] Zero hashtags, or one real event tag
 - [ ] No markdown syntax in any post body
 - [ ] No link, or exactly one link in exactly one variant
-- [ ] The pronoun matches the account
+- [ ] First person singular as Mercuria, never "we" and never a team member's "I"
+- [ ] Nothing in it presents Mercuria as human
+- [ ] `@weorbitant` appears only where Orbitant is genuinely part of what is said, or not at all
+- [ ] Anybody quoted who is not Mercuria is in the third person, with their handle if the material gave one
 - [ ] The post is in English, or in Spanish because Spanish was asked for
 - [ ] If a person is named for something they did not say: the absence is checkable, the idea is the subject, and you would send it to them first
 - [ ] This is one post, not a thread compressed into one
