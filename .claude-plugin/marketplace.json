@@ -10,7 +10,7 @@
       "name": "orbitant-marketing",
       "source": "./plugins/orbitant-marketing",
       "description": "Marketing team skills for content creation and review",
-      "version": "1.8.2"
+      "version": "1.8.3"
     },
     {
       "name": "orbitant-operations",
