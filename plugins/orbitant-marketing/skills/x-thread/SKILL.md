@@ -14,7 +14,7 @@ description: |
   mentioning X, Twitter, threads, @mercuria_orb or @weorbitant — even if they
   never say the word "thread". This skill writes for X only; it is the wrong skill for
   LinkedIn, YouTube or the newsletter.
-version: "1.0.3"
+version: "1.0.4"
 license: MIT
 metadata:
   author: orbitant
@@ -68,6 +68,8 @@ What that rules out, concretely:
 - **No sign-off and no signature.** The thread ends on its last idea.
 
 **Naming Orbitant.** `@weorbitant` is a mention like any other and it is available — use it where Orbitant is genuinely part of what is being said (work done there, a session it ran, somebody who works there) and not as a tax on every thread. It reads correctly whoever ends up posting, which is exactly why it is the safe way to put Orbitant in a thread.
+
+**Write it as the mention when it appears in the copy.** If a post names Orbitant at all — somebody's employer, where a session happened, who built a thing — `@weorbitant` is the form to use: `software engineer at @weorbitant`, `a team at @weorbitant`. It costs the same characters, it is a live link, and it is the difference between naming the company and reaching it. Not mandatory and not a reason to shoehorn Orbitant into a post that had no reason to mention it — but when the name is already there, mention it.
 
 **If an agent turns out to be the publisher**, the standing guardrails of Orbitant's communication strategy apply: an agent never presents itself as human, the framing is always **amplify, not replace** (never "fewer humans"), and disclosure that a piece involved an AI agent is required where the strategy calls for it. Writing a thread that presumes no account is what keeps all three satisfiable without knowing.
 
