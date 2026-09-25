@@ -17,8 +17,10 @@ plugins/orbitant-marketing/ @weorbitant/marketing
 # Chief of Staff vertical
 plugins/orbitant-chief-of-staff/ @weorbitant/orbitant-os
 
+# Engineering vertical - owned by the engineering team
+plugins/orbitant-engineering/ @weorbitant/engineering
+
 # Future verticals (uncomment when created)
-# plugins/orbitant-engineering/ @weorbitant/engineering
 # plugins/orbitant-hr/ @weorbitant/hr
 # plugins/orbitant-infra/ @weorbitant/infra
 
