@@ -10,10 +10,11 @@ description: |
   when the user mentions "Nano Banana 2", "image generation", or asks for a
   prompt for an AI image tool.
 license: MIT
-version: "1.0.1"
+version: "1.0.2"
 metadata:
   author: orbitant
   tags: marketing, image, thumbnail, blog, visual, prompt, nano-banana-2, ai-image, imagen
+  modality: image
 ---
 
 ## Overview
