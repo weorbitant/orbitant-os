@@ -7,7 +7,7 @@ description: |
   but a search-intent-driven choice for the English market. Use this skill only on articles
   that have completed the full editorial and review process.
 license: MIT
-version: "1.1.0"
+version: "1.2.0"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, translation, writing
@@ -48,6 +48,8 @@ Maintain the same tone as the original:
 - First person plural "we" only when speaking as Orbitant as a company.
 - Confident but humble, technical but accessible.
 - No corporate jargon, no consultant-speak. If the Spanish original avoided it, the English version must too.
+
+If the signer has a tone file in `../blog-post-create/references/tones/` (named after them, e.g. `felipe-polo.md`), load it again for the translation, so the English version keeps that voice and its English-specific rules.
 
 ### Technical terms
 Most technical terms are already in English in the Spanish original (e.g., *framework*, *pipeline*, *deployment*, *token*, *clean code*). Keep them as-is — they are the standard English terms and require no translation. Do not over-translate industry-standard terminology.

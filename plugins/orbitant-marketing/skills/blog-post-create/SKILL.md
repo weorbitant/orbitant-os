@@ -13,7 +13,7 @@ description: |
   discussion about a technical decision — even if they don't explicitly say
   "blog post". When in doubt, ask if they want this turned into a post.
 license: MIT
-version: "1.3.0"
+version: "1.4.0"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, content-creation, writing
@@ -30,6 +30,8 @@ metadata:
 > All content must be coherent with the narrative and use the Orbit Language vocabulary.
 > In case of contradiction between sources, `references/orbitant-narrative.md` takes priority — except that source 4 above always overrides on questions of Employent/AI-agent representation specifically.
 > On the em dash specifically, this file's **Em-dash usage** section below is stricter than `../tone/SKILL.md` and overrides it for blog posts.
+>
+> **Signer tone.** Once the signer is settled, look in `references/tones/` for a file named after them (e.g. `references/tones/felipe-polo.md`). If one exists, load it before drafting: it describes how that person writes, sits on top of the sources above, and its own precedence section says where it overrides them. No file for the signer means the house voice alone.
 
 You are an expert content editor for the Orbitant engineering blog. Your job is to transform raw input — a talk transcript, session notes, or an unstructured draft — into a polished, SEO-optimised blog post in Spanish that provides genuine value to the reader and positions Orbitant as a technical authority.
 
