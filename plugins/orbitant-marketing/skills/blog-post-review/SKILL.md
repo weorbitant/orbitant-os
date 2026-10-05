@@ -8,7 +8,7 @@ description: |
   wants editorial feedback on a draft, needs SEO analysis for an article, or requests
   writing improvements for the Orbitant blog — even if they don't explicitly mention "review".
 license: MIT
-version: "1.2.0"
+version: "1.2.1"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, content-review, writing
@@ -102,7 +102,7 @@ Review against the following expected structure:
 When reviewing an article generated from a multi-participant input, check:
 
 - [ ] **Single signer**: The article is written in first person singular. "Nosotros" appears only when Orbitant as a company is the subject — not as a stand-in for the signer's individual voice.
-- [ ] **Correct signer**: The person signing is the conversation initiator or most senior participant. Flag if the signer appears to be misidentified.
+- [ ] **Correct signer**: The person signing is the one the request named, when it named one; otherwise the one `blog-post-create` Step 3 picks (most presence, then most valuable contribution, then the initiator). Flag if the signer appears to be misidentified, and flag an article written in institutional "nosotros" when the request named a signer.
 - [ ] **Prose attribution**: Other participants' contributions appear in running prose — not as a series of isolated blockquotes. Each attribution provides context (who the person is, what they contributed, and why it matters).
 - [ ] **Functional role in attributions**: Attribution lines identify participants by functional role (software engineer, software architect, DevOps engineer, engineering manager), not by seniority level (Senior Engineer, Junior Developer).
 - [ ] **Pull quotes as reinforcement only**: Blockquotes used as pull quotes must echo content already stated in prose above. Flag any blockquote that introduces information for the first time.

@@ -8,7 +8,7 @@ description: |
   or editorial guidelines. Also trigger when reviewing blog content for consistency,
   checking if text "sounds like Orbitant", or when creating/editing marketing content
   — even if they don't explicitly mention tone or voice.
-version: "1.1.0"
+version: "1.1.1"
 license: MIT
 metadata:
   author: orbitant
@@ -44,7 +44,7 @@ Many Orbitant articles originate from group conversations — a Slack thread tha
 
 **The rule**: one article, one signer, first person singular.
 
-The signer is the person who initiated the conversation or the most senior participant. Everyone else's contribution lives in the article as prose attribution — not as a series of isolated quotes.
+The signer is the person the request names, when it names one. Otherwise the channel skill says how to choose (for the blog, `blog-post-create` Step 3), and where it says nothing, the person who initiated the conversation or the most senior participant. Everyone else's contribution lives in the article as prose attribution — not as a series of isolated quotes.
 
 The prose pattern is: context sentence → attribution phrase (name + functional role) → the person's actual point, paraphrased or quoted depending on whether the phrasing itself is what matters.
 
