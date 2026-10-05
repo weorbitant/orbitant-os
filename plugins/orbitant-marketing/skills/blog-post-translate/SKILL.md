@@ -49,7 +49,9 @@ Maintain the same tone as the original:
 - Confident but humble, technical but accessible.
 - No corporate jargon, no consultant-speak. If the Spanish original avoided it, the English version must too.
 
-If the signer has a tone file in `../blog-post-create/references/tones/` (named after them, e.g. `felipe-polo.md`), load it again for the translation, so the English version keeps that voice and its English-specific rules.
+If the signer has a tone file, load it again for the translation, so the English version keeps that voice and its English-specific rules:
+
+- Felipe Polo: [../blog-post-create/references/tones/felipe-polo.md](../blog-post-create/references/tones/felipe-polo.md)
 
 ### Technical terms
 Most technical terms are already in English in the Spanish original (e.g., *framework*, *pipeline*, *deployment*, *token*, *clean code*). Keep them as-is — they are the standard English terms and require no translation. Do not over-translate industry-standard terminology.
