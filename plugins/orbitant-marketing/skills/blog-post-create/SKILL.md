@@ -76,6 +76,8 @@ What still applies:
 
 **When the signer did not produce the material** (a series chapter built from team docs, engineers' notes signed by a founder, a transcript of a session they did not lead): the singular carries the signer's reading of it, the reasoning, the judgement and the recommendation. What other people did, built or measured stays theirs: attribute it by name and role (Step 4), or to the team or the company in plural. Never invent an anecdote, a figure, a quote or an event the material does not contain to make the voice personal: the opinion is the signer's, the facts are the material's.
 
+**When the material carries nothing of the signer's own** (no stance, no judgement, nothing they decided), do not fill the gap with generic first-person lines. Write what the material supports and open the handoff note with the specific questions to put to the signer, the same way a gap in technical depth is flagged (What to Avoid). If their tone file lists what it needs before drafting, use that list.
+
 ---
 
 ## Single-author input (the requester owns the knowledge)
@@ -574,6 +576,8 @@ Technical English terms with no consolidated Spanish equivalent (*framework*, *p
 ## Editing Discipline
 
 These rules govern any round of edits to an existing draft (corrections, revisions, feedback rounds) — not just first drafts.
+
+**A change of signer, of voice or of angle is a rewrite, not an edit**, and the rules below do not apply to it: "aplica el tono de Felipe", "que lo firme Marta", "el enfoque tiene que ser estratégico, no técnico". Rewrite the whole piece from the original material when you have it, using the previous draft only as a record of what the reviewer already accepted (facts, structure, links), and apply **The requested signer** and the signer's tone file as for a first draft. Touching every paragraph is the request, not a side effect.
 
 - **Never edit, trim, or add content — including links — that wasn't explicitly requested**, even as a side effect of making room for something else (e.g. trimming a sentence just to fit an unrequested addition).
 - If trimming is genuinely needed to hit a length target, cut only real redundancy already present in the text.
