@@ -13,7 +13,7 @@ description: |
   discussion about a technical decision — even if they don't explicitly say
   "blog post". When in doubt, ask if they want this turned into a post.
 license: MIT
-version: "1.4.0"
+version: "1.4.1"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, content-creation, writing
@@ -56,9 +56,33 @@ Read it fully before writing. Extract the core insight, the practical takeaways,
 
 ---
 
+## The requested signer (overrides every default below)
+
+When the request names who signs the piece ("firmado por Felipe Polo", "que lo firme Marta", "a nombre de…"), **that person is the signer**. Settle this before anything else in this file. It overrides every rule below that picks a signer or removes one:
+
+- the requester as signer by default (**Single-author input**);
+- the selection criteria and the confirmation question (**Multi-voice input**, Step 3), and the signer choice in **External-person input** (Cases B and C);
+- the institutional voice of **Corporate / institutional content**, including a chapter of the "Building our Employents" series, a company announcement or a positioning piece. A named signer turns any of them into that person's piece.
+
+What still applies:
+
+- **The signer is an Orbitant employee** (Step 2). Take the named person as one unless the request or the material shows otherwise (a client, a guest speaker, a partner). If they are external, say so and do not sign as them.
+- **Case A** (an interview with an external person): the name settles who signs, not the framing. Ask about the framing only if the request leaves it open.
+- **The voice is first person singular** for the signer throughout, and "nosotros" only when Orbitant as a company is the subject (Language & Tone).
+- **Their tone file**, if the Overview lists one.
+- **Anything about Mercuria or the Employents line** follows the Notion strategy (Overview, source 4) whoever signs it.
+
+**The piece must read as theirs.** A named signer is a promise to the reader that a person is speaking, so their first person singular has to be visible, at the latest in the opening paragraph and again in the closing: what they think about it, why it matters to them, what they would recommend ("creo que…", "lo que más me importa de esto…", "mi recomendación es…"). A draft whose only first person is "nosotros" has dropped the signer, whatever its byline says.
+
+**When the signer did not produce the material** (a series chapter built from team docs, engineers' notes signed by a founder, a transcript of a session they did not lead): the singular carries the signer's reading of it, the reasoning, the judgement and the recommendation. What other people did, built or measured stays theirs: attribute it by name and role (Step 4), or to the team or the company in plural. Never invent an anecdote, a figure, a quote or an event the material does not contain to make the voice personal: the opinion is the signer's, the facts are the material's. A previous draft already written in the signer's voice is fine to work from, since that is the normal way a piece reaches them, but it is still a draft: a first-person claim in it about what they did or decided ("decidí…") is no more confirmed for being written there. If the original material does not back it, keep it as their view or list it in the handoff note for them to confirm.
+
+**When the material carries nothing of the signer's own** (no stance, no judgement, nothing they decided), do not fill the gap with generic first-person lines. **Ask before drafting**: post the specific questions in the request thread, addressed to the requester, and wait for the answer before writing. Write with what they answer. If they reply that the information is not available or ask you to go ahead without it, write what the material supports and mark each gap inline as `[PENDIENTE <NOMBRE>: …]` where the missing piece would go, so it is visible when the draft is reviewed. If their tone file lists what it needs before drafting, use that list for the questions.
+
+---
+
 ## Single-author input (the requester owns the knowledge)
 
-The simplest and most common case: an Orbitant employee submits their own notes, a rough draft, or a transcript of themselves (e.g. a solo recording) to write about a topic they own — no thread, no multiple voices, just their own material. **They are the signer by default.** Skip the verification and signer-selection workflow below (Multi-voice input, Steps 2–3) entirely — there's no ambiguity to resolve, and no need to look them up on Slack to confirm what's already given (unless something about the request itself makes their identity or employment genuinely unclear).
+The simplest and most common case: an Orbitant employee submits their own notes, a rough draft, or a transcript of themselves (e.g. a solo recording) to write about a topic they own — no thread, no multiple voices, just their own material. **They are the signer by default**, unless the request names someone else (see **The requested signer**). Skip the verification and signer-selection workflow below (Multi-voice input, Steps 2–3) entirely — there's no ambiguity to resolve, and no need to look them up on Slack to confirm what's already given (unless something about the request itself makes their identity or employment genuinely unclear).
 
 Write in first person singular as usual (Language & Tone). If their material quotes or references other people along the way, attribute those mentions normally (Step 4) — that alone doesn't turn it into multi-voice input requiring signer selection. It only becomes a Multi-voice input case if the raw material itself is a thread or session where multiple people contributed the substance (not just got name-checked).
 
@@ -87,6 +111,8 @@ Do not start writing until you have a clear picture of who said what.
 - If a name can't be resolved with confidence, say so explicitly when proposing the signer in Step 3, rather than guessing either way.
 
 ### Step 3 — Choose the signer
+
+If the request already names the signer, this step is settled: skip the proposal and the confirmation question, and go to Step 4 (see **The requested signer**).
 
 The article is signed by **one person only**, and that person must be an Orbitant employee confirmed in Step 2. An external contributor is never the signer — attribute them in prose instead, like any other participant (Step 4), by name, role, and company if relevant — and anonymised per the "never name the client" rule if they represent a client.
 
@@ -155,7 +181,7 @@ A pull quote is a blockquote that highlights a phrase already present in the pro
 
 ## External-person input
 
-Three cases where the raw input centers on someone outside Orbitant. In all three, Step 2/3 still apply — an external person never signs the post — but the framing differs by case, and in Case A there's a real choice to put to the requester rather than a single rule to apply silently.
+Three cases where the raw input centers on someone outside Orbitant. A signer named in the request settles who signs in all three (see **The requested signer**). Otherwise, Step 2/3 still apply — an external person never signs the post — but the framing differs by case, and in Case A there's a real choice to put to the requester rather than a single rule to apply silently.
 
 ### Case A — Interview with an external person
 
@@ -189,7 +215,7 @@ State which criterion decided it, the same way as Step 3, and ask for confirmati
 
 ## Corporate / institutional content (no individual source)
 
-Not all input maps to one person's session or thread. When the raw input is a company announcement, a positioning piece, a chapter of the "Building our Employents" series, external-event coverage where Case A/B/C above found no individual signer that made sense, or any other content that speaks for Orbitant as a whole rather than relaying one person's individual experience, **skip the signer-selection workflow above (Multi-voice input, Step 3) entirely**:
+Not all input maps to one person's session or thread. When the raw input is a company announcement, a positioning piece, a chapter of the "Building our Employents" series, external-event coverage where Case A/B/C above found no individual signer that made sense, or any other content that speaks for Orbitant as a whole rather than relaying one person's individual experience, **and the request names no signer**, skip the signer-selection workflow above (Multi-voice input, Step 3) entirely. If the request does name one, this section does not apply: the piece is theirs (see **The requested signer**). Otherwise:
 
 - Write in **first person plural ("nosotros")** throughout — there is no individual signer.
 - Do not force a personal voice or invent an individual anecdote to satisfy the singular-voice rules elsewhere in this file (Language & Tone → *First person: singular vs. plural*). Those rules apply only when there is an actual person's experience behind the post.
@@ -550,6 +576,8 @@ Technical English terms with no consolidated Spanish equivalent (*framework*, *p
 ## Editing Discipline
 
 These rules govern any round of edits to an existing draft (corrections, revisions, feedback rounds) — not just first drafts.
+
+**A change of signer, of voice or of angle is a rewrite, not an edit**, and the rules below do not apply to it: "aplica el tono de Felipe", "que lo firme Marta", "el enfoque tiene que ser estratégico, no técnico". Rewrite the whole piece from the original material when you have it, using the previous draft only as a record of what the reviewer already accepted (facts and links). Its structure, H2s and asset suggestions do not carry over by default: keep one only if it passes the signer's tone file (for Felipe, section 3: one business idea per H2, at most two technical specifics per H2). A wrong angle usually lives in the structure, so a rewrite that keeps the old H2s has not changed the angle. Apply **The requested signer** and the signer's tone file as for a first draft. Touching every paragraph is the request, not a side effect.
 
 - **Never edit, trim, or add content — including links — that wasn't explicitly requested**, even as a side effect of making room for something else (e.g. trimming a sentence just to fit an unrequested addition).
 - If trimming is genuinely needed to hit a length target, cut only real redundancy already present in the text.
