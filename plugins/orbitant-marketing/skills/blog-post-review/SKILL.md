@@ -110,6 +110,24 @@ When reviewing an article generated from a multi-participant input, check:
 
 ---
 
+## Signer tone checklist (when the signer has a tone file)
+
+Some signers have their own tone file in `../blog-post-create/references/tones/` (today: Felipe Polo, `felipe-polo.md`). When the article is signed by one of them, **load that file and review the article against it**, on top of the general guidelines above. Where the two disagree, the tone file wins, following its own precedence section. In particular, do not ask a signer with a business voice to make the piece more technical.
+
+For Felipe Polo, check at least:
+
+- [ ] **One business idea per H2**: each H2 title and its bolded sentence state a business idea (cost, risk, value, options, speed). Flag any H2 built around a mechanism (a hash, a PR, an ADR, a lockfile).
+- [ ] **At most two technical specifics per H2**, each one translated into a business consequence in the same or the next sentence. Flag the H2 and list its specifics if it has more.
+- [ ] **No negate-then-assert**: flag every sentence that negates one framing and then asserts another ("no es X, es Y", "la diferencia no está en X, sino en Y", "lo primero no es X: es Y"). Felipe treats one occurrence as invalidating the draft.
+- [ ] **No unbacked first-person decisions**: flag every "decidí / tomé la decisión / exijo" that the source material does not attribute to Felipe. What the team did or decided stays in plural or attributed by name.
+- [ ] **No open gaps**: flag any `[PENDIENTE FELIPE: …]` still in the text.
+- [ ] **Closing**: ends on a decision rule the reader can apply or on what comes next, not on a summary.
+- [ ] Run the tone file's own pre-delivery check (section 8) and report any item that fails.
+
+Report these findings under *3. Tono y voz*, ranked above generic tone remarks, and include any failure among the top suggestions in *5. Sugerencias accionables*.
+
+---
+
 ## SEO Review Checklist
 
 ### Metadata
@@ -170,6 +188,7 @@ Produce feedback with these sections:
 - If the article originates from a multi-voice source: apply the multi-voice checklist above.
 
 ### 3. Tono y voz
+- If the signer has a tone file: apply the signer tone checklist above and report its findings first.
 - Does it sound like a person, not a consultancy brochure?
 - Is Orbitant referenced naturally and contextually, not promotionally?
 - Flag any generic consultant phrases found (quote them exactly).

@@ -80,7 +80,7 @@ A Felipe post stands on three things that engineering material (sprint notes, AD
 2. **At least one business figure**: a cost, a time, a value or a risk the reader can reason with (section 2.1).
 3. **Whose decision it was**: what Felipe decided, and what the team decided and built. Only the first goes in his first person.
 
-If any is missing, do not paper over it with generic first-person lines or invented numbers. Ask the requester before writing when the session lets you; otherwise write what the material supports and open the handoff note with the questions for Felipe, one per gap, in Spanish and concrete: *"¿Qué opinas tú de versionar el conocimiento del agente: lo ves como una inversión o como un coste de mantenimiento?"*, *"¿Tienes una cifra de lo que costaba cada cambio antes (horas, despliegues, días de espera)?"*, *"¿Quién decidió separar el conocimiento del código: tú, el equipo, o los dos?"*
+If any is missing, do not paper over it with generic first-person lines or invented numbers. **Ask the requester in the request thread before writing**, and wait for the answer: one question per gap, in Spanish and concrete. Write with what they answer. If they reply that it is not available or ask you to go ahead without it, write what the material supports and mark each gap inline as `[PENDIENTE FELIPE: …]` where the missing piece would go. Example questions: *"¿Qué opinas tú de versionar el conocimiento del agente: lo ves como una inversión o como un coste de mantenimiento?"*, *"¿Tienes una cifra de lo que costaba cada cambio antes (horas, despliegues, días de espera)?"*, *"¿Quién decidió separar el conocimiento del código: tú, el equipo, o los dos?"*
 
 ---
 
@@ -204,7 +204,7 @@ The register is calm and measured, and that leaves more room than it sounds like
 
 Run this after the anti-slop pass in `SKILL.md`:
 
-0. Did the input carry Felipe's position, a business figure and whose decision it was (section 2b)? If not, does the handoff note open with the questions for him?
+0. Did the input carry Felipe's position, a business figure and whose decision it was (section 2b)? If not, were the questions asked in the request thread and answered before drafting? Any gap the requester could not fill must appear inline as `[PENDIENTE FELIPE: …]`.
 1. Can a non-technical CEO follow every H2 and say what decision it supports?
 2. Does each H2 contain no more than two technical specifics, and is each one translated into a business consequence?
 3. Is there at least one quantified trade-off (cost, time, value, risk) the reader can reason with?
