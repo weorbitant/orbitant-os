@@ -14,7 +14,7 @@ description: |
   mentioning X, Twitter, threads, @mercuria_orb or @WeOrbitant — even if they
   never say the word "thread". This skill writes for X only; it is the wrong skill for
   LinkedIn, YouTube or the newsletter.
-version: "1.0.4"
+version: "1.1.0"
 license: MIT
 metadata:
   author: orbitant
@@ -88,6 +88,8 @@ Report what they said; do not borrow the interviewer's voice. *"They told us"* p
 **If the material gives their account on X, cite it.** Put it beside their name the first time they appear — `Marta Ferrán (@martaferran)`. A handle cannot be inferred or guessed: either the material supplies it or the thread does without one. Never construct a handle from somebody's name, and never carry one over from another thread.
 
 Cite it **only as they gave it**. Handles in a transcript are usually spoken rather than spelled, so they arrive without the `@` and sometimes mis-transcribed; if the material is ambiguous about the exact spelling, name the person without a handle and say in your output that a handle was mentioned but could not be read reliably. A confidently wrong handle cites a stranger.
+
+**When the material does not say who they are**, the thread still reports on them in the third person, with one neutral phrase used the same way in every post: "the person interviewed" for an interview, "the speaker" for a talk or a session ("la persona entrevistada", "la persona que da la charla" in a Spanish thread). Never invent a name, a role or a handle, and never turn what they lived into Orbitant's story. A stable phrase is what lets a name replace it later without rewriting the thread.
 
 ### Language
 

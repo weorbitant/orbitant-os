@@ -12,7 +12,7 @@ description: |
   session". Also trigger when given a transcript and asked to prepare anything for a
   video upload.
 license: MIT
-version: "1.0.1"
+version: "1.1.0"
 metadata:
   author: orbitant
   tags: marketing, youtube, seo, video, content, ks-sessions, description, bilingual, keywords
@@ -96,6 +96,8 @@ After the opening line, introduce the speaker(s) with 🎙️.
 If there are more than 3 speakers, group them: list the two or three most prominent by name and add "junto a [N] expertos más" or "and [N] more experts".
 
 Keep it factual. Avoid superlatives.
+
+**Speaker not named in the input:** do not invent a name, a title or a company. Write the line in the third person with a neutral phrase (`🎙️ La persona que da la charla comparte […]`, `🎙️ The speaker shares […]`) and use that same phrase wherever the description refers to them, so a name can replace it later. Never write their talk as Orbitant's ("os contamos", "we share").
 
 ### 3. Overview (1–2 short paragraphs)
 

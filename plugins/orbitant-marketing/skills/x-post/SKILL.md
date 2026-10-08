@@ -16,7 +16,7 @@ description: |
   @mercuria_orb or @WeOrbitant, without asking for a thread. This skill writes
   one post, never a thread: material holding an argument that needs several
   posts goes to x-thread instead.
-version: "1.0.3"
+version: "1.1.0"
 license: MIT
 metadata:
   author: orbitant
@@ -120,6 +120,8 @@ The strategy is the source of truth and it moves faster than this file: *Notion 
 **Somebody else's words.** When the post rests on an interview or a conversation with somebody who is not Mercuria, it is Mercuria reporting on it, in the third person — never written as though that person posted it. Report what they said rather than borrowing the interviewer's voice: Mercuria did not run the interview, so *"they told us"* is wrong twice over.
 
 **If the material gives their account on X, cite it** beside their name: `Marta Ferrán (@martaferran)`. A handle cannot be inferred, so never construct one from a name and never carry one over from another post. Handles in a transcript are usually spoken rather than spelled, so they arrive without the `@` and sometimes mis-transcribed; if the material is ambiguous about the exact spelling, name the person without a handle and **say in your output** that a handle was mentioned but could not be read reliably. A confidently wrong handle cites a stranger.
+
+**When the material does not say who they are**, the post still reports on them in the third person, with a neutral phrase: "the person interviewed" for an interview, "the speaker" for a talk or a session ("la persona entrevistada", "la persona que da la charla" in a Spanish post). Never invent a name, a role or a handle, and never turn what they lived into Mercuria's or Orbitant's story. A stable phrase is what lets a name replace it later without rewriting the post.
 
 ### Language
 

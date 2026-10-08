@@ -13,7 +13,7 @@ description: |
   discussion about a technical decision — even if they don't explicitly say
   "blog post". When in doubt, ask if they want this turned into a post.
 license: MIT
-version: "1.4.0"
+version: "1.5.0"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, content-creation, writing
@@ -53,6 +53,16 @@ The raw input may be:
 - A mix of the above
 
 Read it fully before writing. Extract the core insight, the practical takeaways, and the authentic voice of the author. Do not invent technical content that is not present in the input.
+
+### Spoken material whose speaker is not named yet
+
+Sometimes the input is somebody speaking (an interview, a recorded talk, a KS session) and nothing says who they are: no name or speaker label in the transcript, no notes beside it, nobody in the request saying it. Write the post anyway, and write it **about** that person, never **as** them:
+
+- **Third person, always.** Their experience, decisions, team, company and results are theirs: "la persona entrevistada explica que…", "su equipo tardó tres semanas en…", "en su empresa…". Never "yo", "nosotros", "mi equipo" or "nuestro cliente" for what they lived, and never present it as something Orbitant did or learned.
+- **One neutral phrase for them, used the same way throughout.** "La persona entrevistada" for an interview; "la persona que da la charla" for a talk or a session. Do not invent a name, a role, a gender or a company, and do not swap the phrase for a guess the material does not support ("el CTO", "una ingeniera"). A stable phrase is what lets a name replace it later without rewriting the piece.
+- **Whoever signs does not take their story.** The signer workflow below still decides the byline, and the institutional "nosotros" still means Orbitant's own practice. Neither ever covers what the speaker said or lived.
+
+As soon as anything names them (the request, a speaker label, notes that came with the transcript), they are named: attribute them as usual (Step 4).
 
 ---
 
