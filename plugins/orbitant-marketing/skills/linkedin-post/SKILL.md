@@ -13,7 +13,7 @@ description: |
   from this article", or "help me schedule this content" — even if they don't
   explicitly mention LinkedIn or social media strategy.
 license: MIT
-version: "1.0.0"
+version: "1.1.0"
 metadata:
   author: orbitant
   tags: marketing, linkedin, social-media, content, content-plan, carousel, engagement
@@ -32,6 +32,8 @@ The goal is reach and sustained engagement across an entire week.
 A blog post in Markdown format. Read it fully before writing anything.
 
 Your job is not to summarise it — it is to find the **most shareworthy angles** and adapt them for LinkedIn.
+
+**When the source rests on somebody speaking whom it does not name** (an interview or a talk, whether the post calls them "la persona entrevistada" or the material is the transcript itself), keep them in the third person with one neutral phrase used the same way in every piece: "the person interviewed" for an interview, "the speaker" for a talk or a session. Never invent a name, a role or a company for them, and never write what they lived as Orbitant's ("we", "our team"). A stable phrase is what lets a name replace it later without rewriting the pieces.
 
 ---
 
