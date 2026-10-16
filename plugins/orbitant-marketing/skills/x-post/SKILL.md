@@ -6,8 +6,7 @@ description: |
   published, a feature just shipped, a decision taken or reversed, a measurement
   that broke an expectation, a build-in-public moment — and returns numbered variants
   of the same post, three by default and two when the material holds only two
-  angles: different ways into the same material, ordered strongest first, each
-  with its weighted character count against X's 280 limit.
+  angles: different ways into the same material, ordered strongest first.
 
   Activate when the user asks for a post, a tweet or a single piece for X, or
   says "un post para X", "un tuit", "algo suelto para X", "esto no da para un
@@ -16,7 +15,7 @@ description: |
   @mercuria_orb or @WeOrbitant, without asking for a thread. This skill writes
   one post, never a thread: material holding an argument that needs several
   posts goes to x-thread instead.
-version: "1.1.0"
+version: "1.2.0"
 license: MIT
 metadata:
   author: orbitant
@@ -119,7 +118,7 @@ The strategy is the source of truth and it moves faster than this file: *Notion 
 
 **Somebody else's words.** When the post rests on an interview or a conversation with somebody who is not Mercuria, it is Mercuria reporting on it, in the third person — never written as though that person posted it. Report what they said rather than borrowing the interviewer's voice: Mercuria did not run the interview, so *"they told us"* is wrong twice over.
 
-**If the material gives their account on X, cite it** beside their name: `Marta Ferrán (@martaferran)`. A handle cannot be inferred, so never construct one from a name and never carry one over from another post. Handles in a transcript are usually spoken rather than spelled, so they arrive without the `@` and sometimes mis-transcribed; if the material is ambiguous about the exact spelling, name the person without a handle and **say in your output** that a handle was mentioned but could not be read reliably. A confidently wrong handle cites a stranger.
+**If the material gives their account on X, cite it** beside their name: `Marta Ferrán (@martaferran)`. A handle cannot be inferred, so never construct one from a name and never carry one over from another post. An account a manager has set for that person in the employent's standing instructions counts as given by the material. Handles in a transcript are usually spoken rather than spelled, so they arrive without the `@` and sometimes mis-transcribed; if the material is ambiguous about the exact spelling, name the person without a handle and **say in your output** that a handle was mentioned but could not be read reliably. A confidently wrong handle cites a stranger.
 
 **When the material does not say who they are**, the post still reports on them in the third person, with a neutral phrase: "the person interviewed" for an interview, "the speaker" for a talk or a session ("la persona entrevistada", "la persona que da la charla" in a Spanish post). Never invent a name, a role or a handle, and never turn what they lived into Mercuria's or Orbitant's story. A stable phrase is what lets a name replace it later without rewriting the post.
 
@@ -127,7 +126,7 @@ The strategy is the source of truth and it moves faster than this file: *Notion 
 
 **English by default** — every post, whatever language the material is in. Spanish material, English post.
 
-Write the post in Spanish only when whoever asked for it asks for Spanish. Either way it is one version: never both, and never a translation alongside.
+Write the post in Spanish only when whoever asked for it asks for Spanish. A request written in Spanish is not, by itself, a request for a Spanish post. Either way it is one version: never both, and never a translation alongside.
 
 Material in Spanish and a post in English means anything you quote is being translated. Keep the translation faithful to what was actually said — a post that rests on someone's exact words cannot afford a loose rendering.
 
@@ -188,7 +187,7 @@ Fewer variants that genuinely differ always beat more that nearly match.
 - **Target 150 to 240 of the 280.** Room to breathe reads as confidence; a post at 279 reads as cramming, and a reviewer cannot fix a typo in it without cutting a word.
 - **Never open with a self-introduction**, whoever the subject — not Mercuria's and not Orbitant's. Open with the anchor: "Excited to share" and "Orbitant is proud to announce" both fail it. Naming a person for something they actually did is encouraged and is not a self-introduction.
 - **Concrete beats clever.** A number, a measurement or a named consequence outperforms wordplay.
-- **Report the weighted character count** for every variant, and treat your own number as an estimate. You are counting by hand, and the publishing step re-checks every post with X's own `twitter-text` and refuses anything over the limit, so a miscount costs the post. Leave margin instead of writing 279.
+- **Do not count characters by hand.** Aim for the 150 to 240 band by eye and leave margin. Whatever publishes the post measures it with X's own counter and refuses anything over 280, so a count in your answer is something nobody can rely on.
 - **Plain text in the post itself.** Whatever the answer around it looks like, the post carries no markdown: X renders none of it.
 - **Short lines and blank lines** are the whole formatting toolkit. Three lines of text at most.
 - **Lists inside a post:** two items at most, one per line, no bullet characters. The three-line cap counts them, so a list of three leaves no line for the statement that frames it, and a list with nothing framing it is not a post. Three items or more is a thread.
@@ -229,7 +228,7 @@ The four steps on real material. This shows the reasoning, not a layout to copy:
 
 **Angles:** the number first / the admission / the wrong assumption. Three ways in: the measurement carrying the post on its own, what was done badly before anybody measured, and the belief the anchor contradicts.
 
-**Variant 1, the number first.** 153 characters.
+**Variant 1, the number first.**
 
 ```text
 The pipeline took 22 minutes. One integration test was eating 13 of them, because it started a real Postgres on every run.
@@ -237,7 +236,7 @@ The pipeline took 22 minutes. One integration test was eating 13 of them, becaus
 Mocked, it takes 8.
 ```
 
-**Variant 2, the admission.** 209 characters.
+**Variant 2, the admission.**
 
 ```text
 Months of blaming the runner, the cache, the dependency install. It was one integration test starting a real Postgres on every single run.
@@ -245,7 +244,7 @@ Months of blaming the runner, the cache, the dependency install. It was one inte
 Nobody had profiled it. 22 minutes down to 8 once somebody did.
 ```
 
-**Variant 3, the wrong assumption.** 168 characters.
+**Variant 3, the wrong assumption.**
 
 ```text
 A slow pipeline is rarely slow everywhere. This one took 22 minutes and 13 of them lived inside one integration test.
@@ -325,7 +324,7 @@ Verify each of these. Do not deliver an answer that fails one.
 
 - [ ] Three variants, or two when the material only holds two angles, each a different angle and none of them another one reworded
 - [ ] Numbered, ordered by preference, strongest first, with one line saying why
-- [ ] A weighted count on every variant, with margin under 280: weight 1 only inside the allowlisted ranges, 2 for anything else including `…`, 23 for any URL
+- [ ] Every variant visibly inside the 150 to 240 target, with any URL budgeted at 23 and no `…` or emoji left to chance
 - [ ] Every variant stands alone, with no context and nothing to open
 - [ ] Every variant is anchored in something concrete and checkable
 - [ ] No rhetorical question, no engagement bait, no thread announcement
