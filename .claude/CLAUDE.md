@@ -42,7 +42,7 @@ orbitant-os/
 │   │   ├── crm/
 │   │   ├── reports/
 │   │   └── references/
-│   └── orbitant-engineering/       <- v0.1.1 — ai-readiness, git-hygiene, owasp-scan, 12-factor, debrief (+ /ground-control)
+│   └── orbitant-engineering/       <- v0.3.0 — ai-readiness, git-hygiene, owasp-scan, 12-factor, debrief (+ /ground-control)
 │       ├── .claude-plugin/
 │       │   └── plugin.json
 │       ├── commands/
@@ -267,7 +267,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 |--------|---------|--------|--------|----------|
 | orbitant-marketing | 1.12.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter`, `orbitant-x-thread`, `orbitant-x-post` | — |
 | orbitant-operations | 1.0.0 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
-| orbitant-engineering | 0.1.1 | Active | `orbitant-ai-readiness`, `orbitant-git-hygiene`, `orbitant-owasp-scan`, `orbitant-12-factor`, `orbitant-debrief` | `/ground-control` |
+| orbitant-engineering | 0.3.0 | Active | `orbitant-ai-readiness`, `orbitant-git-hygiene`, `orbitant-owasp-scan`, `orbitant-12-factor`, `orbitant-debrief` | `/ground-control` |
 
 ## Scripts
 
