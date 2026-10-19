@@ -258,7 +258,7 @@ These rules work at the level of the sentence. They are Felipe's prose rules, wh
 ### 7.1 Typography, rhythm and editing
 
 - **No em dashes, ever.** Use a comma, a colon, a semicolon, parentheses or a full stop. This overrides the inciso allowance in `tone/SKILL.md` and the habit in his LinkedIn posts.
-- **Paragraphs of 1 to 2 sentences, 3 at most.**
+- **Paragraphs of 3 to 5 sentences**, joined with grammatical connectors, as `SKILL.md` asks for the blog (one idea per paragraph, developed). A one- or two-sentence paragraph is kept for emphasis only, at most one per H2 section.
 - **Vary sentence length on purpose.** Short sentences land the claim; longer ones carry the mechanism.
 - **Numbers as digits.**
 - **Front-load the important word.**
@@ -307,7 +307,7 @@ Run this after the anti-slop pass in `SKILL.md` when drafting, and as an extra c
 8. Does the closing hand the reader a testable rule of thumb or a next step, rather than a summary or "hope it helps"?
 9. Is there one line a competent engineer could argue with?
 10. If there is a film reference or running metaphor (optional), is there only one, and does it land on a point in the next sentence?
-11. Typography sweep: zero em dashes, zero emoji, paragraphs of 1 to 3 sentences, numbers as digits, adverbs cut, no *apalancar*, Italianisms and Slack fillers removed, *tú* throughout.
+11. Typography sweep: zero em dashes, zero emoji, paragraphs of 3 to 5 sentences (at most one shorter paragraph per H2), numbers as digits, adverbs cut, no *apalancar*, Italianisms and Slack fillers removed, *tú* throughout.
 12. On the English version: contractions throughout, and the banned-word list in section 7.3 run over the whole text.
 13. Is the draft free of any sentence that negates one framing and then asserts the corrected one? A single occurrence fails it.
 

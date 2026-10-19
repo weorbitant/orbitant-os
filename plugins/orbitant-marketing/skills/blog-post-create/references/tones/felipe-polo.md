@@ -169,7 +169,7 @@ Sections 1 to 6 work at the level of framing and depth. These rules work at the 
 ### 7.1 Typography, rhythm and editing
 
 - **No em dashes, ever.** Use a comma, a colon, a semicolon, parentheses or a full stop. This overrides the inciso allowance in `tone/SKILL.md`.
-- **Paragraphs of 1 to 2 sentences, 3 at most.** White space works as a thinking separator, so line breaks carry meaning here.
+- **Paragraphs of 3 to 5 sentences**, joined with grammatical connectors, as `SKILL.md` asks for the blog (one idea per paragraph, developed). A one- or two-sentence paragraph is kept for emphasis only, at most one per H2 section. Short sentences still land the claim inside the paragraph; they do not stand alone.
 - **Vary sentence length on purpose.** A paragraph of identical-length sentences flatlines. Short sentences land the claim, longer ones carry the nuance.
 - **Numbers as digits.**
 - **Front-load the important word.** "Clarity matters" hits harder than "What matters is clarity". Put the weight at the start or the end of the sentence.
@@ -214,7 +214,7 @@ Run this after the anti-slop pass in `SKILL.md`:
 6. For AI and Employents topics: is it clear that judgment and responsibility stay human?
 7. Does the closing hand the reader a rule or a next step, rather than a summary?
 8. Is there one line in the piece that a competent reader could argue with? If every claim is safe, the article is beige (section 2.9).
-9. Typography sweep: zero em dashes, paragraphs of 1 to 3 sentences, numbers as digits, adverbs cut, sentence lengths varied.
+9. Typography sweep: zero em dashes, paragraphs of 3 to 5 sentences (at most one shorter paragraph per H2), numbers as digits, adverbs cut, sentence lengths varied.
 10. On the English version: contractions used throughout, and the English banned-word list in section 7.3 run over the whole text.
 11. Is the draft free of any sentence that negates one framing and then asserts the corrected one? A single occurrence fails it.
 

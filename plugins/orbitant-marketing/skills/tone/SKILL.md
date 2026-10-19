@@ -158,6 +158,7 @@ These specific words and patterns degrade Orbitant's voice when they appear in p
 | "la parte que más me interesa" | AI-sounding filler — no real person writes like this | State the point directly |
 | "me parece especialmente relevante destacar" | AI hedging + filler preamble | Delete the preamble; state the point |
 | "no podemos dejar de mencionar" | Filler | State the point directly |
+| "sostener", in any form ("sostiene", "lo que sostiene…", "se sostiene", "sostener un sistema") | Vague, overused verb in AI-written Spanish: it says something matters without saying how | Name what the thing does: "permite", "garantiza", "evita", "depende de", or the concrete mechanism |
 
 Technical English terms with no consolidated Spanish equivalent (*framework*, *pipeline*, *deployment*, *token*, *clean code*, *contract testing*) are kept in English and in italics. This list targets words that have a natural Spanish equivalent but get replaced by English out of habit, not necessity.
 
