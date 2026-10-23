@@ -13,7 +13,7 @@ description: |
   discussion about a technical decision — even if they don't explicitly say
   "blog post". When in doubt, ask if they want this turned into a post.
 license: MIT
-version: "1.7.0"
+version: "1.8.0"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, content-creation, writing
@@ -533,7 +533,8 @@ The link should feel invisible to the reader — as if the sentence always led t
 
 ### Images
 
-- Suggest 1 main image concept. **Do not include alt text.** Alt text is written *after* the fact, once the actual image has been chosen or generated — at this stage the main image doesn't exist yet, so there is nothing concrete to describe. Alt text must never appear in the output.
+- Suggest 1 main image concept, in the terms of the `image-creation` skill: a metaphor for the article's idea. Never a portrait or likeness of a real person, the interviewee included; a real photo is only for articles about Orbitant's own team, culture or events.
+- **Do not include alt text.** Alt text is written *after* the fact, once the actual image has been chosen or generated — at this stage the main image doesn't exist yet, so there is nothing concrete to describe. Alt text must never appear in the output.
 
 ---
 
