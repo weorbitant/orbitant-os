@@ -144,15 +144,13 @@ The script auto-detects which watermark to use based on the bottom strip brightn
 2. Check if `assets/reference/` contains images. If empty, ask the user to run `node scripts/scrape-insights-images.mjs` and wait before continuing.
 3. Browse 3–5 reference images from `assets/reference/` to calibrate your sense of the brand's visual style.
 
-### Step 1 — Choose the Category
+### Step 1 — Always a Conceptual Metaphor
 
-Based on the article topic, decide between:
-- **Category A — Conceptual Metaphor** (default, ~70% of images): AI-generated scenes using a physical metaphor
-- **Category B — Real Photography** (~30%): Team photos for culture/event articles — cannot be generated, tell the user to pick from their photo library
+Every image this skill makes is a conceptual metaphor: an AI-generated scene built on a physical metaphor. Real photos (the team, an event) are chosen and added by hand, outside this skill, so never ask for one or suggest one instead of generating.
 
-Category B is only for articles about Orbitant's own team, culture or events, where a photo of the team exists. An article about someone else (an interview, a profile, a talk by a guest) is Category A: illustrate the idea the article is about, never the person. Never put a real, identifiable person in a generated image.
+Never put a real, identifiable person in an image, even when the article is about one (an interview, a profile, a guest talk): illustrate the idea the article is about, not the person.
 
-### Step 2 — Find the Metaphor (Category A only)
+### Step 2 — Find the Metaphor
 
 Identify a **physical object or scene** that metaphorically represents the article's core concept:
 - Immediately recognizable (not too abstract)
@@ -203,7 +201,7 @@ node scripts/generate-image.mjs \
 ### Step 6 — Present Results
 
 Show the user:
-1. The **category** and **metaphor reasoning**
+1. The **metaphor reasoning**
 2. The **prompt** used (also saved as `.prompt.json` next to the images for reuse)
 3. The **generated image(s)** — read the output file(s) so the user can see them
 4. Note that the **Orbitant watermark was automatically composited** (unless `--watermark none` was used)
@@ -228,7 +226,6 @@ Key points:
 
 **Article**: "5 Tips for Successful Legacy Migrations"
 
-**Category**: A — Conceptual Metaphor
 **Metaphor**: Layered architectural model being deconstructed, representing careful extraction of legacy systems
 **Background**: Light (methodology/best-practices topic)
 
@@ -250,5 +247,5 @@ node scripts/generate-image.mjs \
 - **Always reserve bottom-center space** for the logo overlay.
 - **Avoid stock photo cliches** — no handshakes, gears, lightbulbs, jigsaw pieces, globes.
 - **Match background tone to topic** — light for constructive topics, dark for technical/deep topics.
-- **If the article is about Orbitant's team/culture**, recommend a real photo (Category B) instead of generating. An interview or a piece about a named person is not that: it is Category A, with a metaphor for its idea and no portrait.
+- **Always generate a metaphor.** Real photos are added by hand outside this skill: never recommend one instead of an image, and never put a real, identifiable person in a prompt.
 - **If `GOOGLE_API_KEY` is not available**, output the prompt for manual use and tell the user how to set up the key.

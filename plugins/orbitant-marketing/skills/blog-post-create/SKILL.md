@@ -533,7 +533,7 @@ The link should feel invisible to the reader — as if the sentence always led t
 
 ### Images
 
-- Suggest 1 main image concept, in the terms of the `image-creation` skill: a metaphor for the article's idea. Never a portrait or likeness of a real person, the interviewee included; a real photo is only for articles about Orbitant's own team, culture or events.
+- Suggest 1 main image concept, in the terms of the `image-creation` skill: a metaphor for the article's idea. Never a real photo, which is added by hand if wanted, and never a portrait or likeness of a real person, the interviewee included.
 - **Do not include alt text.** Alt text is written *after* the fact, once the actual image has been chosen or generated — at this stage the main image doesn't exist yet, so there is nothing concrete to describe. Alt text must never appear in the output.
 
 ---
