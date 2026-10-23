@@ -10,7 +10,7 @@ description: |
   when the user mentions "Nano Banana 2", "image generation", or asks for a
   prompt for an AI image tool.
 license: MIT
-version: "1.0.2"
+version: "1.1.0"
 metadata:
   author: orbitant
   tags: marketing, image, thumbnail, blog, visual, prompt, nano-banana-2, ai-image, imagen
@@ -150,6 +150,8 @@ Based on the article topic, decide between:
 - **Category A — Conceptual Metaphor** (default, ~70% of images): AI-generated scenes using a physical metaphor
 - **Category B — Real Photography** (~30%): Team photos for culture/event articles — cannot be generated, tell the user to pick from their photo library
 
+Category B is only for articles about Orbitant's own team, culture or events, where a photo of the team exists. An article about someone else (an interview, a profile, a talk by a guest) is Category A: illustrate the idea the article is about, never the person. Never put a real, identifiable person in a generated image.
+
 ### Step 2 — Find the Metaphor (Category A only)
 
 Identify a **physical object or scene** that metaphorically represents the article's core concept:
@@ -248,5 +250,5 @@ node scripts/generate-image.mjs \
 - **Always reserve bottom-center space** for the logo overlay.
 - **Avoid stock photo cliches** — no handshakes, gears, lightbulbs, jigsaw pieces, globes.
 - **Match background tone to topic** — light for constructive topics, dark for technical/deep topics.
-- **If the article is about team/culture**, recommend a real photo (Category B) instead of generating.
+- **If the article is about Orbitant's team/culture**, recommend a real photo (Category B) instead of generating. An interview or a piece about a named person is not that: it is Category A, with a metaphor for its idea and no portrait.
 - **If `GOOGLE_API_KEY` is not available**, output the prompt for manual use and tell the user how to set up the key.
