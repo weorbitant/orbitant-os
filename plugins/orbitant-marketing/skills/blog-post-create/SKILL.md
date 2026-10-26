@@ -69,7 +69,14 @@ As soon as anything names them (the request, a speaker label, notes that came wi
 
 ## The requested signer (overrides every default below)
 
-When the request names who signs the piece ("firmado por Felipe Polo", "que lo firme Marta", "a nombre de…"), **that person is the signer**. Settle this before anything else in this file. It overrides every rule below that picks a signer or removes one:
+When the request names who signs the piece ("firmado por Felipe Polo", "que lo firme Marta", "a nombre de…"), **that person is the signer**. Settle this before anything else in this file.
+
+**Asking for someone's tone or approach is asking them to sign.** A request to write in a person's tone, voice or approach names that person as the signer, exactly as "firmado por" does, whatever the verb or wording. Never answer it with an institutional piece in "nosotros" with that person's tone applied on top. For example:
+
+- «Redacta el post con el tono de Felipe Polo» → firma Felipe Polo.
+- «Aplica el enfoque estratégico de Felipe a este borrador» → firma Felipe Polo; el cambio es una reescritura (see **Editing Discipline**).
+
+The requested signer overrides every rule below that picks a signer or removes one:
 
 - the requester as signer by default (**Single-author input**);
 - the selection criteria and the confirmation question (**Multi-voice input**, Step 3), and the signer choice in **External-person input** (Cases B and C);
@@ -335,9 +342,19 @@ Avoid a run of short, simple sentences separated only by full stops when the ide
 
 This doesn't ban short sentences outright — a short sentence used deliberately for emphasis, after a longer one, is fine. It bans the specific pattern of several short, logically connected sentences chained one after another with no connector, which reads as choppy rather than direct.
 
-### One idea per paragraph
+### One idea per paragraph, developed in 3 to 5 sentences
 
-Each paragraph carries one idea. When a paragraph moves on to a second idea, start a new paragraph there, and give the new one its own bolded phrase. Keep paragraphs to 1–3 sentences; a fourth sentence is usually the start of the next idea.
+Each paragraph develops one idea in **3 to 5 sentences**, joined with grammatical connectors (cause, consequence, contrast, example) so the reasoning reads as one line of thought. When a paragraph moves on to a second idea, start a new paragraph there, and give the new one its own bolded phrase. When an idea fits in one or two sentences, it usually belongs inside the neighbouring paragraph that it explains or extends, not on its own line.
+
+A paragraph of one or two sentences is an exception for emphasis: **at most one per H2 section**, and never two in a row. A run of short paragraphs reads as fragmented notes, not as an article.
+
+**Incorrect** (one idea split into short paragraphs):
+> Cualquier output de un agente se puede corregir. Lo difícil es demostrar con qué conocimiento lo generó.
+>
+> Esa prueba pesa más a medida que el agente asume tareas con más exposición.
+
+**Correct:**
+> Cualquier output de un agente se puede corregir, pero lo difícil es demostrar meses después con qué conocimiento lo generó. Esa pregunta suele llegar cuando un cliente detecta un error en un texto publicado con su marca. Si nadie puede responderla con pruebas, la conversación pasa de corregir el problema a discutir de quién fue la culpa.
 
 **Incorrect** (two ideas in one paragraph):
 > Eso es lo que significa el control de versiones para agentes de IA: poder señalar una versión concreta del conocimiento y afirmar que fue esa la que generó un resultado. Es, sobre todo, una cuestión de a quién le puedes atribuir una decisión cuando algo falla.
@@ -644,7 +661,7 @@ These rules govern any round of edits to an existing draft (corrections, revisio
 
 ## Final Pass: Anti-slop Check
 
-Before delivering the finished draft, re-read it once, end to end, checking it against every rule already collected in this document (the "Words and expressions to avoid" table, em-dash usage, the Spanish-comma-before-y/o/ni anglicism, "No es X, es Y", rhetorical questions anywhere, sentence rhythm, one idea per paragraph, varied openings, precise wording, bold on words not sentences, inclusive language, and the AI filler formulas listed under "What to Avoid") **and against the "Anti-slop Reference" below**. Flag and fix anything that matches. Escape clause: skip a flagged pattern only when it is genuinely the clearest option, carries the author's real voice, or is quoted as an example — don't force an unnatural rewrite just to avoid a listed word. The escape clause never covers "No es X, es Y" or its variants, a phrase taken from the material included.
+Before delivering the finished draft, re-read it once, end to end, checking it against every rule already collected in this document (the "Words and expressions to avoid" table, em-dash usage, the Spanish-comma-before-y/o/ni anglicism, "No es X, es Y", rhetorical questions anywhere, sentence rhythm, one idea per paragraph in 3 to 5 sentences, varied openings, precise wording, bold on words not sentences, inclusive language, and the AI filler formulas listed under "What to Avoid") **and against the "Anti-slop Reference" below**. Flag and fix anything that matches. Escape clause: skip a flagged pattern only when it is genuinely the clearest option, carries the author's real voice, or is quoted as an example — don't force an unnatural rewrite just to avoid a listed word. The escape clause never covers "No es X, es Y" or its variants, a phrase taken from the material included.
 
 ### Anti-slop Reference
 
