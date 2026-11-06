@@ -1,0 +1,67 @@
+{
+  "source": "Sprint 21 · Sherpa — placeholder media, for testing the template",
+  "scenes": [
+    {
+      "type": "card",
+      "kicker": "Sprint 21 · Sherpa",
+      "headline": "Lo nuevo esta quincena",
+      "sub": "Octubre 2026",
+      "script": "Esto es lo que hemos entregado en el sprint 21 de Sherpa.",
+      "say": "Esto es lo que hemos entregado en el sprint veintiuno de Sherpa."
+    },
+    {
+      "type": "beat",
+      "label": "Nuevo",
+      "title": "Filtros guardados",
+      "caption": "Guarda una búsqueda y vuelve a ella en un clic",
+      "media": "media/recording.mp4",
+      "script": "Ahora puedes guardar cualquier búsqueda como filtro y recuperarla en un clic.",
+      "say": "Ahora puedes guardar cualquier búsqueda como filtro… y recuperarla en un clic."
+    },
+    {
+      "type": "beat",
+      "label": "Mejora",
+      "title": "Panel de gastos más claro",
+      "caption": "Cada categoría muestra su total del mes",
+      "media": "media/screenshot.png",
+      "script": "El panel de gastos muestra ahora el total de cada categoría.",
+      "say": "El panel de gastos muestra ahora el total de cada categoría.",
+      "focus": {
+        "x": 300,
+        "y": 170,
+        "w": 1260,
+        "h": 340,
+        "at": 1
+      },
+      "mask": [
+        {
+          "x": 320,
+          "y": 60,
+          "w": 1220,
+          "h": 90
+        }
+      ],
+      "highlight": [
+        {
+          "x": 320,
+          "y": 190,
+          "w": 590,
+          "h": 300,
+          "from": 2.2
+        }
+      ]
+    },
+    {
+      "type": "card",
+      "kicker": "Próximo sprint",
+      "headline": "Exportación a Excel",
+      "script": "En el próximo sprint: exportación a Excel.",
+      "say": "En el próximo esprint… exportación a Excel."
+    },
+    {
+      "type": "outro",
+      "hold": 3
+    }
+  ],
+  "approved": "05e07314fcf6"
+}
