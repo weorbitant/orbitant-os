@@ -1,0 +1,57 @@
+{
+  "name": "Afianza",
+  "language": "es",
+  "colors": {
+    "stage": "#0b3a52",
+    "stageHi": "#125a7f",
+    "stageLo": "#05161f",
+    "ink": "#f2f7fb",
+    "inkMuted": "#a9bccb",
+    "accent": "#36a9e1",
+    "accentInk": "#01162a",
+    "accentText": "#b7ddf4",
+    "card": "#ffffff"
+  },
+  "fonts": {
+    "display": {
+      "family": "Outfit",
+      "file": "brand/fonts/outfit-latin-wght-normal.woff2",
+      "weight": 600
+    },
+    "body": {
+      "family": "Plus Jakarta Sans",
+      "file": "brand/fonts/plus-jakarta-sans-latin-wght-normal.woff2",
+      "weight": 500
+    }
+  },
+  "logo": "brand/assets/afianza-logo-white.png",
+  "outro": {
+    "headline": "Gracias",
+    "sub": "afianza.es"
+  },
+  "voice": {
+    "voiceId": "rDkIS117MFsZ9FVeK2Rx",
+    "model": "eleven_multilingual_v2",
+    "stability": 0.5,
+    "similarityBoost": 0.75,
+    "speed": 1.0,
+    "seed": 42
+  },
+  "motion": {
+    "enter": {
+      "title": "rise",
+      "card": "mask",
+      "figure": "figure",
+      "outro": "hold"
+    },
+    "transition": {
+      "beat": "crossfade",
+      "card": "sweep",
+      "figure": "crossfade",
+      "outro": "crossfade"
+    },
+    "highlight": {
+      "dim": 0.6
+    }
+  }
+}
