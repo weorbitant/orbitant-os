@@ -337,7 +337,8 @@ recording scene is no longer a hero.
 
 **On the word — `cues`.** Without cues, the zoom follows the cursor. With cues, it follows the voice:
 give one word of the recording scene's `say` for each recorded click or hover, in order. A cue matches a
-whole word only, and each cue is found after the previous one, so the same word can be a cue twice:
+whole word only, and each cue is found after the previous one, so the same word can be a cue twice
+(a cue that comes earlier in the say than the one before it gives a warning):
 
 ```json
 "say": "Arriba ves los ingresos del mes. Con el botón ver, abres el detalle.",
@@ -434,8 +435,7 @@ The person signs in to ElevenLabs once in claude.ai; nobody handles an API key.
    node <skill>/scripts/demo.mjs tts demo-video/demos/<slug> --list
    ```
    It prints a JSON list of `{ scene, file, say, voiceId, model }`. Lines that already have audio are
-   not in the list, so a second run only voices what changed: a changed line and the lines next to
-   it (their intonation depends on it). `--force` lists every line.
+   not in the list, so a second run only voices what changed. `--force` lists every line.
 2. For each line, call `creative_generate_speech` with `prompt` = `say` exactly, `voice_id` = `voiceId`,
    `model_id` = `model` and `generations_count: 1`. Call it once per line, never again to retry: each
    call is charged.
@@ -449,7 +449,8 @@ If the session has no ElevenLabs connector, run `node <skill>/scripts/demo.mjs d
 key (`✓ ElevenLabs API key found`), run `node <skill>/scripts/demo.mjs tts demo-video/demos/<slug>`,
 which does steps 1–4 itself. The script reads `ELEVENLABS_API_KEY`, and on macOS the Keychain item
 `elevenlabs-api-key`. It also saves the time of each character next to each line (`audio/*.json`), so a
-`cue` lands on its word exactly. With the connector, `build` estimates the word times from the
+`cue` lands on its word exactly. It sends the neighbour lines with each line for a continuous
+intonation, so a changed line is voiced again together with the lines next to it. With the connector, `build` estimates the word times from the
 characters (about ±0.4 s). Look at the snapshot of each cue.
 
 If there is no connector and no key, stop and give the person both ways, in their language. Never ask

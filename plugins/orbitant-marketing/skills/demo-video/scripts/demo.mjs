@@ -129,15 +129,16 @@ function checkSay(scenes, brand) {
   return { errors, warnings };
 }
 
-// The neighbour lines that tts sends with a line, for continuous prosody (eleven_v3 does not accept them).
+// The neighbour lines that the API path sends with a line, for continuous prosody (eleven_v3 does not
+// accept them; the connector has no such field). They are not in the file key, which both paths and
+// build share: the API path saves them in the line's .json and voices the line again when they change.
 const context = (scenes, i, v) => (v.model === "eleven_v3" ? [] : [
   scenes.slice(0, i).reverse().find((x) => x.say)?.say ?? null,
   scenes.slice(i + 1).find((x) => x.say)?.say ?? null,
 ]);
-// The neighbours are part of the key: when a neighbour line changes, this line is voiced again.
-const voiceKey = (scenes, i, v) =>
-  createHash("sha1").update(JSON.stringify([scenes[i].say, v.voiceId, v.model, v.stability, v.similarityBoost, v.speed, v.seed, ...context(scenes, i, v)])).digest("hex").slice(0, 10);
-const audioFile = (scenes, i, v) => `audio/s${String(i + 1).padStart(2, "0")}.${voiceKey(scenes, i, v)}.mp3`;
+const voiceKey = (say, v) =>
+  createHash("sha1").update(JSON.stringify([say, v.voiceId, v.model, v.stability, v.similarityBoost, v.speed, v.seed])).digest("hex").slice(0, 10);
+const audioFile = (scenes, i, v) => `audio/s${String(i + 1).padStart(2, "0")}.${voiceKey(scenes[i].say, v)}.mp3`;
 
 // The second, in a scene, at which a word of its narration starts. Exact from the ElevenLabs
 // alignment that `tts` saves next to the audio (.json); else in proportion to the characters.
@@ -147,14 +148,16 @@ const fold = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 // clock(word, at, from) → { t, next }: the first whole-word match at or after character `from`
 // ("ver" never matches inside "conversar"). Pass `next` as `from` to find a later occurrence.
 function wordClock(say, alignFile, len) {
-  const al = alignFile && existsSync(alignFile) ? readJson(alignFile) : null;
+  const side = alignFile && existsSync(alignFile) ? readJson(alignFile) : null;
+  const al = side?.characters ? side : null; // the .json can hold only `context` when ElevenLabs sent no alignment
   const text = fold(al?.characters?.join("") ?? say);
   return (word, at, from = 0) => {
     const w = fold(word).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const re = new RegExp(`(?<![\\p{L}\\p{N}])${w}(?![\\p{L}\\p{N}])`, "gu");
     re.lastIndex = from;
     const n = re.exec(text)?.index;
-    if (n == null) die(`${at}: the word "${word}" is not in the say of this scene${from ? " after the previous cue" : ""}`);
+    if (n == null && from) return null; // not after `from`: the caller decides (autoCamera searches again from the start)
+    if (n == null) die(`${at}: the word "${word}" is not in the say of this scene`);
     return { t: al ? al.character_start_times_seconds[n] : (n / text.length) * len, next: n + 1 };
   };
 }
@@ -255,7 +258,12 @@ async function tts() {
   for (const [i, s] of scenes.entries()) {
     if (!s.say) continue;
     const out = join(demoDir, audioFile(scenes, i, v));
-    if (existsSync(out) && !flags.has("--force")) {
+    const side = out.replace(/\.mp3$/, ".json");
+    const ctx = context(scenes, i, v);
+    // A line from this path records its neighbours (`context`); a connector line or an older line has none, and is kept.
+    const saved = existsSync(side) ? readJson(side).context : undefined;
+    const sameCtx = saved === undefined || JSON.stringify(saved) === JSON.stringify(ctx);
+    if (existsSync(out) && sameCtx && !flags.has("--force")) {
       console.log(`· scene ${i + 1}: unchanged, kept ${out}`);
       continue;
     }
@@ -266,7 +274,7 @@ async function tts() {
       voice_settings: { stability: v.stability, similarity_boost: v.similarityBoost, style: 0, use_speaker_boost: true, speed: v.speed },
     };
     // Neighbour text keeps the prosody continuous across scenes.
-    const [prev, next] = context(scenes, i, v);
+    const [prev, next] = ctx;
     if (prev) body.previous_text = prev;
     if (next) body.next_text = next;
     // with-timestamps: the same audio, plus the start time of each character. build uses it to land a
@@ -279,7 +287,7 @@ async function tts() {
     if (!res.ok) die(`scene ${i + 1}: ElevenLabs ${res.status} ${await res.text()}`);
     const { audio_base64, alignment } = await res.json();
     writeFileSync(out, Buffer.from(audio_base64, "base64"));
-    if (alignment) writeFileSync(out.replace(/\.mp3$/, ".json"), JSON.stringify(alignment) + "\n");
+    writeFileSync(side, JSON.stringify({ ...alignment, context: ctx }) + "\n");
     console.log(`✓ scene ${i + 1}: ${out} (${probe(out).toFixed(1)}s)`);
   }
 }
@@ -386,7 +394,12 @@ function autoCamera(s, src, dur, clock, at) {
   const ev = events.map((e, n) => {
     const cue = s.cues?.[n];
     if (cue == null) return e;
-    const { t, next } = clock(cue, at, from);
+    let c = clock(cue, at, from);
+    if (!c) {
+      c = clock(cue, at);
+      drift.push(`${at}: cue ${n + 1} "${cue}" comes before cue ${n} in the say. The cues follow the clicks: give them in click order, or change the order of the steps.`);
+    }
+    const { t, next } = c;
     from = next;
     if (e.t - t <= AUTO.drift && t - e.t <= AUTO.late) return { ...e, t };
     drift.push(`${at}: ${e.kind} ${n + 1} (${e.sel}) is ${Math.abs(e.t - t).toFixed(1)} s ${e.t > t ? "after" : "before"} the word "${cue}". Its zoom${e.lift ? ", highlight and lift" : " and highlight"} stay at ${e.t.toFixed(1)} s, when the clip shows it. To put them on the word, change the wait before it by ${Math.round((t - e.t) * 1000)} ms and record again.`);
@@ -722,7 +735,11 @@ function theme() {
   };
   const missing = REQUIRED.filter((k) => get(brand, k) == null || get(brand, k) === "");
   if (missing.length) die(`video.json: missing ${missing.join(", ")}`);
-  for (const f of [video.fonts.display.file, video.fonts.body.file]) if (!existsSync(p(f))) die(`font not downloaded: ${f}`);
+  // theme copies project/fonts/ only, so a font anywhere else would be missing after the copy.
+  for (const f of [video.fonts.display.file, video.fonts.body.file]) {
+    if (!f.startsWith("fonts/")) die(`video.json: font ${f} must be under fonts/ (brand-pack.md)`);
+    if (!existsSync(p(f))) die(`font not downloaded: ${f}`);
+  }
 
   rmSync(join(out, "brand"), { recursive: true, force: true });
   mkdirSync(join(out, "brand", "assets"), { recursive: true });
