@@ -129,22 +129,33 @@ function checkSay(scenes, brand) {
   return { errors, warnings };
 }
 
-const voiceKey = (say, v) =>
-  createHash("sha1").update(JSON.stringify([say, v.voiceId, v.model, v.stability, v.similarityBoost, v.speed, v.seed])).digest("hex").slice(0, 10);
-const audioFile = (i, say, v) => `audio/s${String(i + 1).padStart(2, "0")}.${voiceKey(say, v)}.mp3`;
+// The neighbour lines that tts sends with a line, for continuous prosody (eleven_v3 does not accept them).
+const context = (scenes, i, v) => (v.model === "eleven_v3" ? [] : [
+  scenes.slice(0, i).reverse().find((x) => x.say)?.say ?? null,
+  scenes.slice(i + 1).find((x) => x.say)?.say ?? null,
+]);
+// The neighbours are part of the key: when a neighbour line changes, this line is voiced again.
+const voiceKey = (scenes, i, v) =>
+  createHash("sha1").update(JSON.stringify([scenes[i].say, v.voiceId, v.model, v.stability, v.similarityBoost, v.speed, v.seed, ...context(scenes, i, v)])).digest("hex").slice(0, 10);
+const audioFile = (scenes, i, v) => `audio/s${String(i + 1).padStart(2, "0")}.${voiceKey(scenes, i, v)}.mp3`;
 
 // The second, in a scene, at which a word of its narration starts. Exact from the ElevenLabs
 // alignment that `tts` saves next to the audio (.json); else in proportion to the characters.
 // ponytail: the proportional estimate can be off by about 0.4 s on a 10 s line (the connector path
 // has no alignment); a forced aligner (whisper) is the upgrade if that is too loose.
 const fold = (s) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+// clock(word, at, from) → { t, next }: the first whole-word match at or after character `from`
+// ("ver" never matches inside "conversar"). Pass `next` as `from` to find a later occurrence.
 function wordClock(say, alignFile, len) {
   const al = alignFile && existsSync(alignFile) ? readJson(alignFile) : null;
   const text = fold(al?.characters?.join("") ?? say);
-  return (word, at) => {
-    const n = text.indexOf(fold(word));
-    if (n < 0) die(`${at}: the word "${word}" is not in the say of this scene`);
-    return al ? al.character_start_times_seconds[n] : (n / text.length) * len;
+  return (word, at, from = 0) => {
+    const w = fold(word).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(`(?<![\\p{L}\\p{N}])${w}(?![\\p{L}\\p{N}])`, "gu");
+    re.lastIndex = from;
+    const n = re.exec(text)?.index;
+    if (n == null) die(`${at}: the word "${word}" is not in the say of this scene${from ? " after the previous cue" : ""}`);
+    return { t: al ? al.character_start_times_seconds[n] : (n / text.length) * len, next: n + 1 };
   };
 }
 
@@ -234,7 +245,7 @@ async function tts() {
   // The connector path: Claude voices these lines with the ElevenLabs connector and saves each one as `file`.
   if (flags.has("--list")) {
     const todo = scenes.flatMap((s, i) => {
-      const file = s.say && join(demoDir, audioFile(i, s.say, v));
+      const file = s.say && join(demoDir, audioFile(scenes, i, v));
       return file && (flags.has("--force") || !existsSync(file)) ? [{ scene: i + 1, file, say: s.say, voiceId: v.voiceId, model: v.model }] : [];
     });
     return console.log(JSON.stringify(todo, null, 2));
@@ -243,7 +254,7 @@ async function tts() {
   if (!key) die("No ElevenLabs API key. Connect the ElevenLabs connector in Claude, or save the key (SKILL.md step 5).");
   for (const [i, s] of scenes.entries()) {
     if (!s.say) continue;
-    const out = join(demoDir, audioFile(i, s.say, v));
+    const out = join(demoDir, audioFile(scenes, i, v));
     if (existsSync(out) && !flags.has("--force")) {
       console.log(`· scene ${i + 1}: unchanged, kept ${out}`);
       continue;
@@ -254,13 +265,10 @@ async function tts() {
       seed: v.seed,
       voice_settings: { stability: v.stability, similarity_boost: v.similarityBoost, style: 0, use_speaker_boost: true, speed: v.speed },
     };
-    // Neighbour text keeps the prosody continuous across scenes. eleven_v3 does not accept it.
-    if (v.model !== "eleven_v3") {
-      const prev = scenes.slice(0, i).reverse().find((x) => x.say);
-      const next = scenes.slice(i + 1).find((x) => x.say);
-      if (prev) body.previous_text = prev.say;
-      if (next) body.next_text = next.say;
-    }
+    // Neighbour text keeps the prosody continuous across scenes.
+    const [prev, next] = context(scenes, i, v);
+    if (prev) body.previous_text = prev;
+    if (next) body.next_text = next;
     // with-timestamps: the same audio, plus the start time of each character. build uses it to land a
     // zoom or a highlight on a word (`cues`, `word`). It is saved next to the line as .json.
     const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${v.voiceId}/with-timestamps?output_format=mp3_44100_128`, {
@@ -302,7 +310,7 @@ function camera(id, s, src, dur, at, frame, clock, warn) {
   const k = frame === "bleed" ? Math.max(CARD.w / mw, CARD.h / mh) : Math.min(CARD.w / mw, CARD.h / mh);
   const box = frame === "bleed" ? { w: mw * k, h: mh * k, x: 0, y: 0 } : { w: mw * k, h: mh * k, x: (CARD.w - mw * k) / 2, y: (CARD.h - mh * k) / 2 };
   // A keyframe or a highlight with `word` lands on that word of the narration.
-  const onWord = (f, kind) => (f.word == null ? f : { ...f, [kind === "focus" ? "at" : "from"]: Math.max(0, Number((clock(f.word, at) - (kind === "focus" ? 1 : 0.3)).toFixed(2))) });
+  const onWord = (f, kind) => (f.word == null ? f : { ...f, [kind === "focus" ? "at" : "from"]: Math.max(0, Number((clock(f.word, at).t - (kind === "focus" ? 1 : 0.3)).toFixed(2))) });
   const rect = (r, what) => {
     if (![r.x, r.y, r.w, r.h].every(Number.isFinite) || r.w <= 0 || r.h <= 0 || r.x < 0 || r.y < 0 || r.x + r.w > mw || r.y + r.h > mh)
       die(`${at}: ${what} ${JSON.stringify(r)} is not inside the ${mw}×${mh} media`);
@@ -374,10 +382,12 @@ function autoCamera(s, src, dur, clock, at) {
   if (s.auto === false || s.focus || s.highlight || !existsSync(log)) return {};
   const { size: [mw, mh], events } = readJson(log);
   const drift = [];
+  let from = 0; // each cue is found after the previous one, so a repeated word lands on its own occurrence
   const ev = events.map((e, n) => {
     const cue = s.cues?.[n];
     if (cue == null) return e;
-    const t = clock(cue, at);
+    const { t, next } = clock(cue, at, from);
+    from = next;
     if (e.t - t <= AUTO.drift && t - e.t <= AUTO.late) return { ...e, t };
     drift.push(`${at}: ${e.kind} ${n + 1} (${e.sel}) is ${Math.abs(e.t - t).toFixed(1)} s ${e.t > t ? "after" : "before"} the word "${cue}". Its zoom${e.lift ? ", highlight and lift" : " and highlight"} stay at ${e.t.toFixed(1)} s, when the clip shows it. To put them on the word, change the wait before it by ${Math.round((t - e.t) * 1000)} ms and record again.`);
     return e;
@@ -385,7 +395,7 @@ function autoCamera(s, src, dur, clock, at) {
   // Hold: the last element needs a second of calm after it lands, before the scene leaves.
   const end = ev.at(-1);
   if (end && end.t + (end.lift ? AUTO.lift : 1) > dur) drift.push(`${at}: the last ${end.kind} (${end.sel}) is ${(dur - end.t).toFixed(1)} s before the scene ends. Give it at least ${end.lift ? AUTO.lift : 1} s: a longer say, a longer clip, or an earlier step.`);
-  if (s.cues && s.cues.length !== events.length) drift.push(`${at}: ${s.cues.length} cue(s) for ${ev.length} recorded click(s). Give one word for each click.`);
+  if (s.cues && s.cues.length !== events.length) drift.push(`${at}: ${s.cues.length} cue(s) for ${events.length} recorded click(s). Give one word for each click.`);
   const focus = [], highlight = [], lift = [];
   const lit = (e) => (e.lift ? AUTO.lift : AUTO.lit); // a lifted element stays up longer: rise, hold, return
   let last = -Infinity;
@@ -460,6 +470,8 @@ function build() {
   }
   for (const f of brandFiles(brand)) cpSync(join(dirname(brandPath), f), join(demoDir, f));
   const tpl = (name) => readFileSync(join(TEMPLATE, "compositions", name), "utf8");
+  const ease = readFileSync(join(TEMPLATE, "ease.js"), "utf8").trimEnd();
+  const EASE = ease.replace(/\n/g, "\n          "); // at the indent of {{EASE}} in the compositions
   const fill = (html, tokens) => html.replace(/\{\{(\w+)\}\}/g, (_, k) => (k in tokens ? tokens[k] : die(`template token {{${k}}} has no value`)));
 
   const m = Object.fromEntries(Object.entries(MOTION).map(([k, d]) => [k, { ...d, ...brand.motion?.[k] }]));
@@ -472,7 +484,7 @@ function build() {
   const sfxOn = (demo.sfx ?? brand.sfx) !== false;
   const clickAt = []; // seconds in the video of each recorded click
   let t = 0, firstLit, firstBeat, lifted = 0; // firstLit, firstBeat: candidates for the poster frame
-  const hosts = [], audio = [], warnings = [], spoken = [], cuts = [], notes = [];
+  const hosts = [], audio = [], warnings = [], spoken = [], cuts = [], notes = [], starts = [], durs = [];
   if (seams.filter((x) => x === "curtain").length > 1) warnings.push("more than one curtain transition. The library allows one in each video.");
   let z = 100;
   for (const [i, s] of scenes.entries()) {
@@ -481,7 +493,7 @@ function build() {
     let dur = s.hold ?? 4;
     let clock = (word) => die(`${at}: "${word}" needs a say on this scene, to find the word in`);
     if (s.say) {
-      const raw = audioFile(i, s.say, v);
+      const raw = audioFile(scenes, i, v);
       if (existsSync(join(demoDir, raw))) {
         // TTS output is about -24 LUFS and varies by line; one loudness for every line.
         const a = `voice/${id}.mp3`;
@@ -508,8 +520,8 @@ function build() {
       if (!s.media) die(`${at}: a recording scene needs media`);
       const src = join(demoDir, s.media);
       if (!existsSync(src)) die(`${at}: media not found: ${s.media}`);
-      if (/\.(mp4|mov|webm|m4v)$/i.test(s.media) && probe(src) < live - 0.1)
-        warnings.push(`${at}: the recording is ${probe(src).toFixed(1)}s, the scene is ${live}s. The last part shows the card with no video.`);
+      const clipLen = /\.(mp4|mov|webm|m4v)$/i.test(s.media) ? probe(src) : Infinity;
+      if (clipLen < live - 0.1) warnings.push(`${at}: the recording is ${clipLen.toFixed(1)}s, the scene is ${live}s. The last part shows the card with no video.`);
       const frame = s.frame ?? brand.frame ?? "bleed";
       if (!(frame in FRAMES)) die(`${at}: frame "${frame}" is not one of ${Object.keys(FRAMES).join(", ")}`);
       // A still has no motion of its own: with no zoom it is a dead screen under the voice.
@@ -526,7 +538,7 @@ function build() {
       firstLit ??= (() => { const h = JSON.parse(SPOTS)[0]; return h && t + h.from + 0.8; })();
       firstBeat ??= t + Math.min(live / 2, 3);
       html = fill(tpl("beat.html"), {
-        ID: id, DUR: live, FRAME: frame, ...CARD_MOVE[frame], LABEL: esc(s.label ?? ""), TITLE: esc(s.title), CAPTION: esc(s.caption ?? ""),
+        ID: id, DUR: live, EASE, FRAME: frame, ...CARD_MOVE[frame], LABEL: esc(s.label ?? ""), TITLE: esc(s.title), CAPTION: esc(s.caption ?? ""),
         MEDIA: `<div id="${id}-cam" class="${id}-cam" style="${cam.style}" data-layout-allow-overflow>${mediaTag(id, s.media, live)}${cam.masks}</div>`, CAM, MASKS, SPOTS, LIFTS,
       });
     } else if (s.type === "card" || s.type === "outro" || s.type === "figure") {
@@ -537,6 +549,7 @@ function build() {
       html = fill(tpl("card.html"), {
         ID: id,
         DUR: live,
+        EASE,
         ENTER: enters[i],
         CLASSES: `enter-${enters[i]}${figure ? " is-figure" : ""}`,
         LOGO: outro ? `<img id="${id}-logo" class="${id}-logo" src="${esc(brand.logo)}" alt="${esc(brand.name)}" />` : "",
@@ -551,11 +564,11 @@ function build() {
     // Overlapping scenes alternate tracks; z-index (not the track) sets which one is on top.
     hosts.push(`<div id="${id}" style="position:absolute;inset:0;z-index:${z}" data-composition-id="${id}" data-composition-src="compositions/${id}.html" data-start="${t.toFixed(2)}" data-duration="${live}" data-track-index="${1 + (i % 2)}" data-width="1920" data-height="1080"></div>`);
     if (i > 0) cuts.push(`SEAM[${JSON.stringify(seams[i])}](${t.toFixed(2)}, "#s${String(i).padStart(2, "0")}", "#${id}")`);
+    starts.push(Number(t.toFixed(2)));
+    durs.push(live);
     t += dur;
   }
   const total = Number(t.toFixed(2));
-  const starts = hosts.map((h) => Number(h.match(/data-start="([\d.]+)"/)[1]));
-  const durs = hosts.map((h) => Number(h.match(/data-duration="([\d.]+)"/)[1]));
 
   // The poster: the one frame most people see (a newsletter thumbnail, a link preview). It shows the
   // result, never a frame between two scenes: `poster` in demo.json, else the first lit highlight,
@@ -580,7 +593,8 @@ function build() {
   const src = demo.music;
   if (src) {
     if (!existsSync(join(demoDir, src))) die(`music not found: ${src}. Download it again, or set "music": null.`);
-    if (probe(join(demoDir, src)) < total) warnings.push(`music ${src} is ${probe(join(demoDir, src)).toFixed(1)}s, the video is ${total}s. The end has no music.`);
+    const musicLen = probe(join(demoDir, src));
+    if (musicLen < total) warnings.push(`music ${src} is ${musicLen.toFixed(1)}s, the video is ${total}s. The end has no music.`);
     const lane = { version: 1, lanes: [{ target: "volume", points: bedEnvelope(spoken, total) }] };
     audio.push(`<audio id="bgm" src="${esc(src)}" data-start="0" data-duration="${total}" data-track-index="11" data-volume="1" data-audio-group="music" data-automation="${esc(JSON.stringify(lane))}"></audio>`);
   }
@@ -624,7 +638,7 @@ function build() {
       ${audio.join("\n      ")}
     </div>
     <script>
-${readFileSync(join(TEMPLATE, "seams.js"), "utf8").replace(/^/gm, "      ")}
+${`${ease}\n\n${readFileSync(join(TEMPLATE, "seams.js"), "utf8")}`.replace(/^/gm, "      ")}
       ${cuts.join("\n      ")}
       window.__timelines["main"] = tl;
     </script>
@@ -682,17 +696,15 @@ function theme() {
 
   const out = resolve(opt("out") ?? "demo-video");
   const brandOut = join(out, "brand.json");
-  rmSync(join(out, "brand"), { recursive: true, force: true });
-  mkdirSync(join(out, "brand", "assets"), { recursive: true });
-  if (existsSync(p("fonts"))) cpSync(p("fonts"), join(out, "brand", "fonts"), { recursive: true });
-
+  // Check every input before the old brand/ is removed: a failed refresh keeps the working pack.
+  if (!video.logo) die("video.json: missing logo");
+  if (!video.fonts?.display?.file || !video.fonts?.body?.file) die("video.json: missing fonts.display.file or fonts.body.file");
   const [group, ...rest] = video.logo.replace(/^assets\//, "").split("/");
   const blob = index.assetGroups?.[group]?.files?.[rest.join("/")]?.blob;
   const find = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
     e.isDirectory() ? find(join(dir, e.name)) : e.name.startsWith(`${blob}.`) ? [join(dir, e.name)] : []);
   const logo = existsSync(p(video.logo)) ? p(video.logo) : blob && find(demoDir)[0];
   if (!logo) die(`logo not downloaded: ${video.logo}${blob ? ` (upload ${blob})` : ""}`);
-  cpSync(logo, join(out, "brand", "assets", basename(video.logo)));
 
   // A placeholder voice in the design system must not erase a voice the project already chose.
   const old = existsSync(brandOut) ? readJson(brandOut) : {};
@@ -708,9 +720,15 @@ function theme() {
     voice,
     theme: { title: index.title, url: opt("url") ?? null },
   };
-  for (const f of brandFiles(brand)) if (!existsSync(join(out, f))) die(`file not found after copy: ${f}`);
   const missing = REQUIRED.filter((k) => get(brand, k) == null || get(brand, k) === "");
   if (missing.length) die(`video.json: missing ${missing.join(", ")}`);
+  for (const f of [video.fonts.display.file, video.fonts.body.file]) if (!existsSync(p(f))) die(`font not downloaded: ${f}`);
+
+  rmSync(join(out, "brand"), { recursive: true, force: true });
+  mkdirSync(join(out, "brand", "assets"), { recursive: true });
+  if (existsSync(p("fonts"))) cpSync(p("fonts"), join(out, "brand", "fonts"), { recursive: true });
+  cpSync(logo, join(out, "brand", "assets", basename(video.logo)));
+  for (const f of brandFiles(brand)) if (!existsSync(join(out, f))) die(`file not found after copy: ${f}`);
   writeFileSync(brandOut, JSON.stringify(brand, null, 2) + "\n");
   console.log(`✓ theme "${index.title}" → ${brandOut}`);
   if (/^REPLACE/.test(voice.voiceId)) console.log("! voice.voiceId is a placeholder. Set it in brand.json before the tts step.");

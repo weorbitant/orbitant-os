@@ -176,7 +176,8 @@ async function login() {
   // A signed-in session has a cookie or stored data for the product's host.
   const host = new URL(capture.base).hostname;
   const st = readJson(SESSION);
-  const mine = st.cookies.filter((c) => host.endsWith(c.domain.replace(/^\./, ""))).length + (st.origins ?? []).filter((o) => new URL(o.origin).hostname === host).length;
+  const onHost = (d) => host === d || host.endsWith(`.${d}`); // a dot boundary: a.com is not dev.sherpa.com
+  const mine = st.cookies.filter((c) => onHost(c.domain.replace(/^\./, ""))).length + (st.origins ?? []).filter((o) => new URL(o.origin).hostname === host).length;
   if (!mine) die(`the session has no cookie and no stored data for ${host}. The person is not signed in yet: run login again.`);
   console.log(`✓ session saved → ${SESSION}`);
 }
@@ -262,9 +263,16 @@ async function find() {
   const fmt = (b) => `x ${b.x} y ${b.y} w ${b.w} h ${b.h}`;
   const count = async (sel) => { const n = await page.locator(sel).count(); return n === 1 ? "unique" : `${n} matches, record uses the first`; };
   const fold = (b) => (b.y + b.h > VIEW.height ? `, below the fold: add { "scroll": ${Math.ceil((b.y + b.h - VIEW.height + 120) / 100) * 100} } before it` : "");
+  // The place of this hit among the matches of its own selector (exact and partial selectors match
+  // different sets, so the hit's place in `hits` is not its nth).
+  const place = (sel, b) => page.locator(sel).evaluateAll((els, b) => els.findIndex((el) => {
+    const r = el.getBoundingClientRect();
+    return Math.round(r.x) === b.x && Math.round(r.y) === b.y && Math.round(r.width) === b.w && Math.round(r.height) === b.h;
+  }), b);
   for (const [n, h] of hits.entries()) {
     const sel = h.exact ? `text=${JSON.stringify(text)}` : `text=${text}`;
-    const nth = hits.length > 1 ? `${sel} >> nth=${n}` : sel;
+    const k = await place(sel, h.box);
+    const nth = k > 0 || (k === 0 && (await page.locator(sel).count()) > 1) ? `${sel} >> nth=${k}` : sel;
     console.log(`${n + 1}. ${h.name}  ${fmt(h.box)}${fold(h.box)}`);
     console.log(`   element: ${nth}   (${await count(nth)})`);
     if (h.card) {

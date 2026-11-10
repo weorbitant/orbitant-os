@@ -336,7 +336,8 @@ or more after the step. **Use one lift in each video**: `build` warns for more. 
 recording scene is no longer a hero.
 
 **On the word — `cues`.** Without cues, the zoom follows the cursor. With cues, it follows the voice:
-give one word of the recording scene's `say` for each recorded click or hover, in order:
+give one word of the recording scene's `say` for each recorded click or hover, in order. A cue matches a
+whole word only, and each cue is found after the previous one, so the same word can be a cue twice:
 
 ```json
 "say": "Arriba ves los ingresos del mes. Con el botón ver, abres el detalle.",
@@ -433,7 +434,8 @@ The person signs in to ElevenLabs once in claude.ai; nobody handles an API key.
    node <skill>/scripts/demo.mjs tts demo-video/demos/<slug> --list
    ```
    It prints a JSON list of `{ scene, file, say, voiceId, model }`. Lines that already have audio are
-   not in the list, so a second run only voices what changed. `--force` lists every line.
+   not in the list, so a second run only voices what changed: a changed line and the lines next to
+   it (their intonation depends on it). `--force` lists every line.
 2. For each line, call `creative_generate_speech` with `prompt` = `say` exactly, `voice_id` = `voiceId`,
    `model_id` = `model` and `generations_count: 1`. Call it once per line, never again to retry: each
    call is charged.

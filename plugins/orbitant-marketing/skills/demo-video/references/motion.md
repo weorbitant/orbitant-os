@@ -84,5 +84,6 @@ design system's `video.json`). A scene changes only itself with `enter` or `tran
 of that type. The first scene has no transition.
 
 The code is in `template/seams.js` (scene changes) and `template/compositions/card.html`
-(entrances). To add a recipe, port it from the board there, add its name to `ENTERS` or `SEAMS`
+(entrances). The house ease is in `template/ease.js`, the one copy: `build` inlines it into each
+composition and before the seams. To add a recipe, port it from the board there, add its name to `ENTERS` or `SEAMS`
 in `scripts/demo.mjs`, and test it with `npm run check` and snapshots.

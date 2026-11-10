@@ -4,26 +4,7 @@
 // cut: the incoming scene starts there. build extends the outgoing scene by the seam's overlap
 // and stacks the scenes with z-index, so these tweens only move the two host elements.
 
-// House ease cubic-bezier(0.2, 0, 0.2, 1). See compositions/beat.html for why it is solved here.
-function cubicBezier(x1, y1, x2, y2) {
-  const A = (a, b) => 1 - 3 * b + 3 * a, B = (a, b) => 3 * b - 6 * a, C = (a) => 3 * a
-  const calc = (t, a, b) => ((A(a, b) * t + B(a, b)) * t + C(a)) * t
-  const slope = (t, a, b) => 3 * A(a, b) * t * t + 2 * B(a, b) * t + C(a)
-  return (x) => {
-    if (x <= 0) return 0
-    if (x >= 1) return 1
-    let t = x
-    for (let i = 0; i < 8; i++) {
-      const err = calc(t, x1, x2) - x
-      if (Math.abs(err) < 1e-6) break
-      const d = slope(t, x1, x2)
-      if (Math.abs(d) < 1e-6) break
-      t -= err / d
-    }
-    return calc(t, y1, y2)
-  }
-}
-const EZ = cubicBezier(0.2, 0, 0.2, 1)
+// The house ease EZ comes from ease.js, which build inlines before this file.
 const F = 1 / 30
 const tl = gsap.timeline({ paused: true })
 const into = (sel, from, to, at) => tl.fromTo(sel, from, { ...to, ease: EZ, immediateRender: false }, at)
