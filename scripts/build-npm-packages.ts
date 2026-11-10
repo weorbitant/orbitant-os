@@ -136,7 +136,13 @@ function buildVertical(plugin: ParsedPlugin): void {
     },
     author: source.author ?? { name: 'Orbitant' },
     license: source.license ?? 'MIT',
-    repository: { type: 'git', url: 'https://github.com/weorbitant/orbitant-os.git' },
+    // `directory` (npm's standard field) says where the brain lives inside this repository, so a
+    // consumer can point at a skill's source without assuming the plugins/ layout.
+    repository: {
+      type: 'git',
+      url: 'https://github.com/weorbitant/orbitant-os.git',
+      directory: `plugins/${plugin.name}`,
+    },
     // Without `access`, npm defaults a scoped package to restricted and rejects the publish.
     publishConfig: { registry: REGISTRY, access: 'public' },
   };
