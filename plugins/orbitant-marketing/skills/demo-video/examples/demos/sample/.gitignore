@@ -1,0 +1,14 @@
+compositions/
+voice/
+sfx/
+brand/
+index.html
+meta.json
+package.json
+.hyperframes/
+snapshots/
+.thumbnails/
+.waveform-cache/
+renders/
+*.mp4
+!media/*.mp4
