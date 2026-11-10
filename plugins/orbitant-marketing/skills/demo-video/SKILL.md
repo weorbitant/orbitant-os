@@ -77,7 +77,7 @@ steps below only when there is no `brand.json`, or when the person asks for anot
    The command resolves the colour tokens and copies the fonts and the logo. It keeps a voice id
    that the project already set when the theme has only a placeholder.
 7. If `theme` prints `! voice.voiceId is a placeholder`, set `voice.voiceId` in `demo-video/brand.json`.
-   Ask the person for a voice, or use the default for Spanish (Spain): Lucia, `rDkIS117MFsZ9FVeK2Rx`.
+   Ask the person for a voice, or use the default for Spanish (Spain): Sofía, `RrEQHwbMIvoa9O0J5xAW`.
    Say which voice you used. `doctor` and `tts` stop while the placeholder is there.
 
 If no design system can be opened (none is shared with the person, or there is no Artifact tool),

@@ -30,7 +30,7 @@
     "sub": "afianza.es"
   },
   "voice": {
-    "voiceId": "rDkIS117MFsZ9FVeK2Rx",
+    "voiceId": "RrEQHwbMIvoa9O0J5xAW",
     "model": "eleven_multilingual_v2",
     "stability": 0.5,
     "similarityBoost": 0.75,
