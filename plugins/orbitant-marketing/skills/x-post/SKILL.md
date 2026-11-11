@@ -15,7 +15,7 @@ description: |
   @mercuria_orb or @WeOrbitant, without asking for a thread. This skill writes
   one post, never a thread: material holding an argument that needs several
   posts goes to x-thread instead.
-version: "1.2.0"
+version: "1.3.0"
 license: MIT
 metadata:
   author: orbitant
@@ -29,6 +29,8 @@ A post on X arrives alone. The timeline drops it between two unrelated things, g
 So the job of a single post is **traction**: a reason for someone who was scrolling to stop. Not a summary of what happened, not an announcement that it happened. Every rule below follows from that.
 
 This skill writes **one standalone post, never a thread**, and it delivers several variants of it so a human can pick one.
+
+Before writing, read `../tone/SKILL.md`: its style rules apply to this piece in full, and its English section applies to every post written in English. This file adds only what belongs to a single X post.
 
 ---
 
@@ -106,13 +108,13 @@ Mercuria is an **autonomous agent with a voice of its own**, and it writes in th
 
 **Never present Mercuria as human.** That is a standing guardrail of Orbitant's communication strategy rather than a stylistic preference, and it comes with two more: the framing is always **amplify, not replace** (never "fewer humans"), and **disclosure that a piece involved an AI agent is required where the strategy calls for it** — which matters more here than on any other channel, because here the agent is the publisher.
 
-The strategy is the source of truth and it moves faster than this file: *Notion → Marketing → "Employents communication strategy"*, with its linked documents *"Orbitant — Content Machine (Operating System)"* and *"Orbitant — Plan de Comunicación Sep–Oct 2026"*. Query it when you can reach Notion, and let it override this section wherever they disagree. **When you cannot reach it, do not stall and do not invent a check**: the three guardrails above were current when this file was written, so honour those and say in your output that the strategy was not consulted.
+The strategy is the source of truth and it moves faster than this file: *Notion → Marketing → "Employents communication strategy"*, with its linked documents *"Orbitant — Content Machine (Operating System)"* and *"Orbitant — Plan de Comunicación Sep–Oct 2026"*. Read it when it is available and let it override this section wherever they disagree. **When it is not available, do not stall and do not invent a check**: the three guardrails above were current when this file was written, so honour those and follow tone's rule for that case (`../tone/SKILL.md`, "How this guide relates to the other files").
 
 **Mentioning `@WeOrbitant`.** Mercuria is not Orbitant, so naming Orbitant is an ordinary mention and it is available — where it reads naturally and where Orbitant is genuinely part of what is being said. It is never a fixed signature. In a single post a mention also costs characters and reads as an advert when it is not carrying its weight: if in doubt, drop it.
 
 **Write it as the mention when it appears in the copy.** If a post names Orbitant at all — somebody's employer, where a session happened, who built a thing — `@WeOrbitant` is the form to use: `software engineer at @WeOrbitant`, `a team at @WeOrbitant`. It costs the same characters, it is a live link, and it is the difference between naming the company and reaching it. Not mandatory and not a reason to shoehorn Orbitant into a post that had no reason to mention it — but when the name is already there, mention it.
 
-**What Mercuria sounds like.** The register is the house one: write as the `tone` skill says, in the first person singular. What makes it Mercuria's rather than Orbitant's is the standpoint, not a costume — an agent that did the reading, watched the session or went through the material, saying what it found and no more than the material supports.
+**What Mercuria sounds like.** The register is the house one: write as `../tone/SKILL.md` says, in the first person singular. Mercuria's first person singular replaces tone's default narrator for a piece no person signs (Orbitant as a company, "we"). What makes it Mercuria's rather than Orbitant's is the standpoint, not a costume — an agent that did the reading, watched the session or went through the material, saying what it found and no more than the material supports.
 
 **Do not invent a personality.** No quirks, no catchphrase, no jokes about being a machine, no narrating its own nature unless the post is genuinely about that. Marketing settled the standpoint on 2026-09-22 and deliberately did not hand down a persona; a distinct register is a product decision nobody has taken, and it is not this file's to take by example. If one is ever wanted, it arrives here as its own change with examples attached.
 
@@ -120,7 +122,7 @@ The strategy is the source of truth and it moves faster than this file: *Notion 
 
 **If the material gives their account on X, cite it** beside their name: `Marta Ferrán (@martaferran)`. A handle cannot be inferred, so never construct one from a name and never carry one over from another post. An account a manager has set for that person in the employent's standing instructions counts as given by the material. Handles in a transcript are usually spoken rather than spelled, so they arrive without the `@` and sometimes mis-transcribed; if the material is ambiguous about the exact spelling, name the person without a handle and **say in your output** that a handle was mentioned but could not be read reliably. A confidently wrong handle cites a stranger.
 
-**When the material does not say who they are**, the post still reports on them in the third person, with a neutral phrase: "the person interviewed" for an interview, "the speaker" for a talk or a session ("la persona entrevistada", "la persona que da la charla" in a Spanish post). Never invent a name, a role or a handle, and never turn what they lived into Mercuria's or Orbitant's story. A stable phrase is what lets a name replace it later without rewriting the post.
+**When the material does not say who they are**, follow tone's rule for a speaker not named in the material, and never turn what they lived into Mercuria's story either.
 
 ### Language
 
@@ -128,7 +130,7 @@ The strategy is the source of truth and it moves faster than this file: *Notion 
 
 Write the post in Spanish only when whoever asked for it asks for Spanish. A request written in Spanish is not, by itself, a request for a Spanish post. Either way it is one version: never both, and never a translation alongside.
 
-Material in Spanish and a post in English means anything you quote is being translated. Keep the translation faithful to what was actually said — a post that rests on someone's exact words cannot afford a loose rendering.
+Material in Spanish and a post in English means anything you quote is being translated, and tone asks for a faithful translation of every literal quote.
 
 In a Spanish post, keep technical English terms in English: *framework*, *pipeline*, *deployment*, *token*.
 
@@ -181,17 +183,14 @@ Fewer variants that genuinely differ always beat more that nearly match.
 
 ### Rules for every variant
 
-- **A statement, never a rhetorical question.** A question invites "no" and a scroll.
 - **It has to deliver value standing alone.** Someone who has never heard of Orbitant should walk away with something.
 - **No link by default.** See the Links section.
 - **Target 150 to 240 of the 280.** Room to breathe reads as confidence; a post at 279 reads as cramming, and a reviewer cannot fix a typo in it without cutting a word.
 - **Never open with a self-introduction**, whoever the subject — not Mercuria's and not Orbitant's. Open with the anchor: "Excited to share" and "Orbitant is proud to announce" both fail it. Naming a person for something they actually did is encouraged and is not a self-introduction.
-- **Concrete beats clever.** A number, a measurement or a named consequence outperforms wordplay.
 - **Do not count characters by hand.** Aim for the 150 to 240 band by eye and leave margin. Whatever publishes the post measures it with X's own counter and refuses anything over 280, so a count in your answer is something nobody can rely on.
 - **Plain text in the post itself.** Whatever the answer around it looks like, the post carries no markdown: X renders none of it.
 - **Short lines and blank lines** are the whole formatting toolkit. Three lines of text at most.
 - **Lists inside a post:** two items at most, one per line, no bullet characters. The three-line cap counts them, so a list of three leaves no line for the statement that frames it, and a list with nothing framing it is not a post. Three items or more is a thread.
-- **No engagement bait.** Not "Agree?", not "What do you think?", not "Follow for more", not "Bookmark this". Traction is the post being worth stopping for, not the reader being asked to react.
 
 ### Examples
 
@@ -327,7 +326,7 @@ Verify each of these. Do not deliver an answer that fails one.
 - [ ] Every variant visibly inside the 150 to 240 target, with any URL budgeted at 23 and no `…` or emoji left to chance
 - [ ] Every variant stands alone, with no context and nothing to open
 - [ ] Every variant is anchored in something concrete and checkable
-- [ ] No rhetorical question, no engagement bait, no thread announcement
+- [ ] Tone's final style pass run over every variant, and no thread announcement
 - [ ] Zero hashtags, or one real event tag
 - [ ] No markdown syntax in any post body
 - [ ] No link, or exactly one link in exactly one variant
@@ -343,13 +342,9 @@ Verify each of these. Do not deliver an answer that fails one.
 
 ## Tone
 
-Refer to the `tone` skill for Orbitant's voice. On a single X post specifically:
+Orbitant's voice and every style rule are in `../tone/SKILL.md`. On a single X post specifically:
 
 - **Compress hard.** 280 characters is not a trimmed paragraph, it is a different sentence length. One clause where you would write two.
-- **Concrete over abstract.** Numbers, measurements, named consequences. X punishes vagueness faster than any other channel.
-- **Dry humour is welcome** when it fits naturally. Human, not polished — not forced, not performative.
-- **No buzzwords:** "game-changing", "innovative", "cutting-edge", "empower", "leverage".
-- **No growth-hacker voice:** "Most developers get this wrong", "Here is everything you need to know", "This changed how I think about X forever", "Steal this".
 - **If the post is in Spanish, the em dash only marks a two-sided aside.** A single-sided dash used as a continuation is an anglicism. In English it is ordinary punctuation and the rule does not apply.
 
 ---
@@ -367,4 +362,3 @@ Refer to the `tone` skill for Orbitant's voice. On a single X post specifically:
 - A link in every variant, or a link in a post whose job is to be quoted.
 - Markdown syntax. X renders none of it.
 - Naming a person to score a point.
-- Engagement bait of any kind, including the closing question.

@@ -14,7 +14,7 @@ description: |
   mentioning X, Twitter, threads, @mercuria_orb or @WeOrbitant — even if they
   never say the word "thread". This skill writes for X only; it is the wrong skill for
   LinkedIn, YouTube or the newsletter.
-version: "1.1.0"
+version: "1.2.0"
 license: MIT
 metadata:
   author: orbitant
@@ -26,6 +26,8 @@ metadata:
 A thread is one argument spread across several posts. But X distributes **single posts**: the timeline shows them on their own, out of order, and people quote and screenshot individual posts without the rest.
 
 So a thread has two jobs at once. It has to hold together as one argument, and every post in it has to survive alone. Every rule below follows from that.
+
+Before writing, read `../tone/SKILL.md`: its style rules apply to this piece in full, and its English section applies to every thread written in English. This file adds only what belongs to an X thread.
 
 ---
 
@@ -73,7 +75,7 @@ What that rules out, concretely:
 
 **If an agent turns out to be the publisher**, the standing guardrails of Orbitant's communication strategy apply: an agent never presents itself as human, the framing is always **amplify, not replace** (never "fewer humans"), and disclosure that a piece involved an AI agent is required where the strategy calls for it. Writing a thread that presumes no account is what keeps all three satisfiable without knowing.
 
-The strategy is the source of truth and it moves faster than this file: *Notion → Marketing → "Employents communication strategy"*, with its linked documents *"Orbitant — Content Machine (Operating System)"* and *"Orbitant — Plan de Comunicación Sep–Oct 2026"*. Query it when you can reach Notion, and let it override this section wherever they disagree. **When you cannot reach it, do not stall and do not invent a check**: the guardrails above were current when this file was written, so honour those and say in your output that the strategy was not consulted.
+The strategy is the source of truth and it moves faster than this file: *Notion → Marketing → "Employents communication strategy"*, with its linked documents *"Orbitant — Content Machine (Operating System)"* and *"Orbitant — Plan de Comunicación Sep–Oct 2026"*. Read it when it is available and let it override this section wherever they disagree. **When it is not available, do not stall and do not invent a check**: the guardrails above were current when this file was written, so honour those and follow tone's rule for that case (`../tone/SKILL.md`, "How this guide relates to the other files").
 
 ### Somebody else's words
 
@@ -89,7 +91,7 @@ Report what they said; do not borrow the interviewer's voice. *"They told us"* p
 
 Cite it **only as they gave it**. Handles in a transcript are usually spoken rather than spelled, so they arrive without the `@` and sometimes mis-transcribed; if the material is ambiguous about the exact spelling, name the person without a handle and say in your output that a handle was mentioned but could not be read reliably. A confidently wrong handle cites a stranger.
 
-**When the material does not say who they are**, the thread still reports on them in the third person, with one neutral phrase used the same way in every post: "the person interviewed" for an interview, "the speaker" for a talk or a session ("la persona entrevistada", "la persona que da la charla" in a Spanish thread). Never invent a name, a role or a handle, and never turn what they lived into Orbitant's story. A stable phrase is what lets a name replace it later without rewriting the thread.
+**When the material does not say who they are**, follow tone's rule for a speaker not named in the material, with the same neutral phrase in every post.
 
 ### Language
 
@@ -97,7 +99,7 @@ Cite it **only as they gave it**. Handles in a transcript are usually spoken rat
 
 Write the thread in Spanish only when whoever asked for it asks for Spanish. Either way it is one version: never both, and never a translation alongside.
 
-Material in Spanish and a thread in English means anything you quote is being translated. Keep the translation faithful to what was actually said — a post that rests on someone's exact words cannot afford a loose rendering.
+Material in Spanish and a thread in English means anything you quote is being translated, and tone asks for a faithful translation of every literal quote.
 
 In a Spanish thread, keep technical English terms in English: *framework*, *pipeline*, *deployment*, *token*.
 
@@ -123,12 +125,10 @@ X surfaces this post on its own. Assume most people read only this one. **It has
 
 ### Rules
 
-- **A statement, never a rhetorical question.** A question invites "no" and a scroll.
 - **No link.** It goes in the closing post, once.
 - **No thread announcement.** No "🧵", no "A thread:", no "👇", no "Let me explain:". A post that has to announce it is a thread is not a hook.
 - **Target ~200 of the 280 characters.** Room to breathe reads as confidence; a post packed to 279 reads as cramming.
 - **Never open with a self-introduction**, whoever the subject — not Mercuria's, not Orbitant's. Open with the insight. Naming a person for something they did is encouraged and is not a self-introduction.
-- **Concrete beats clever.** A number, a measurement or a named consequence outperforms wordplay.
 
 ### Examples
 
@@ -181,8 +181,6 @@ Give one post to the honest limitation — where the idea stops working. A threa
 **Native** — a statement that encapsulates the spine. Memorable, not a generic call to action. `Building with intention, not chaos` — not `Read more on our blog`.
 
 If the thread mentions `@WeOrbitant` at all, this is one natural place for it — but only when the closing genuinely lands on Orbitant. See *Account and voice*.
-
-**No engagement bait.** Not "Follow for more", not "Bookmark this", not "What do you think?", not "Agree?", not "RT if you have lived this".
 
 ---
 
@@ -273,13 +271,9 @@ Verify each of these. Do not deliver a thread that fails one.
 
 ## Tone
 
-Refer to the `tone` skill for Orbitant's voice. On X specifically:
+Orbitant's voice and every style rule are in `../tone/SKILL.md`. On X specifically:
 
 - **Compress hard.** 280 characters is not a trimmed paragraph, it is a different sentence length. One clause where you would write two.
-- **Concrete over abstract.** Numbers, measurements, named consequences. X punishes vagueness faster than any other channel.
-- **Dry humour is welcome** when it fits naturally. Human, not polished — not forced, not performative.
-- **No buzzwords:** "game-changing", "innovative", "cutting-edge", "empower", "leverage".
-- **No growth-hacker voice.** The fastest way to lose a technical audience: "Here is everything you need to know", "10 lessons I learned", "Most developers get this wrong", "This changed how I think about X forever", "Steal this".
 - **If the thread is in Spanish, the em dash only marks a two-sided aside.** A single-sided dash used as a continuation is an anglicism. In English it is ordinary punctuation and the rule does not apply.
 
 ---
@@ -295,5 +289,4 @@ Refer to the `tone` skill for Orbitant's voice. On X specifically:
 - Markdown syntax — X renders none of it.
 - Code as text.
 - `🧵`, `👇`, "A thread:", and every other way of announcing a thread instead of starting one.
-- Engagement bait of any kind, including the closing question.
 - Padding a thin idea to reach a post count. A thread that runs out of argument at post 4 should be four posts, or one.
