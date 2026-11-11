@@ -31,7 +31,7 @@ Everything about how a sentence is written lives here, once. The other files add
 
 When two sources disagree, apply this order, highest first:
 
-1. **Notion → Marketing → "Employents communication strategy"**, on one subject only: how Orbitant's people and its AI agents are represented in public. This covers every way of naming them: AI agents, AI employees, Employents (Orbitant's own name for its AI employees, whatever content series is written about them) and any agent with a name of its own, such as Mercuria or Neptuno. Query it in Notion for every piece that touches that subject. If Notion cannot be reached, apply the standing guardrails (an agent never presents itself as human, agents amplify the team, and a piece discloses that an AI agent took part where the strategy asks for it) and say in the output that the strategy was not consulted.
+1. **Notion → Marketing → "Employents communication strategy"**, on one subject only: how Orbitant's people and its AI agents are represented in public. This covers every way of naming them: AI agents, AI employees, Employents (Orbitant's own name for its AI employees, whatever content series is written about them) and any agent with a name of its own, such as Mercuria or Neptuno. Read it when it is available (a Notion tool, or the page given as part of the material), for every piece that touches that subject. If it is not available, apply the standing guardrails (an agent never presents itself as human, agents amplify the team, and a piece discloses that an AI agent took part where the strategy asks for it) and do not mention in the piece that the strategy was not read.
 2. **This guide**, on how every sentence is written.
 3. **The channel skill**, on what belongs to its piece: who narrates, length, structure, SEO and formats.
 4. **The author profile**, when the signer has one, on that person's angle, reader, depth and argument.
@@ -202,7 +202,7 @@ Good technical writing acknowledges what did not work, what could be better, and
 
 ---
 
-# Style rules
+## Style rules
 
 These rules apply to every piece Orbitant writes, revises or translates, on every channel. They cover how a sentence is written. A channel skill can be stricter and says so explicitly; it is never more permissive.
 
