@@ -123,26 +123,26 @@ Automated drafts built from sprint notes, ADRs or Slack threads tend to come out
 
 ## 5. Conflict resolution
 
-When this profile disagrees with another source, apply this order (highest first):
+When this profile disagrees with another source, apply this order (highest first). Where tone sits in it, and what a profile can and cannot change, is defined in `../../../tone/SKILL.md` ("How this guide relates to the other files"); that wins over this list wherever the two differ.
 
 1. **Notion → "Employents communication strategy"** for anything about how AI agents and Employents are represented publicly (see `SKILL.md` Overview). Always wins.
-2. **Publication requirements in `SKILL.md`.** The rules that describe the blog as a surface rather than Felipe as a writer: SEO metadata, the 900-word floor, the 300-word H2 minimum, bold in every paragraph, never naming the client, Spanish grammar and accents, no comma before y/o/ni, sentence case, no "En Orbitant + verb". These apply to Felipe like to anyone else. His published posts went through the same editorial pass.
-3. **Felipe's prose rules, in section 7 below**, on everything that happens inside a sentence: typography, paragraph length, rhythm, vocabulary, verbs, banned phrases, register and how a piece closes. These are his own rules for everything he signs, anywhere. They outrank the plugin's stylistic guidance, with level 2 above as the only exception.
+2. **Publication requirements in `SKILL.md` and the fixed rules of `../../../tone/SKILL.md`.** The rules that describe the blog as a surface rather than Felipe as a writer: SEO metadata, the 900-word floor, the 300-word H2 minimum, bold in every paragraph, never naming the client, Spanish grammar and accents, no comma before y/o/ni, sentence case, no "En Orbitant + verb". These apply to Felipe like to anyone else. His published posts went through the same editorial pass.
+3. **Felipe's prose rules, in section 7 below**, on everything that happens inside a sentence: typography, paragraph length, rhythm, vocabulary, verbs, banned phrases, register and how a piece closes. These are his own rules for everything he signs, anywhere.
 4. **This profile** for angle, framing, argument structure, depth calibration, what to keep or drop from the raw input, openings, closings and the reader's role.
 5. **Remaining structural and stylistic guidance in `SKILL.md`** (article structure, element variety, pull quotes, asset callouts, H2 length), adapted as described below.
-6. **`../tone/SKILL.md` and the narrative**, as the general Orbitant backdrop.
+6. **The narrative**, as the general Orbitant backdrop.
 
-Levels 2 and 3 agree more often than they collide. The bans on "No es X, es Y" and on rhetorical questions, the anti-slop pass and the "Words and expressions to avoid" table all appear in both, and Felipe treats the negate-then-assert construction as a fatal error that invalidates the whole draft. Where a real collision exists, the table below resolves it.
+Levels 2 and 3 agree more often than they collide. The bans on "No es X, es Y" and on rhetorical questions, the final style pass and the hard bans table of `../../../tone/SKILL.md` all appear in both, and Felipe treats the negate-then-assert construction as a fatal error that invalidates the whole draft. Where a real collision exists, the table below resolves it.
 
 ### Specific cases
 
 | Conflict | Resolution |
 |---|---|
 | Felipe opens with questions ("¿Son necesarios? ¿Hasta qué punto?", "¿gastado o invertido?") vs. **no rhetorical questions** | The ban wins. Keep his reframing move but state the tension declaratively: *"Pocas veces nos preguntamos si ese refactor se paga solo."* |
-| His "En Orbitant…" openers vs. the **"en Orbitant + verb" ban** | The ban wins. Use the trailing clause form from `SKILL.md`. |
+| His "En Orbitant…" openers vs. the **"en Orbitant + verb" ban** | The ban wins. Use the trailing clause form from `../../../tone/SKILL.md`. |
 | Phrases like "No son eslóganes… son la columna vertebral" vs. **"No es X, es Y"** and **foundation metaphors** | The bans win. State the affirmative claim directly. |
 | His short principle-like lines vs. the **pseudo-profound closer** ban | Allowed at most once per article, only if the line is a decision rule the reader can apply ("Mide cuánto cuesta la siguiente capacidad antes de celebrar la primera"). It may stand as the final sentence when it carries a real instruction (see the closing row below). An aphorism with no instruction in it stays banned anywhere in the piece. |
-| **Em dash** permitted as a two-sided inciso in `tone/SKILL.md` vs. Felipe's rule, **no em dashes, ever** (section 7.1) | Felipe's rule wins on anything he signs. The Orbitant rule permits the inciso and never requires it, so dropping it satisfies both. Use a comma, a colon, a semicolon, parentheses or a full stop. |
+| **Em dash** as a last resort in `../../../tone/SKILL.md` vs. Felipe's rule, **no em dashes, ever** (section 7.1) | Felipe's rule is stricter than tone's and applies on anything he signs. Tone never requires the em dash, so dropping it satisfies both. Use a comma, a colon, a semicolon, parentheses or a full stop. |
 | **Bold in every paragraph** (`SKILL.md`) vs. Felipe's rule, **bold sparingly, 1 or 2 moments per section** (section 7.1) | The house rule wins, **on the Orbitant blog only**. Bolding every paragraph is a scannability requirement of the publication surface rather than a voice choice. On Felipe's own channels (LinkedIn, newsletter, essays) his sparing-bold rule governs and this profile does not load at all. |
 | **900-word floor** and 300 words per H2 vs. Felipe's editing rule, **cut 20 to 30 per cent from every draft** (section 7.1) | Both apply, in this order: write, cut 20 to 30 per cent, then measure. If the cut draft lands under 900 words the material is thin, so add a second use case, another quantified trade-off, or the context where the decision would fail. Padding to reach the floor is banned by `SKILL.md` itself. |
 | Closing: Felipe ends at the **highest point of insight**, on a short, memorable takeaway that lands like a closing argument, vs. the ban on ending with a principle line | Reconciled. The closing decision rule may be the last sentence when it is genuinely actionable, an imperative the reader can apply next week. What stays banned at the end is a summary, and any memorable-sounding line with no instruction inside it. |
@@ -164,12 +164,12 @@ Levels 2 and 3 agree more often than they collide. The bans on "No es X, es Y" a
 
 ## 7. Felipe's prose rules
 
-Sections 1 to 6 work at the level of framing and depth. These rules work at the level of the sentence. They are Felipe's own, they hold for everything he signs, and they outrank the plugin's stylistic guidance wherever the two differ (see the precedence list in section 5). Apply them to the Spanish original and again to the English translation.
+Sections 1 to 6 work at the level of framing and depth. These rules work at the level of the sentence. They are Felipe's own, they hold for everything he signs, and section 5 says how they rank against the plugin's guidance. Apply them to the Spanish original and again to the English translation.
 
 ### 7.1 Typography, rhythm and editing
 
-- **No em dashes, ever.** Use a comma, a colon, a semicolon, parentheses or a full stop. This overrides the inciso allowance in `tone/SKILL.md`.
-- **Paragraphs of 1 to 2 sentences, 3 at most.** White space works as a thinking separator, so line breaks carry meaning here.
+- **No em dashes, ever.** Use a comma, a colon, a semicolon, parentheses or a full stop. This is stricter than tone's last-resort rule for the em dash in `../../../tone/SKILL.md`.
+- **Paragraphs of 3 to 5 sentences**, joined with grammatical connectors, as `SKILL.md` asks for the blog (one idea per paragraph, developed). A one- or two-sentence paragraph is kept for emphasis only, at most one per H2 section. Short sentences still land the claim inside the paragraph; they do not stand alone.
 - **Vary sentence length on purpose.** A paragraph of identical-length sentences flatlines. Short sentences land the claim, longer ones carry the nuance.
 - **Numbers as digits.**
 - **Front-load the important word.** "Clarity matters" hits harder than "What matters is clarity". Put the weight at the start or the end of the sentence.
@@ -179,13 +179,13 @@ Sections 1 to 6 work at the level of framing and depth. These rules work at the 
 ### 7.2 Words and verbs
 
 - **Physical verbs for abstract processes**: "sanded down" over "improved", "bolted on" over "added", "stripped back" over "simplified". In Spanish, reach for the same concreteness: *lijar*, *atornillar encima*, *desmontar*, *apuntalar*.
-- **Cut adverbs.** Almost every one props up a weak verb. This is the same rule as the Spanish filler list in `SKILL.md` (realmente, simplemente, básicamente, prácticamente, claramente).
+- **Cut adverbs.** Almost every one props up a weak verb. This is the same rule as the Spanish filler list in `../../../tone/SKILL.md` (realmente, simplemente, básicamente, prácticamente, claramente).
 - **Concrete beats abstract.** Clients are always anonymised, which removes one source of specificity, so the rest has to come from numbers, timelines and named trade-offs. A paragraph with no number and no concrete scenario is usually abstract soup.
-- **"Leverage" is a noun** ("operating leverage", "leverage in a negotiation"). Using it as a verb is banned. The Spanish *apalancar* is banned outright by `SKILL.md`.
+- **"Leverage" is a noun** ("operating leverage", "leverage in a negotiation"). Using it as a verb is banned. The Spanish *apalancar* is banned outright by `../../../tone/SKILL.md`.
 
 ### 7.3 English translation pass
 
-The "Words and expressions to avoid" table in `SKILL.md` is written for Spanish and does not catch the English equivalents. Run this second list over the translation. Banned, among others: delve, dive into, unpack, harness, utilize, landscape, realm, robust, game-changer, cutting-edge, straightforward, "in order to", furthermore, additionally, moreover, "it's worth noting", "in today's…", supercharge, unlock, future-proof, streamline, empower, foster, meticulous, paramount, elevate, transformative, tapestry, beacon, multifaceted, intricate, embark, ever-evolving.
+Run the English section of `../../../tone/SKILL.md` over the translation, its banned list included.
 
 - **Contractions always** (don't, can't, won't). English without them reads stiff and robotic, which is the opposite of how Felipe sounds in Spanish.
 - The fatal rule travels too. "This isn't X, this is Y", "Not X. Y.", "Less X, more Y" and every variation invalidate the draft. State the positive claim and delete the negation.
@@ -203,7 +203,7 @@ The register is calm and measured, and that leaves more room than it sounds like
 
 ## 8. Pre-delivery check for Felipe posts
 
-Run this after the anti-slop pass in `SKILL.md`:
+Run this after the final style pass in `../../../tone/SKILL.md`:
 
 0. Did the input carry Felipe's position, a business figure and whose decision it was (section 2b)? If not, were the questions asked in the request thread and answered before drafting? Any gap the requester could not fill must appear inline as `[PENDIENTE FELIPE: …]`.
 1. Can a non-technical CEO follow every H2 and say what decision it supports?
@@ -214,8 +214,8 @@ Run this after the anti-slop pass in `SKILL.md`:
 6. For AI and Employents topics: is it clear that judgment and responsibility stay human?
 7. Does the closing hand the reader a rule or a next step, rather than a summary?
 8. Is there one line in the piece that a competent reader could argue with? If every claim is safe, the article is beige (section 2.9).
-9. Typography sweep: zero em dashes, paragraphs of 1 to 3 sentences, numbers as digits, adverbs cut, sentence lengths varied.
-10. On the English version: contractions used throughout, and the English banned-word list in section 7.3 run over the whole text.
+9. Typography sweep: zero em dashes, paragraphs of 3 to 5 sentences (at most one shorter paragraph per H2), numbers as digits, adverbs cut, sentence lengths varied.
+10. On the English version: contractions used throughout, and the English banned-word list section 7.3 points to run over the whole text.
 11. Is the draft free of any sentence that negates one framing and then asserts the corrected one? A single occurrence fails it.
 
 If the answer to 1, 2 or 11 is no, rewrite that section before delivering.
