@@ -12,13 +12,15 @@ description: |
   me upload this session". Also trigger when given a transcript and asked to prepare
   anything for a video upload.
 license: MIT
-version: "1.2.0"
+version: "1.3.0"
 metadata:
   author: orbitant
   tags: marketing, youtube, seo, video, content, ks-sessions, asteroids, title, description, bilingual, keywords
 ---
 
 ## Overview
+
+> **Before writing, read `../tone/SKILL.md`: its style rules apply to this piece in full.** This file adds only what belongs to the YouTube title and description, and the few rules where YouTube copy is stricter than tone or replaces one of its defaults.
 
 You are writing the YouTube title and description for an Orbitant video. There are two formats:
 
@@ -47,16 +49,7 @@ Work with the material you are given. Never stop to ask for something missing: w
 - The thumbnail title, the session title or description from the planner, the Slack thread about the session: they usually have names of people, companies and tools spelled correctly.
 - Verified URLs for the tools mentioned (see Step 5).
 
-1. **Fix transcription errors.** Zoom transcripts regularly mangle names of people, the company and tools. Correct them with the material you were given and this list of errors already seen:
-   - "Keith Martínez" → Kevin Martínez
-   - "órbita", "órbitan" → Orbitant
-   - "T, www, E, F", "testing Df" → TWD
-   - "Twee" → tester-army/e2e
-   - "Cloud" (when the speaker means the AI) → Claude
-   - "Mad Pocock" → Matt Pocock
-   When a name looks wrong and you cannot confirm it with the material, do not guess: write the most likely form followed by a question mark in parentheses (`Laia (¿Laya?)`) and flag it in the notes.
-
-2. **Distinguish methodologies from tools.** A methodology (TDD, red-green-refactor) is not a tool (TWD). Never merge them, never describe one as the other, and never list the same tool twice under different descriptions.
+Fixing transcription errors and keeping methodologies apart from tools follow "Transcripts and spoken material" in `../tone/SKILL.md`; flag any name you could not confirm in the notes after the output.
 
 ---
 
@@ -137,11 +130,7 @@ The opening is a **paragraph**, not a single sentence. It can run 2–3 sentence
 
 **The hook states something concrete from the session.** It works because it is specific (a real situation, a real consequence, a real result), not because of a rhetorical device.
 
-**Forbidden hook devices (Orbitant style):**
-- Rhetorical questions (`¿Cuántas veces te ha pasado…?`, `¿Y si te dijéramos que…?`)
-- "No es X, es Y" / "X no desaparece: se multiplica" contrast formulas
-- Staccato chains of short sentences separated by full stops (`Creas un worktree. Lanzas la app. Falla.`): join related ideas with a connector instead. Addressing the viewer as "tú" is fine (`Puedes tener dashboards para casi todo y aun así no enterarte de que algo se ha roto.`)
-- Generic consultant phrases (`En el mundo actual…`, `Es crucial…`)
+The patterns tone bans (section 2 of `../tone/SKILL.md`) are banned in the hook like everywhere else.
 
 **Vary the hook.** Do not open every description with "Aprende a…" / "Learn how to…". Rotate among these hook types, choosing the one that fits the session, and, if you have the recent published descriptions, avoid the type used in the last 2–3:
 
@@ -233,46 +222,29 @@ Format: `[Name], [short description]: [URL]` — multiple URLs joined with `&`. 
 
 ## Writing rules (both languages)
 
-Orbitant's voice is defined in the `tone` skill. Everything else this skill needs to avoid AI-sounding copy is written below, so it does not depend on any other skill.
+Style rules (banned words, patterns, punctuation, register, the English list) are in `../tone/SKILL.md` and apply here in full, to both language versions. This section holds only what YouTube copy adds to them.
 
-**What does not carry over from the blog:** brand personality and narrative. YouTube descriptions are short and exist to position the video, so they go straight to the point: concise, concrete, keyword-driven. Do not use Orbitant's Orbit Language (orbit, gravity, thrust, escape velocity…), and always prefer the term people search for ("deuda técnica", not "gravity"). Orbitant appears only in the speaker intro and the newsletter CTA.
+**What does not carry over from the blog:** brand personality and narrative. YouTube descriptions are short and exist to position the video, so they go straight to the point: concise, concrete, keyword-driven. Do not use Orbitant's Orbit Language (orbit, gravity, thrust, escape velocity…), and always prefer the term people search for ("deuda técnica", not "gravity"). Orbitant appears only in the speaker intro and the newsletter CTA. This replaces tone's default on the narrative and the Orbit Language for this piece.
 
-- **Write the Spanish natively, never as a mental translation from English.** The most frequent failure is a sentence that is grammatical but that no Spanish speaker would write: English calques and word-for-word structures. Also do not copy the speaker's spoken phrasing literally from the transcript; oral Spanish ("mover la decisión cuando todavía es barata") reads wrong in writing. Rewrite the idea the way a Spanish editor would.
+- **Write the Spanish natively, never as a mental translation from English.** Tone defines the rule and the calques to rewrite. An example from a YouTube description:
   - ❌ `En lugar de describir el diseño en texto turno tras turno, lo ves y lo decides cuando cambiarlo todavía es barato.` ("turn after turn" and "while it's still cheap" calqued; "lo decides" has no clear referent)
   - ✅ `Con estas herramientas puedes ver varias propuestas de diseño y elegir una antes de escribir código, cuando cambiar de idea aún no cuesta nada.`
-  - Typical calques to catch: "barato/caro" for decisions or changes, "turno tras turno", "hacer sentido", "en orden de", "basado en" at the start of a sentence, "aplicar para", "eventualmente" meaning "finally", "impactar algo", "accionable".
-  - Test: read each Spanish sentence aloud. If it sounds translated, or you need the English to understand it, rewrite it.
-- **Acronyms in Spanish:** first mention = full form + acronym in parentheses, then the acronym only. `Test-Driven Development (TDD)`, `interfaz de usuario (UI)`, `pull request (PR)`. Product names (TWD) are not expanded.
 - **No repetition across blocks.** The keyword goes in the hook; it may reappear only where it is natural. Never repeat a phrase to "reinforce" SEO.
-- **No rhetorical questions and no "No es X, es Y" / "no se trata de X, sino de Y"** anywhere: hook, overview, takeaways or titles. State the affirmative claim directly.
-- **Register:** informal "tú", never "usted". Direct, practical, human. No brochure or consultant language ("en el mundo actual", "es crucial", "cabe destacar", "a la hora de", "a nivel de" outside a real technical level, "en base a").
-- **Forbidden AI-slop words (never use, in any form or tense):**
-  - Spanish: honesto/a, con honestidad, incómodo/a ("la pregunta incómoda"), sostener ("sostener un sistema", "lo que sostiene…"), provocador/a, profundizar, adentrarse, fomentar, apalancar, empoderar, aprovechar el poder de, desbloquear (el potencial), elevar, supercargar, robusto, de vanguardia, puntero, revolucionario, disruptivo, transformador, cambio de paradigma, un antes y un después, esto lo cambia todo, sinergia, holístico, sin fisuras, multifacético, meticuloso, intrincado, primordial, tapiz, entramado, faro, abanico de posibilidades, en constante evolución, emprender un viaje.
-  - English: honest/honestly, uncomfortable, delve, leverage, harness, empower, unlock, elevate, supercharge, robust, seamless, cutting-edge, game-changing, revolutionary, transformative, paradigm shift, synergy, holistic, tapestry, landscape, navigate (figurative), journey (figurative).
-- **Empty words (cut unless they carry real meaning):** realmente, básicamente, simplemente, literalmente, sinceramente, prácticamente, claramente, obviamente, de alguna manera, por así decirlo, clave, esencial, potenciar, impulsar, ecosistema, escalable, solución (as a euphemism for "product"), utilizar (use "usar"). English: really, basically, simply, literally, truly, key, essential.
-- **AI-sounding structures:** false reveals ("Lo que nadie te cuenta"), dramatic colons ("La clave: X"), importance inflation ("marca un antes y un después", "juega un papel fundamental"), foundation metaphors ("pilar fundamental", "piedra angular"), consecration verbs ("se erige como", "ha llegado para quedarse"), pseudo-profound closing lines, synonym cycling (repeat the clear word instead of rotating "el agente / el asistente / la herramienta"), invented figures or vague attributions ("la mayoría de los equipos").
-- **Concrete over abstract.** Name the tool, the technique, the decision or the result from the session. No hollow adjective pairs ("simple y potente").
-- **Inclusive language:** avoid the generic masculine plural when a collective noun works ("el equipo", "quienes…", "las personas que…").
-- **No comma before "y" / "o" / "ni"** in a simple enumeration (`contexto, latencia y coste`).
-- **No shallow-analysis or posteriority gerunds** (`…, demostrando el compromiso con…`, `Lanzaron X, mejorando Y`).
-- **Orbitant as context, never as subject.** Never use "En Orbitant + verb" constructions.
-- **Em dash (—):** forbidden as punctuation anywhere in the description, in both languages and in any form (single- or two-sided). Use a colon, comma, parentheses or full stop instead. It is allowed only as a fixed format element: the separator between title and speaker in titles (`[Title] — [Speaker]`) and the takeaway bullet marker. This is stricter than the em-dash note in `tone` and overrides it for YouTube copy.
-- **English technical terms** with no consolidated Spanish equivalent (pull request, workflow, prompt, framework) stay in English. YouTube has no italics, so write them in plain text.
-- **No filler:** "una sesión muy interesante", "a fascinating discussion", "todo lo que necesitas saber sobre", "Here is everything you need to know".
+- **Banned outright in YouTube copy:** elevar, puntero, tapiz, entramado and faro, in any form, and "leverage" in any use. Tone lists the Spanish ones among the words that need a reason and bans "leverage" only as a verb. This is stricter than tone and overrides it here.
+- **Never "En Orbitant + verb", in any position of the sentence.** This is stricter than tone, which allows a mid-sentence mention as the exception, and overrides it here.
+- **Em dash (—):** forbidden as punctuation anywhere in the description, in both languages and in any form (single- or two-sided). Use a colon, comma, parentheses or full stop instead. It is allowed only as a fixed format element: the separator between title and speaker in titles (`[Title] — [Speaker]`) and the takeaway bullet marker. This is stricter than tone and overrides it here.
+- **English technical terms** stay in English as tone's glossary defines. YouTube has no italics, so write them in plain text.
 - **Plain text only.** YouTube does not render markdown: no `**bold**`, no `##`, no `-` bullets.
 
 ### Final pass before delivering
 
-Re-read the full output once and check:
+Run the final style pass in `../tone/SKILL.md` over both language versions, then check:
 
-- [ ] Every Spanish sentence reads as written by a native editor: no calques, no literal transcript phrasing, no pronoun without a clear referent
 - [ ] The first ~150 characters of each version contain the hook and the primary keyword
 - [ ] If you had the recent published descriptions, the hook type and title formula differ from the last 2–3
-- [ ] No rhetorical question, no "No es X, es Y", no staccato chain of short sentences
 - [ ] No block repeats an idea from another block; no two takeaways say the same thing
 - [ ] Every takeaway is ~12 words or fewer
-- [ ] No word from the anti-slop lists, no comma before "y" in enumerations, no em dash used as punctuation in the description
-- [ ] Spanish acronyms expanded on first mention
+- [ ] No word from the YouTube list above, no "En Orbitant + verb" anywhere, no em dash used as punctuation in the description
 - [ ] Names of people, company and tools corrected; unconfirmed ones marked `(¿…?)` and flagged
 - [ ] Each newsletter CTA links to its own language page
 - [ ] Resources: only lesser-known tools; URLs only if verified, otherwise `(enlace por confirmar)`
@@ -332,13 +304,11 @@ After the output, add at most a few one-line notes for anything that must be ver
 ## What to avoid
 
 - Opening every description with "Aprende a…" / "Learn how to…", or every title with "Cómo…".
-- Rhetorical questions, "no es X, es Y" contrasts or staccato chains of short sentences in hooks and titles.
 - A hook paragraph whose first ~150 characters miss the hook or the primary keyword.
 - Formal or uncommon vocabulary in titles and keywords.
 - Paragraphs or bullets that restate each other.
 - URLs written from memory or never verified.
 - Listing widely known products or generic standards as resources.
-- Confusing a methodology with a tool, or keeping transcription errors in names.
 - Spanish newsletter URL in the English version.
 - Invented content, resources or claims not in the transcript.
 - Timestamps.
