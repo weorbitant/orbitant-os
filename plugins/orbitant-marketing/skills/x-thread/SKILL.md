@@ -101,7 +101,7 @@ Write the thread in Spanish only when whoever asked for it asks for Spanish. Eit
 
 Material in Spanish and a thread in English means anything you quote is being translated, and tone asks for a faithful translation of every literal quote.
 
-In a Spanish thread, keep technical English terms in English: *framework*, *pipeline*, *deployment*, *token*.
+In a Spanish thread, English technical terms follow the glossary in `../tone/SKILL.md`. X renders no italics, so write them in plain text.
 
 ---
 
@@ -274,7 +274,6 @@ Verify each of these. Do not deliver a thread that fails one.
 Orbitant's voice and every style rule are in `../tone/SKILL.md`. On X specifically:
 
 - **Compress hard.** 280 characters is not a trimmed paragraph, it is a different sentence length. One clause where you would write two.
-- **If the thread is in Spanish, the em dash only marks a two-sided aside.** A single-sided dash used as a continuation is an anglicism. In English it is ordinary punctuation and the rule does not apply.
 
 ---
 
