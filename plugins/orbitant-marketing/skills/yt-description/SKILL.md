@@ -231,7 +231,7 @@ Style rules (banned words, patterns, punctuation, register, the English list) ar
   - ✅ `Con estas herramientas puedes ver varias propuestas de diseño y elegir una antes de escribir código, cuando cambiar de idea aún no cuesta nada.`
 - **No repetition across blocks.** The keyword goes in the hook; it may reappear only where it is natural. Never repeat a phrase to "reinforce" SEO.
 - **Banned outright in YouTube copy:** elevar, puntero, tapiz, entramado and faro, in any form, and "leverage" in any use. Tone lists the Spanish ones among the words that need a reason and bans "leverage" only as a verb. This is stricter than tone and overrides it here.
-- **Never "En Orbitant + verb", in any position of the sentence.** This is stricter than tone, which allows a mid-sentence mention as the exception, and overrides it here.
+- **Orbitant as context, never as subject.** Never use "En Orbitant + verb" constructions at the start or in the middle of a sentence. This is stricter than tone, which accepts a mid-sentence mention as the exception, and overrides it here.
 - **Em dash (—):** forbidden as punctuation anywhere in the description, in both languages and in any form (single- or two-sided). Use a colon, comma, parentheses or full stop instead. It is allowed only as a fixed format element: the separator between title and speaker in titles (`[Title] — [Speaker]`) and the takeaway bullet marker. This is stricter than tone and overrides it here.
 - **English technical terms** stay in English as tone's glossary defines. YouTube has no italics, so write them in plain text.
 - **Plain text only.** YouTube does not render markdown: no `**bold**`, no `##`, no `-` bullets.
@@ -244,7 +244,7 @@ Run the final style pass in `../tone/SKILL.md` over both language versions, then
 - [ ] If you had the recent published descriptions, the hook type and title formula differ from the last 2–3
 - [ ] No block repeats an idea from another block; no two takeaways say the same thing
 - [ ] Every takeaway is ~12 words or fewer
-- [ ] No word from the YouTube list above, no "En Orbitant + verb" anywhere, no em dash used as punctuation in the description
+- [ ] No word from the YouTube list above, no "En Orbitant + verb" at the start or in the middle of a sentence, no em dash used as punctuation in the description
 - [ ] Names of people, company and tools corrected; unconfirmed ones marked `(¿…?)` and flagged
 - [ ] Each newsletter CTA links to its own language page
 - [ ] Resources: only lesser-known tools; URLs only if verified, otherwise `(enlace por confirmar)`
