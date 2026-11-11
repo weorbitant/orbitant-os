@@ -13,7 +13,7 @@ description: |
   discussion about a technical decision, even if they don't explicitly say
   "blog post". When in doubt, ask if they want this turned into a post.
 license: MIT
-version: "2.0.1"
+version: "2.0.2"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, content-creation, writing
@@ -57,7 +57,14 @@ As soon as anything names them (the request, a speaker label, notes that came wi
 
 ## The requested signer (overrides every default below)
 
-When the request names who signs the piece ("firmado por Felipe Polo", "que lo firme Marta", "a nombre de…", "con el tono de Matteo"), **that person is the signer**. Settle this before anything else in this file. It overrides every rule below that picks a signer or removes one:
+When the request names who signs the piece ("firmado por Felipe Polo", "que lo firme Marta", "a nombre de…", "con el tono de Matteo"), **that person is the signer**. Settle this before anything else in this file.
+
+**Asking for someone's tone or approach is asking them to sign.** A request to write in a person's tone, voice or approach names that person as the signer, exactly as "firmado por" does, whatever the verb or wording. Never answer it with an institutional piece in "nosotros" with that person's tone applied on top. For example:
+
+- "Redacta el post con el tono de Felipe Polo" → firma Felipe Polo.
+- "Aplica el enfoque estratégico de Felipe a este borrador" → firma Felipe Polo; el cambio es una reescritura (see **Editing Discipline**).
+
+The requested signer overrides every rule below that picks a signer or removes one:
 
 - the requester as signer by default (**Single-author input**);
 - the selection criteria and the confirmation question (**Multi-voice input**, Step 3), and the signer choice in **External-person input** (Cases B and C);
