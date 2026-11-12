@@ -3,16 +3,16 @@ name: orbitant-yt-description
 description: |
   YouTube title and description generator for Orbitant videos: Knowledge Sharing (KS)
   sessions and Asteroids. Takes a session transcript (.vtt or plain text) and produces
-  one title plus a bilingual, SEO-optimised YouTube description — built around a
+  one title plus a bilingual, SEO-optimised YouTube description, built around a
   positionable keyword placed in a varied opening hook, concise non-repetitive blocks,
   verified resources with real URLs, a newsletter CTA per language, and bilingual hashtags
   chosen for search intent. Use this skill whenever someone needs to write or generate a
-  YouTube title or description for a KS session, an Asteroid or any Orbitant video — even
+  YouTube title or description for a KS session, an Asteroid or any Orbitant video, even
   if they just say "escribe la descripción del vídeo", "I need the YouTube copy", or "help
   me upload this session". Also trigger when given a transcript and asked to prepare
   anything for a video upload.
 license: MIT
-version: "1.3.0"
+version: "1.4.2"
 metadata:
   author: orbitant
   tags: marketing, youtube, seo, video, content, ks-sessions, asteroids, title, description, bilingual, keywords
@@ -20,7 +20,7 @@ metadata:
 
 ## Overview
 
-> **Before writing, read `../tone/SKILL.md`: its style rules apply to this piece in full.** This file adds only what belongs to the YouTube title and description, and the few rules where YouTube copy is stricter than tone or replaces one of its defaults.
+Before writing, read `../tone/SKILL.md`. It defines how every sentence is written, in Spanish and in English. This file adds only what belongs to YouTube: who narrates, the title, the description blocks, resources and hashtags.
 
 You are writing the YouTube title and description for an Orbitant video. There are two formats:
 
@@ -33,9 +33,13 @@ The output does two things at once: it convinces a viewer who lands on the page 
 
 Read the transcript in full before writing anything. Do not invent content not present in the input.
 
+### Who narrates
+
+The description is **descriptive**: it reports what the video shows, with no first person (neither "yo" nor "nosotros", neither "I" nor "we") and no signature. The speaker is always a third person whom the description presents. The viewer can be addressed as "tú" (and "you" in English). This replaces tone's default narrator for this channel.
+
 ---
 
-## Step 0 — What you need to write well
+## Step 0: What you need to write well
 
 Work with the material you are given. Never stop to ask for something missing: write the best output possible with what you have and flag the gaps in the notes after it.
 
@@ -49,11 +53,11 @@ Work with the material you are given. Never stop to ask for something missing: w
 - The thumbnail title, the session title or description from the planner, the Slack thread about the session: they usually have names of people, companies and tools spelled correctly.
 - Verified URLs for the tools mentioned (see Step 5).
 
-Fixing transcription errors and keeping methodologies apart from tools follow "Transcripts and spoken material" in `../tone/SKILL.md`; flag any name you could not confirm in the notes after the output.
+Names of people, companies and tools in the transcript are corrected as tone defines, with the material you were given as the reference.
 
 ---
 
-## Step 1 — Keyword research
+## Step 1: Keyword research
 
 ### Primary keyword (one per language version)
 
@@ -66,20 +70,19 @@ The English keyword is its own research exercise, not a translation of the Spani
 
 ### Secondary keywords (2–4 per language version)
 
-Tool names, technique names and broader category terms. They appear where they fit naturally — never forced, never repeated mechanically.
+Tool names, technique names and broader category terms. They appear where they fit naturally, never forced and never repeated mechanically.
 
 ---
 
-## Step 2 — Title
+## Step 2: Title
 
 Deliver **one title**: the one that best meets every criterion below. Do not offer alternatives; if it doesn't fit, the user will ask for another one.
 
-YouTube titles do **not** follow the blog's SEO title rules (exact keyword first, never "Cómo"). They are less strict: the keyword must be early and the phrasing searchable, and any formula in the bank below is valid, "Cómo…" included, as long as formulas rotate.
+The keyword must be early and the phrasing searchable. Any formula in the bank below is valid, "Cómo…" included, as long as formulas rotate.
 
 ### Criteria every title must meet
 
-- **Searchable phrasing.** Would someone type these exact words into YouTube? Noun-only titles are fine when the nouns are the ones people use; the failure is formal or uncommon vocabulary.
-  - Avoid formal or administrative register ("previo a", "mediante", "en el ámbito de", "implementación" when "programar" or "desarrollar" is what people say).
+- **Searchable phrasing.** Would someone type these exact words into YouTube? Noun-only titles are fine when the nouns are the ones people use; the failure is formal or uncommon vocabulary, such as "implementación" when "programar" or "desarrollar" is what people say.
   - ❌ `Diseño visual previo a implementación con IA`
   - ✅ `Diseño de UI con Claude Code antes de programar`
 - **Primary keyword within the first ~40 characters.**
@@ -88,7 +91,8 @@ YouTube titles do **not** follow the blog's SEO title rules (exact keyword first
   - `Diseña la UI con Claude Code antes de programar — David Rueda` (61 characters)
 - **Reads naturally out loud.** If it sounds like a report heading, rewrite it.
 - **No descriptive situation titles** (`Cuando le describes la UI a Claude y nadie sabe cómo va a quedar`): they read empty and run past the character limit. The problem belongs in the description's hook, not in the title.
-- **Spanish titles in sentence case** (`Diseña la UI antes de programarla`, not `Diseña La UI Antes De Programarla`).
+- **Sentence case**, as tone defines for headings.
+- **Numbers.** A title writes numbers as digits (`3 herramientas…`). This replaces tone's default for numbers, in the title only.
 - **If you have the thumbnail title, treat it as an angle, not the YouTube title.** It can inspire the title but it is designed for the image, not for search (e.g. thumbnail `Design mixed with implementation` is not searchable).
 
 ### Format
@@ -96,7 +100,7 @@ YouTube titles do **not** follow the blog's SEO title rules (exact keyword first
 - **Never use emojis in YouTube titles.** The emojis used in internal planning headlines (☄️, ⏯️) are labels only and never go on the channel.
 - **Asteroid and KS:** `[Title] — [Speaker full name]`. The speaker name is always included when you have it, in both formats. With several speakers, list the names separated by " y " (`… — Kevin Martínez y David Rueda`); if they don't fit within the length budget, keep the main speaker only and flag it.
 
-### Formula bank — rotate them
+### Formula bank: rotate them
 
 | Formula | Example |
 |---|---|
@@ -110,17 +114,23 @@ YouTube titles do **not** follow the blog's SEO title rules (exact keyword first
 
 ---
 
-## Step 3 — Language order
+## Step 3: Language order
 
-- Session primarily in Spanish → Spanish version first, English second.
-- Session primarily in English → English first, Spanish second.
+- The Spanish version always goes first and the English version second, whatever the language of the session.
 - Both versions are always present. The English version is an adaptation for English search intent, not a literal translation.
-- No separator line between versions — leave a blank line.
-- **Timestamps are not part of this output.** They are added separately after publication.
+- The Spanish version carries no label. The English version opens with a separator line of underscores and, on the next line, its language label. Both are fixed format elements of this channel:
+
+```
+________________________________________________
+🇬🇧 ENGLISH
+[Opening paragraph, English]
+```
+
+- The output ends with the same separator line and the heading `TIMESTAMPS (EN/ES):`, left empty, after the hashtags. Never write the timestamps themselves: they are added after publication.
 
 ---
 
-## Step 4 — Write the description
+## Step 4: Write the description
 
 Structure for each language version, in this order. Target length: **~120–160 words per language** (excluding resources and hashtags).
 
@@ -128,9 +138,9 @@ Structure for each language version, in this order. Target length: **~120–160 
 
 The opening is a **paragraph**, not a single sentence. It can run 2–3 sentences and give context. The constraint applies only to its **first ~150 characters**, which is what YouTube shows in search results before "Show more": those characters must contain **both the hook and the primary keyword**. Whatever comes after them in the paragraph adds context and must not repeat the speaker intro or the takeaways.
 
-**The hook states something concrete from the session.** It works because it is specific (a real situation, a real consequence, a real result), not because of a rhetorical device.
+An acronym that belongs to the primary keyword is written as people search it, with no expansion. "IA" ("AI" in English) needs no expansion inside the primary keyword or at its first mention. The full form ("inteligencia artificial", "artificial intelligence") appears at least once in each language version, where it fits naturally, because people search for both. This replaces tone's acronym rule for those acronyms only; every other acronym in the description follows tone, and a title uses the acronym alone, as tone defines for titles.
 
-The patterns tone bans (section 2 of `../tone/SKILL.md`) are banned in the hook like everywhere else.
+**The hook states something concrete from the session.** It works because it is specific (a real situation, a real consequence, a real result), not because of a rhetorical device. The devices tone bans (rhetorical questions, negate-then-assert, chains of short sentences without connector, consultant phrases) are banned in hooks and titles like everywhere else. Addressing the viewer as "tú" is fine: `Puedes tener dashboards para casi todo, pero no enterarte de que algo se ha roto.`
 
 **Vary the hook.** Do not open every description with "Aprende a…" / "Learn how to…". Rotate among these hook types, choosing the one that fits the session, and, if you have the recent published descriptions, avoid the type used in the last 2–3:
 
@@ -140,18 +150,18 @@ The patterns tone bans (section 2 of `../tone/SKILL.md`) are banned in the hook 
 | Result or outcome | `Un workflow real de desarrollo frontend con agentes de IA, probado en producción, para evitar que la IA amplifique la deuda técnica…` |
 | The speaker's real case | `Al crear un worktree nuevo en Orca, la app fallaba porque el .env no se copiaba. Así se comparte el .env entre git worktrees…` |
 | Tool or technique + what it solves | `Superpowers, la skill prototype de Matt Pocock y /design permiten diseñar la UI con Claude Code antes de escribir código…` |
-| Learn / discover (use sparingly) | `Aprende cómo evitar que la IA amplifique la deuda técnica en proyectos de software mediante un workflow real…` |
+| Learn / discover (use sparingly) | `Aprende cómo evitar que la IA amplifique la deuda técnica en proyectos de software con un workflow real…` |
 
 ### 2. Speaker intro
 
-One sentence with 🎙️. Say **what the speaker did or built and what it achieves**, not only what they talk about.
+One sentence with 🎙️. Say **what the speaker did or built and what it achieves**, not only what they talk about. The role follows tone: in English, in lower case in the Spanish version and capitalised in the English one.
 
-> ✅ `🎙️ Kevin Martínez, Software Architect en Orbitant, explica cómo estructuró el trabajo de su equipo para integrar agentes de IA en el desarrollo de software, manteniendo el control del código, de los estándares técnicos y de la calidad del resultado.`
-> ❌ `🎙️ Kevin Martínez, Software Architect en Orbitant, comparte su experiencia sobre IA y deuda técnica.`
+> ✅ `🎙️ Kevin Martínez, software architect en Orbitant, explica cómo estructuró el trabajo de su equipo para integrar agentes de IA en el desarrollo de software sin perder el control del código, de los estándares técnicos ni de la calidad del resultado.`
+> ❌ `🎙️ Kevin Martínez, software architect en Orbitant, comparte su experiencia sobre IA y deuda técnica.`
 
-Multiple speakers (up to 3): one line each; mention the company once if shared. More than 3: name the two or three most prominent and add "junto a [N] ponentes más" / "and [N] more speakers" (never the generic masculine "expertos"). Use the job title and company given in the material; if none is given, use the name only. No superlatives.
+Multiple speakers (up to 3): one line each; mention the company once if shared. More than 3: name the two or three most prominent and add "junto a [N] ponentes más" / "and [N] more speakers". Use the job title and company given in the material; if none is given, use the name only. No superlatives.
 
-**Speaker not named in the input:** do not invent a name, a title or a company. Write the title without `— [Speaker]`, and write the 🎙️ line in the third person with a neutral phrase ("la persona que da la charla", "the speaker"): `🎙️ La persona que da la charla comparte […]`. Use that same phrase wherever the description refers to them, so a name can replace it later. Never write their talk as Orbitant's ("os contamos", "we share"). Flag in the notes that the name is missing.
+**Speaker not named in the input:** tone defines how to refer to them (one neutral phrase, never an invented name, role or company). Here, write the title without `— [Speaker]`, write the 🎙️ line with that phrase (`🎙️ La persona que da la charla comparte […]`), use the same phrase wherever the description refers to them, and flag in the notes that the name is missing.
 
 ### 3. Overview (optional)
 
@@ -163,7 +173,7 @@ Open with:
 - Spanish: `ℹ️ En esta sesión descubrirás:`
 - English: `ℹ️ In this session you'll discover:`
 
-Then **5–7 bullets** starting with `—` (em dash, no space before the text). Each bullet:
+Then **5–7 bullets** starting with `—` (em dash, no space before the text; a fixed format element of this channel). Each bullet:
 - Is short: **~12 words maximum**. Noun phrases are welcome.
 - Names a concrete tool, technique or decision from the session.
 - Says something no other bullet or block says. No two bullets may express the same idea.
@@ -171,43 +181,43 @@ Then **5–7 bullets** starting with `—` (em dash, no space before the text). 
   - ❌ `—Cómo funciona…` / `—Cómo aplicar…` / `—Cómo usar…` / `—Cómo encajar…`
   - ✅ `—Por qué diseñar en prosa…` / `—Visual Companion de Superpowers: …` / `—La skill prototype de Matt Pocock…` / `—Dónde encaja cada herramienta…`
 
-> ✅ `—El desarrollador como team lead de su propio agente de IA`
+> ✅ `—Tu agente de IA, tratado como un equipo al que diriges`
 > ✅ `—Contratos OpenAPI para mantener los mocks de frontend sincronizados con el backend`
 > ❌ `—Cómo validar visualmente una pull request con testing frontend con IA en un navegador real, sin cambiar de entorno` (too long, keyword stuffed)
 
 ### 5. Newsletter CTA (always)
 
 Last line of each language version:
-- Spanish: `📩 Más insights en nuestra newsletter: https://orbitant.com/#newsletter`
-- English: `📩 Get more insights in our newsletter: https://orbitant.com/en/#newsletter`
+- Spanish: `📩 Más insights en la newsletter de Orbitant: https://orbitant.com/#newsletter`
+- English: `📩 Get more insights in the Orbitant newsletter: https://orbitant.com/en/#newsletter`
 
-Each language links to its own page — never the Spanish URL in the English version.
+Each language links to its own page, never the Spanish URL in the English version.
 
 ---
 
-## Step 5 — Resources
+## Step 5: Resources
 
 A **single block, in English, after the English CTA** and before the hashtags. Only include it if there are resources that qualify.
 
 Open with: `🔗 Resources mentioned during the session:`
 
 **What qualifies:**
-- Specific repos, libraries or tools the viewer probably doesn't know and would want to try — including those mentioned by attendees in the Q&A.
-- A URL only if it was given to you or verified. Never write a URL from memory: it may not exist. If you have no verified URL, write the name followed by `(enlace por confirmar)` and flag it in the notes; whoever publishes the video fills it in.
+- Specific repos, libraries or tools the viewer probably doesn't know and would want to try, including those mentioned by attendees in the Q&A.
+- A URL only if it was given to you or verified, as tone requires. If you have no verified URL, write the name followed by `(enlace por confirmar)` and flag it in the notes; whoever publishes the video fills it in.
 
 **What does not qualify:**
 - Widely known products (Claude Design, Claude Code, Figma, Cypress…).
 - Generic standards or concepts (OpenAPI, TDD).
 - The newsletter (it is the CTA, not a resource).
 
-Format: `[Name], [short description]: [URL]` — multiple URLs joined with `&`. Without a verified URL: `[Name], [short description] (enlace por confirmar)`.
+Format: `[Name], [short description]: [URL]`, with multiple URLs joined with `&`. Without a verified URL: `[Name], [short description] (enlace por confirmar)`.
 
 > `TWD, a front-end testing tool that runs tests directly in the application's browser: https://twd.dev/ & https://github.com/BRIKEV/twd`
 > `tester-army/e2e, a library for generating AI-powered test scenarios based on use cases: https://github.com/tester-army/e2e`
 
 ---
 
-## Step 6 — Hashtags
+## Step 6: Hashtags
 
 8–12 hashtags after the resources block (or after the English CTA if there are no resources).
 
@@ -220,36 +230,38 @@ Format: `[Name], [short description]: [URL]` — multiple URLs joined with `&`. 
 
 ---
 
-## Writing rules (both languages)
+## YouTube-specific writing rules (both languages)
 
-Style rules (banned words, patterns, punctuation, register, the English list) are in `../tone/SKILL.md` and apply here in full, to both language versions. This section holds only what YouTube copy adds to them.
+**The narrative vocabulary is switched off here**, as tone allows a channel to do. YouTube descriptions are short and exist to position the video, so they go straight to the point: concise, concrete, keyword-driven. Do not use the Orbit Language, and always write the term people search for ("deuda técnica").
 
-**What does not carry over from the blog:** brand personality and narrative. YouTube descriptions are short and exist to position the video, so they go straight to the point: concise, concrete, keyword-driven. Do not use Orbitant's Orbit Language (orbit, gravity, thrust, escape velocity…), and always prefer the term people search for ("deuda técnica", not "gravity"). Orbitant appears only in the speaker intro and the newsletter CTA. This replaces tone's default on the narrative and the Orbit Language for this piece.
+- **Orbitant is named only as the speaker's company in the speaker intro and in the newsletter CTA.** The video is already on Orbitant's channel, so the description never says "En Orbitant + verb", in any position of the sentence, and never uses the trailing clause tone prefers for other channels. This is stricter than tone and overrides it here.
+- **Banned outright in YouTube copy:** elevar, puntero, tapiz, entramado and faro in the figurative uses tone describes. Tone lists them among the words that need a reason; here no reason allows them. "Puntero" as the programming term is still correct. This is stricter than tone and overrides it here.
 
-- **Write the Spanish natively, never as a mental translation from English.** Tone defines the rule and the calques to rewrite. An example from a YouTube description:
-  - ❌ `En lugar de describir el diseño en texto turno tras turno, lo ves y lo decides cuando cambiarlo todavía es barato.` ("turn after turn" and "while it's still cheap" calqued; "lo decides" has no clear referent)
-  - ✅ `Con estas herramientas puedes ver varias propuestas de diseño y elegir una antes de escribir código, cuando cambiar de idea aún no cuesta nada.`
 - **No repetition across blocks.** The keyword goes in the hook; it may reappear only where it is natural. Never repeat a phrase to "reinforce" SEO.
-- **Banned outright in YouTube copy:** elevar, puntero, tapiz, entramado and faro, in any form, and "leverage" in any use. Tone lists the Spanish ones among the words that need a reason and bans "leverage" only as a verb. This is stricter than tone and overrides it here.
-- **Orbitant as context, never as subject.** Never use "En Orbitant + verb" constructions at the start or in the middle of a sentence. This is stricter than tone, which accepts a mid-sentence mention as the exception, and overrides it here.
-- **Em dash (—):** forbidden as punctuation anywhere in the description, in both languages and in any form (single- or two-sided). Use a colon, comma, parentheses or full stop instead. It is allowed only as a fixed format element: the separator between title and speaker in titles (`[Title] — [Speaker]`) and the takeaway bullet marker. This is stricter than tone and overrides it here.
-- **English technical terms** stay in English as tone's glossary defines. YouTube has no italics, so write them in plain text.
+- **Em dash (—):** forbidden as punctuation anywhere in the description, in both languages and in any form (single- or two-sided). Use a colon, comma, parentheses or full stop instead. It is allowed only as a fixed format element: the separator between title and speaker in titles (`[Title] — [Speaker]`) and the takeaway bullet marker. This is stricter than tone and overrides it for YouTube copy.
+- **English technical terms** with no consolidated Spanish equivalent (pull request, workflow, prompt, framework) stay in English. YouTube has no italics, so write them in plain text.
 - **Plain text only.** YouTube does not render markdown: no `**bold**`, no `##`, no `-` bullets.
+- **Emoji:** only the fixed ones of this format (🎙️, ℹ️, 📩, 🔗, and 🇬🇧 in the English label), in the places the structure gives them. None in titles.
+- Everything else about how the sentences are written (calques, spoken phrasing, acronyms, register, banned words, patterns, inclusive language, commas) follows tone.
 
 ### Final pass before delivering
 
-Run the final style pass in `../tone/SKILL.md` over both language versions, then check:
+Run the final style pass defined in `../tone/SKILL.md` over the whole output, then check what belongs to this channel:
 
 - [ ] The first ~150 characters of each version contain the hook and the primary keyword
 - [ ] If you had the recent published descriptions, the hook type and title formula differ from the last 2–3
 - [ ] No block repeats an idea from another block; no two takeaways say the same thing
-- [ ] Every takeaway is ~12 words or fewer
-- [ ] No word from the YouTube list above, no "En Orbitant + verb" at the start or in the middle of a sentence, no em dash used as punctuation in the description
+- [ ] Every takeaway is ~12 words or fewer, and no two start with the same word
+- [ ] No em dash used as punctuation in the description
+- [ ] No first person anywhere
+- [ ] Orbitant named only in the speaker intro and the newsletter CTA
+- [ ] No figurative elevar, puntero, tapiz, entramado or faro
+- [ ] The full form of "IA" / "AI" appears at least once in each language version
 - [ ] Names of people, company and tools corrected; unconfirmed ones marked `(¿…?)` and flagged
 - [ ] Each newsletter CTA links to its own language page
+- [ ] Spanish version first; separator line and `🇬🇧 ENGLISH` label before the English version; empty `TIMESTAMPS (EN/ES):` heading at the very end
 - [ ] Resources: only lesser-known tools; URLs only if verified, otherwise `(enlace por confirmar)`
 - [ ] Hashtags: the 3 most relevant first, no #Orbitant, bilingual where the term differs
-- [ ] Takeaways don't start with the same word
 
 ---
 
@@ -261,11 +273,11 @@ Deliver as plain text, ready to paste into YouTube:
 Título:
 [Title] — [Speaker]
 
-[Opening paragraph — hook + primary keyword in the first ~150 characters — Spanish]
+[Opening paragraph, Spanish: hook + primary keyword in the first ~150 characters]
 
-🎙️ [Speaker intro — Spanish]
+🎙️ [Speaker intro, Spanish]
 
-[Optional overview — Spanish, only if it adds something new]
+[Optional overview, Spanish, only if it adds something new]
 
 ℹ️ En esta sesión descubrirás:
 —[takeaway]
@@ -274,13 +286,15 @@ Título:
 —[takeaway]
 —[takeaway]
 
-📩 Más insights en nuestra newsletter: https://orbitant.com/#newsletter
+📩 Más insights en la newsletter de Orbitant: https://orbitant.com/#newsletter
 
-[Opening paragraph — hook + primary keyword in the first ~150 characters — English]
+________________________________________________
+🇬🇧 ENGLISH
+[Opening paragraph, English: hook + primary keyword in the first ~150 characters]
 
-🎙️ [Speaker intro — English]
+🎙️ [Speaker intro, English]
 
-[Optional overview — English]
+[Optional overview, English]
 
 ℹ️ In this session you'll discover:
 —[takeaway]
@@ -289,12 +303,15 @@ Título:
 —[takeaway]
 —[takeaway]
 
-📩 Get more insights in our newsletter: https://orbitant.com/en/#newsletter
+📩 Get more insights in the Orbitant newsletter: https://orbitant.com/en/#newsletter
 
 🔗 Resources mentioned during the session:
 [Name], [description]: [URL]
 
 #MostRelevant1 #MostRelevant2 #MostRelevant3 #tag #tag ...
+
+________________________________________________
+TIMESTAMPS (EN/ES):
 ```
 
 After the output, add at most a few one-line notes for anything that must be verified: a missing speaker name, uncertain name corrections, URLs marked `(enlace por confirmar)`. Do not explain your internal reasoning or decisions the user didn't ask about.
@@ -309,6 +326,7 @@ After the output, add at most a few one-line notes for anything that must be ver
 - Paragraphs or bullets that restate each other.
 - URLs written from memory or never verified.
 - Listing widely known products or generic standards as resources.
+- Keeping transcription errors in names.
 - Spanish newsletter URL in the English version.
 - Invented content, resources or claims not in the transcript.
-- Timestamps.
+- Writing timestamps under the heading reserved for them.
