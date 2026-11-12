@@ -184,26 +184,26 @@ The "after" examples are written for this profile from Matteo's real material. T
 
 ## 5. Conflict resolution
 
-When this profile disagrees with another source, apply this order (highest first):
+When this profile disagrees with another source, apply this order (highest first). Where tone sits in it, and what a profile can and cannot change, is defined in `../../../tone/SKILL.md` ("How this guide relates to the other files"); that wins over this list wherever the two differ.
 
 1. **Notion → "Employents communication strategy"** for anything about how AI agents and Employents are represented publicly. Always wins.
-2. **Publication requirements in `SKILL.md`.** These are the rules that describe the blog as a surface rather than Matteo as a writer: SEO metadata, the 900-word floor, the 300-word H2 minimum, bold in every paragraph, never naming the client, Spanish grammar and accents, no comma before y/o/ni, sentence case, no "En Orbitant + verb". They apply to Matteo like to anyone else.
-3. **The prose rules in section 7 below.** These are the same rules Felipe applies to everything he signs, adopted for Matteo without the parts tied to Felipe's role. They cover everything that happens inside a sentence: typography, paragraph length, rhythm, vocabulary, verbs, banned phrases, register and how a piece closes. They outrank the plugin's stylistic guidance, with level 2 as the only exception.
+2. **Publication requirements in `SKILL.md` and the fixed rules of `../../../tone/SKILL.md`.** These are the rules that describe the blog as a surface rather than Matteo as a writer: SEO metadata, the 900-word floor, the 300-word H2 minimum, bold in every paragraph, never naming the client, Spanish grammar and accents, no comma before y/o/ni, sentence case, no "En Orbitant + verb". They apply to Matteo like to anyone else.
+3. **The prose rules in section 7 below.** These are the same rules Felipe applies to everything he signs, adopted for Matteo without the parts tied to Felipe's role. They cover everything that happens inside a sentence: typography, paragraph length, rhythm, vocabulary, verbs, banned phrases, register and how a piece closes.
 4. **This profile** for angle, framing, argument structure, depth calibration, what to keep or drop from the raw input, openings, closings and the reader's role.
 5. **Remaining structural and stylistic guidance in `SKILL.md`** (article structure, element variety, pull quotes, asset callouts, H2 length), adapted as described below.
-6. **`../tone/SKILL.md` and the narrative**, as the general Orbitant backdrop.
+6. **The narrative**, as the general Orbitant backdrop.
 
-**No AI slop, no exceptions.** Every prohibition in `blog-post-create` applies to Matteo's posts in full and without exceptions. That covers:
+**No AI slop, no exceptions.** Every prohibition in `blog-post-create` and in `../../../tone/SKILL.md` applies to Matteo's posts in full and without exceptions. That covers:
 
-- the "Words and expressions to avoid" table;
+- the hard bans table in `../../../tone/SKILL.md`;
 - the "What to Avoid" list;
 - the em-dash rules;
 - the ban on "No es X, es Y" and every variant ("no se trata de X, sino de Y", "Not X. Y.", "Menos X, más Y");
 - rhetorical questions anywhere;
-- the full Anti-slop Reference (banned and overused words, empty adverbs and phrases, structural patterns, calques, *sustantivitis*);
+- the full style rules in `../../../tone/SKILL.md` (banned and overused words, empty adverbs and phrases, patterns, calques, *sustantivitis*);
 - the prose rules in section 7.
 
-Nothing in this profile relaxes any of them. Matteo's voice comes through in what he argues and how he reasons, never through a banned pattern. Where this profile allows a device (a film reference, the spoiler, a closing rule of thumb, an aside in parentheses), that device must also pass the full anti-slop check. A rule of thumb with no concrete test in it counts as a pseudo-profound closer and gets cut.
+Nothing in this profile relaxes any of them. Matteo's voice comes through in what he argues and how he reasons, never through a banned pattern. Where this profile allows a device (a film reference, the spoiler, a closing rule of thumb, an aside in parentheses), that device must also pass the final style pass in `../../../tone/SKILL.md`. A rule of thumb with no concrete test in it counts as a pseudo-profound closer and gets cut.
 
 **When reviewing (`blog-post-review`).** The review skill checks the post against the same order above. Its own SEO and structure checks (title, slug, meta description, keyword placement, word counts, H2 balance, alt text) apply unchanged. Where the review skill is **more permissive** than `blog-post-create` or this profile, the stricter rule wins and the reviewer flags the breach instead of accepting it. Today that covers three points:
 
@@ -222,7 +222,7 @@ The reviewer also runs section 8 of this profile as an extra checklist and repor
 | Questions to the reader ("¿Os acordáis de los spoilers de arriba?", "Have you ever shipped a 'small silly tool'…?") vs. **no rhetorical questions** | The ban wins. Keep the callback move declaratively: *"Vuelvo a los tres spoilers del principio."* |
 | *Vosotros* forms in his drafts ("Imaginad", "os dejo") vs. the blog's form of address | Address the reader as *tú* singular, as his Apogee post does ("No vengo a contarte…", "Si quieres implementar…"). |
 | "Hope it helps! 🚀" and emoji on bullets or headers | LinkedIn only. Banned on the blog. |
-| **Em dash** (common in his LinkedIn posts; allowed as a two-sided inciso in `tone/SKILL.md`) vs. **no em dashes, ever** | The no-em-dash rule wins on anything Matteo signs. Use a comma, a colon, a semicolon, parentheses or a full stop. |
+| **Em dash** (common in his LinkedIn posts; a last resort in `../../../tone/SKILL.md`) vs. **no em dashes, ever** | The no-em-dash rule is stricter than tone's and applies on anything Matteo signs. Use a comma, a colon, a semicolon, parentheses or a full stop. |
 | His love of numbered lists and pros/cons vs. **element variety** in `SKILL.md` (at least one bullet list and one numbered list per article) and section 3, point 6 | Both apply, so a Matteo post has **exactly two lists: one bulleted, one numbered**. Each item is a decision with its reason or its cost; feature or tool inventories become prose. A pros/cons list counts as one of the two. |
 | The **spoiler device** (decision, then "spoiler:" with its consequence, paid off later) | Allowed once per article as a structural device, without emoji, and only if the payoff section exists. It's one of his strongest moves; don't use it as decoration. |
 | His closing **rule of thumb** vs. the **pseudo-profound closer** ban | Allowed as the final sentence when it is testable: the reader can check it against their own system or team. A line with no test inside it stays banned. |
@@ -231,7 +231,7 @@ The reviewer also runs section 8 of this profile as an extra checklist and repor
 | **900-word floor** and 300 words per H2 vs. **cut 20 to 30 per cent** | Write, cut, then measure. If it lands short, add the decision that aged badly, a second Orbitant case or the context where the trade-off would flip. Never pad. |
 | Technical **keyword** | Keep it where the SEO rules require it. The H2 containing it still states a consequence: *"Idempotencia en procesos distribuidos: poder repetir un trabajo sin pagar dos veces."* |
 | **Extract the author's voice from the input** vs. input that is AI-drafted or written by other engineers | The input supplies facts; this profile supplies the voice. Never add facts, numbers, cases or mistakes that aren't in the input. Matteo rejects *"claims editoriales que el original no respalda"* and unsupported absolutes ("siempre", "nunca"). |
-| The anti-slop **escape clause** in `SKILL.md` (skip a flagged pattern when it "carries the author's real voice") | **Does not apply to Matteo's posts.** Every ban is absolute (see "No AI slop, no exceptions" above). Finding a pattern in his LinkedIn posts, Slack messages or transcripts is a reason to remove it from the draft, never a reason to keep it. |
+| The **escape clause** in `../../../tone/SKILL.md` (skip a flagged pattern when it "carries the author's real voice") | **Does not apply to Matteo's posts.** Every ban is absolute (see "No AI slop, no exceptions" above). Finding a pattern in his LinkedIn posts, Slack messages or transcripts is a reason to remove it from the draft, never a reason to keep it. |
 | **English technical terms** (italics required by `blog-post-review`) vs. section 7.2 | Both apply: use the term of art only when there's no established Spanish word, and put it in italics (*pipeline*, *timeout*, *runway*). |
 | **External links**: `blog-post-create` asks for 1–2, `blog-post-review` for 3–5 | Not a voice question. `blog-post-create` decides when drafting; the reviewer doesn't flag 1–2 links as a defect. |
 | Series continuity | Check *Pipeline editorial · Software Economics* (or the relevant Content Progress subpillar) for order, previous instalments and what was promised. Don't guess. Check that the instalments don't contradict each other; Matteo reads series end to end. |
@@ -257,8 +257,8 @@ These rules work at the level of the sentence. They are Felipe's prose rules, wh
 
 ### 7.1 Typography, rhythm and editing
 
-- **No em dashes, ever.** Use a comma, a colon, a semicolon, parentheses or a full stop. This overrides the inciso allowance in `tone/SKILL.md` and the habit in his LinkedIn posts.
-- **Paragraphs of 1 to 2 sentences, 3 at most.**
+- **No em dashes, ever.** Use a comma, a colon, a semicolon, parentheses or a full stop. This is stricter than tone's last-resort rule for the em dash in `../../../tone/SKILL.md`, and overrides the habit in his LinkedIn posts.
+- **Paragraphs of 3 to 5 sentences**, joined with grammatical connectors, as `SKILL.md` asks for the blog (one idea per paragraph, developed). A one- or two-sentence paragraph is kept for emphasis only, at most one per H2 section.
 - **Vary sentence length on purpose.** Short sentences land the claim; longer ones carry the mechanism.
 - **Numbers as digits.**
 - **Front-load the important word.**
@@ -270,14 +270,14 @@ These rules work at the level of the sentence. They are Felipe's prose rules, wh
 - **Physical verbs for abstract processes**: *lijar*, *atornillar encima*, *desmontar*, *apuntalar*, *despejar las vías*.
 - **Cut adverbs.**
 - **Concrete beats abstract.** Clients are always anonymised, so the specificity has to come from numbers, timelines, limits and named trade-offs.
-- **"Leverage" is a noun.** Never a verb. In Spanish, *apalancar* / *apalancarse* is banned outright by `SKILL.md`. Matteo uses both in Slack and internal docs, so expect them in the input and replace them.
+- **"Leverage" is a noun.** Never a verb. In Spanish, *apalancar* / *apalancarse* is banned outright by `../../../tone/SKILL.md`. Matteo uses both in Slack and internal docs, so expect them in the input and replace them.
 - **Anglicisms: use the term working engineers use, once it is the term of art** (deploy, pipeline, MVP, runway, timeout, PoC, trade-off). Prefer the Spanish word where Spanish engineers use one naturally (*despliegue*, *coste*, *deuda técnica*, *poner en producción*). Never stack several anglicisms in one sentence, and never use English for flavour.
 - **Italianisms in the input get corrected, not imitated.** Matteo is a native Italian speaker writing in Spanish. His drafts include forms such as *coesas*, *proprio*, *in parte*, *produccionar*, *Fue entonces que*, *moviendo los primeros pasos*, and missing accents. Fix them to standard Spanish. Keep his sentence logic and his humour.
 - **No casual Slack fillers in the prose**: *entre comillas*, *digamos*, *pues eso*, *un poco*, *ojo que*, *rollo*. They are his spoken tics, not his written voice.
 
 ### 7.3 English translation pass
 
-Run the English banned-word list over the translation: delve, dive into, unpack, harness, utilize, landscape, realm, robust, game-changer, cutting-edge, straightforward, "in order to", furthermore, additionally, moreover, "it's worth noting", "in today's…", supercharge, unlock, future-proof, streamline, empower, foster, meticulous, paramount, elevate, transformative, tapestry, beacon, multifaceted, intricate, embark, ever-evolving.
+Run the English section of `../../../tone/SKILL.md` over the translation, its banned list included.
 
 - **Contractions always.**
 - **The fatal rule travels too.** "This isn't X, it's Y", "Not X. Y.", "Less X, more Y" and every variation invalidate the draft. Watch for it: it is Matteo's most frequent pattern in English.
@@ -294,7 +294,7 @@ Run the English banned-word list over the translation: delve, dive into, unpack,
 
 ## 8. Pre-delivery check for Matteo posts
 
-Run this after the anti-slop pass in `SKILL.md` when drafting, and as an extra checklist when running `blog-post-review` on a Matteo post:
+Run this after the final style pass in `../../../tone/SKILL.md` when drafting, and as an extra checklist when running `blog-post-review` on a Matteo post:
 
 0. Did the input carry Matteo's position, a figure, a decision that aged badly and whose decision it was (plus a real Orbitant case for Software Economics, see section 2b)? If not, were the questions asked in the request thread and answered before drafting? Any gap the requester could not fill must appear inline as `[PENDIENTE MATTEO: …]`.
 1. Does every H2 state a consequence (cost, risk, time, value, what it enabled), with the mechanism serving it?
@@ -307,8 +307,8 @@ Run this after the anti-slop pass in `SKILL.md` when drafting, and as an extra c
 8. Does the closing hand the reader a testable rule of thumb or a next step, rather than a summary or "hope it helps"?
 9. Is there one line a competent engineer could argue with?
 10. If there is a film reference or running metaphor (optional), is there only one, and does it land on a point in the next sentence?
-11. Typography sweep: zero em dashes, zero emoji, paragraphs of 1 to 3 sentences, numbers as digits, adverbs cut, no *apalancar*, Italianisms and Slack fillers removed, *tú* throughout.
-12. On the English version: contractions throughout, and the banned-word list in section 7.3 run over the whole text.
+11. Typography sweep: zero em dashes, zero emoji, paragraphs of 3 to 5 sentences (at most one shorter paragraph per H2), numbers as digits, adverbs cut, no *apalancar*, Italianisms and Slack fillers removed, *tú* throughout.
+12. On the English version: contractions throughout, and the banned-word list section 7.3 points to run over the whole text.
 13. Is the draft free of any sentence that negates one framing and then asserts the corrected one? A single occurrence fails it.
 
 If the answer to 1, 2 or 13 is no, rewrite that section before delivering.

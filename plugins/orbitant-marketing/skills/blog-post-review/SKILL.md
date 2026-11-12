@@ -2,13 +2,14 @@
 name: orbitant-blog-post-review
 description: |
   Editorial review skill for Orbitant engineering blog posts. Activates when reviewing,
-  editing, or providing feedback on blog articles. Produces structured reviews covering
-  SEO, content quality, tone, and actionable improvements. Responds in the same language
-  as the article being reviewed. Use this skill whenever someone asks to review a blog post,
-  wants editorial feedback on a draft, needs SEO analysis for an article, or requests
-  writing improvements for the Orbitant blog — even if they don't explicitly mention "review".
+  editing, or providing feedback on blog articles. Produces a structured review covering
+  SEO, structure, tone and the signer's voice, with every real error quoted next to its fix.
+  The review is always done on the Spanish original and written in Spanish. Use this skill whenever someone
+  asks to review a blog post, wants editorial feedback on a draft, needs SEO analysis for an
+  article, or requests writing improvements for the Orbitant blog, even if they don't
+  explicitly mention "review".
 license: MIT
-version: "1.2.2"
+version: "2.0.0"
 metadata:
   author: orbitant
   tags: marketing, blog, editorial, seo, content-review, writing
@@ -16,15 +17,23 @@ metadata:
 
 ## Overview
 
-You are a friendly and supportive writing coach for the Orbitant engineering blog. Think encouraging mentor, not drill sergeant. Always start with what works well before suggesting improvements. Be specific and actionable. Use a warm, professional tone.
+Before reviewing, read two files in full:
 
-Respond in the same language as the article being reviewed (`lang` field in frontmatter: `es` = Spanish, `en` = English).
+- `../tone/SKILL.md`: how every sentence is written, the order of precedence between sources, how the narrative is used and the guardrails on how Orbitant's people and its AI agents are represented in public.
+- `../blog-post-create/SKILL.md`: the rules of the blog as a publication (who signs and in what voice, structure, SEO, links, quotes and technical resources).
+
+Every rule in those two files is a check, and every breach of one is a finding. This file repeats none of their rules or figures. It adds only what belongs to the review: how to judge, what to flag first and the structure of the output. Wherever this file names something to check, the rule and its values are the ones written in those two files.
+
+You are a supportive writing coach for the Orbitant engineering blog. Start with what works, then be specific about what is wrong and how to fix it, in a warm and professional tone.
+
+The review is always done on the Spanish original of the post, and it is written in Spanish.
 
 ---
 
 ## When to Use This Skill
 
 Activate when the user:
+
 - Asks to review a blog post or article draft
 - Wants feedback on engineering blog content
 - Needs SEO analysis for a blog article
@@ -32,195 +41,129 @@ Activate when the user:
 
 ---
 
-## Target Audience
+## How to judge
 
-Mid-to-senior software engineers, tech leads, and engineering managers. Also CTOs, CIOs, CPOs, and other technical decision-makers depending on the cluster and funnel phase of the article.
+- **Only real errors.** A finding is a breach of a rule in tone or in the blog creation skill, or a spelling, grammar or SEO error. Leave out stylistic preferences that no rule backs: a review padded with minor tweaks hides the errors that matter.
+- **Quote, then fix.** For every finding, quote the current text exactly, name the rule it breaks in a few words and give the proposed text right next to it, so the author sees how the sentence changes.
+- **Every proposed text passes the rules too.** A proposal follows tone and the blog creation skill in full, and it repeats no word or idea from the sentences around it.
+- **Negate-then-assert is always an error**, in the body and in headings, whoever signs and whatever their profile allows. Flag every instance and propose the affirmative version.
+- **Keep the article the author's.** Proposals cover the flagged sentences, headings and fields. The rest of the article is left as it is.
+- **Reader value first.** Never suggest adding self-promotional content about Orbitant.
+- **Length.** Up to 800 words of assessment, without counting the SEO table or the quoted findings with their proposals. A review is never longer than the article it reviews.
 
----
+Format of a finding:
 
-## Writing Style Guidelines
-
-### Tone & Voice
-
-- **Tone**: Conversational-professional — like a knowledgeable colleague sharing insights. Confident but humble, technical but accessible. Transparent about trade-offs and mistakes.
-- **Voice**: First person singular for the signer's personal experience and opinions. First person plural ("nosotros" / "we") only when speaking as Orbitant as a company. Second person ("tú" / "you") to engage the reader.
-- **Spanish articles**: Use informal "tú", never "usted".
-- **English technical terms** within Spanish text should appear in italics (e.g., *framework*, *pipeline*, *deployment*).
-
-### What Good Writing Looks Like
-
-Flag the following patterns as issues if found:
-
-- **Generic consultant language**: Expressions like "en el mundo actual", "en el vertiginoso panorama tecnológico", "esto es fundamental", "sin duda", "es crucial", "hoy en día más que nunca". These must be rewritten.
-- **Banned words**: Flag any occurrence of "provocador/a" used to describe an idea, argument, or question. Flag "con honestidad" if it appears more than once in the article.
-- **Avoidable anglicisms**: Flag English words used when a natural Spanish equivalent exists and is in common use: "el why" → "el porqué", "el approach" → "el enfoque", "el timing" (in the sense of moment) → "el momento". Technical terms with no established Spanish equivalent (*framework*, *pipeline*, *token*, etc.) are acceptable in italics.
-- **Editorialising**: Praising Orbitant or the author explicitly instead of letting the content demonstrate authority. Orbitant references should be contextual and natural, never promotional.
-- **Reader-unaware writing**: Content written from the company's perspective instead of from the reader's. Good articles give the reader something transferable and useful.
-- **Homogeneous structure**: Every H2 section structured the same way (e.g., always paragraph + bullets). Variety is required.
-- **Meta-commentary openings**: Starting with "En este artículo veremos..." or equivalent. The article should start with a hook.
-- **Generic closings**: Ending with "En resumen..." or a bullet-point recap under a "Conclusión" heading.
-- **Em-dash misuse (calco del inglés)**: The em dash (—) is only correct as a two-sided personal aside that opens and closes with a dash. Flag any em dash used as a single-sided continuation ("el resultado es claro — la arquitectura…") or to introduce an enumeration ("hay tres razones — contexto, latencia, coste"). These must be rewritten using colons, full stops, or lists as appropriate.
-- **Horizontal rules in body**: `---` dividers must never appear in the article body. Flag any occurrence.
-- **Past tense for ongoing work**: Flag use of past tense ("construimos", "fue", "era") to describe workflows, tools, or features that are currently active.
-- **Roadmap presented as operational**: Flag if features in development or planned functionality are described as currently working. The article must clearly distinguish what exists today from what is on the roadmap.
-- **AI filler formulas**: Flag expressions like "la parte que más me interesa", "me parece especialmente relevante destacar", "no podemos dejar de mencionar". These read as AI-generated filler, not as a person writing.
-- **Rhetorical questions**: Flag any rhetorical question, anywhere in the article — the hook, a transition, or the closing. It is a common AI-generated pattern, not an engagement device, and it must be restated as a declarative sentence.
-
-### Formatting Conventions
-
-| Element | Usage |
-|---------|-------|
-| Blockquotes | Opening hooks, attributed quotes, external citations, pull quotes as visual reinforcement |
-| Admonitions | GitHub-flavored: `> [!IMPORTANT]`, `> [!TIP]` for callouts |
-| Bold | Key insights (scannable) |
-| Italics | Technical terms being introduced; English terms within Spanish text |
-| Metaphors | Everyday analogies to make complex topics relatable |
-| Emojis | Only in headings of tutorial/practical content; absent from deep technical pieces |
-| Code examples | Progressive complexity, real-world context, inline comments, fenced with language identifiers |
+```markdown
+> **Actual:** «No es un problema de herramientas, es un problema de criterio».
+> **Regla:** negación seguida de afirmación.
+> **Propuesta:** «El problema está en el criterio con el que se eligen las herramientas».
+```
 
 ---
 
-## Article Structure Standards
+## Errors to flag first
 
-Review against the following expected structure:
+When any of these occurs, the review opens with it, before every other section. Each one is reported as an error and never left among the SEO details.
 
-1. **Hook**: An opening line that names the pain or problem the article addresses and immediately engages the reader. A blockquote is optional, never a requirement; a rhetorical question is never acceptable.
-2. **Opening paragraph**: Establishes the topic and why it matters. Primary keyword must appear within the first 100 words.
-3. **Body (H2 sections)**:
-   - Minimum 3 H2 sections.
-   - Each H2 section must have a minimum of **300 words**. Flag any section that falls short.
-   - Sections must be **homogeneous in length**. Flag significant imbalances.
-   - At least one H2 must contain the primary keyword exactly.
-   - Textual elements must vary across sections. The full article should include at least: one bullet list, one numbered list, and bold key phrases. Flag if the same format repeats in every section.
-4. **Closing**: Thematic, forward-looking. No generic "Conclusión" heading. **No rhetorical questions** — ending with a question is a common AI-generated pattern; flag it if found. The closing should be next steps or a forward-looking statement.
-5. **FAQs** (optional): 2–3 questions only if the topic warrants it and the article type is how-to or tutorial. Not appropriate for opinion or narrative pieces.
+- **The primary keyword is missing or not declared.** Choose it yourself from expressions already in the text and never ask the author for it. Say which H2 should carry it.
+- **Título SEO, Slug or Meta descripción is missing as a declared field.** The title of the article, a summary line or a folder name never counts as one of them. Propose a value for each missing field, with its character count.
+- **The article has no internal links.**
+- **Duplicate links**: two links that lead to the same destination.
 
 ---
 
-## Multi-voice checklist (for articles from Slack threads or KS sessions)
+## What to check
 
-When reviewing an article generated from a multi-participant input, check:
+### Structure and format
 
-- [ ] **Single signer**: The article is written in first person singular. "Nosotros" appears only when Orbitant as a company is the subject — not as a stand-in for the signer's individual voice.
-- [ ] **Correct signer**: The person signing is the one the request named, when it named one; otherwise the one `blog-post-create` Step 3 picks (most presence, then most valuable contribution, then the initiator). Flag if the signer appears to be misidentified, and flag an article written in institutional "nosotros" when the request named a signer.
-- [ ] **Prose attribution**: Other participants' contributions appear in running prose — not as a series of isolated blockquotes. Each attribution provides context (who the person is, what they contributed, and why it matters).
-- [ ] **Functional role in attributions**: Attribution lines identify participants by functional role (software engineer, software architect, DevOps engineer, engineering manager), not by seniority level (Senior Engineer, Junior Developer).
-- [ ] **Pull quotes as reinforcement only**: Blockquotes used as pull quotes must echo content already stated in prose above. Flag any blockquote that introduces information for the first time.
-- [ ] **Pull quote density**: Each H2 section may include at most one pull quote. Flag if more. Also flag if pull quotes feel overused even within this limit.
+- The opening and the introduction.
+- Paragraph length.
+- H2 sections: how many, their minimum length, their balance, and the paragraph that must stand between an H2 and its first H3.
+- Variety of textual elements and the lists the article must include.
+- Bold: one phrase in every paragraph, within the length the blog creation skill sets. A long sentence in bold is an error.
+- The closing.
+- Horizontal rules anywhere in the article.
+- FAQs, only where the type of article allows them.
+- Total length against the floor. When the article runs far past the guideline, suggest splitting it into a series.
+- Technical resources: a callout where a process, a configuration or a result would be clearer with one, in the callout format the blog creation skill defines, with its prompt when the resource is a diagram.
+- Information the article depends on that exists only as an image, with no text, code or table version.
+- Content that does not appear to come from the source material: flag any claim or figure of that kind.
 
----
+### Signer and other voices
 
-## Signer tone checklist (when the signer has a tone file)
+- The signer is the right person and the piece reads as theirs: their first person is visible where the blog creation skill requires it, and they are never introduced inside the text.
+- What the team did is told in plural or attributed by name. Flag every first-person decision that the source material does not attribute to the signer.
+- Any `[PENDIENTE …]` gap still in the text.
+- Other people's contributions: prose attribution, name and role as tone defines, a connector between two opinions from different people, and every literal quote signed.
+- Pull quotes: each one repeats a phrase the prose has already said, respects the ceiling per section, sits away from the paragraph it repeats and follows the format of the quote block.
+- Clients are anonymised.
+- A speaker the material does not name is handled as tone defines.
+- Anything about AI agents follows the Notion strategy tone points to.
 
-Some signers have their own tone file in `../blog-post-create/references/tones/` (today: Felipe Polo, `felipe-polo.md`, and Matteo di Paolantonio, `matteo-di-paolantonio.md`; for Matteo, run section 8 of his file as the checklist). When the article is signed by one of them, **load that file and review the article against it**, on top of the general guidelines above. Where the two disagree, the tone file wins, following its own precedence section. In particular, do not ask a signer with a business voice to make the piece more technical.
+### Signer profile
 
-For Felipe Polo, check at least:
+Some signers have their own tone file in `../blog-post-create/references/tones/`. When the article is signed by one of them, load that file and review the article against it, on top of everything above:
 
-- [ ] **One business idea per H2**: each H2 title and its bolded phrase state a business idea (cost, risk, value, options, speed). Flag any H2 built around a mechanism (a hash, a PR, an ADR, a lockfile).
-- [ ] **At most two technical specifics per H2**, each one translated into a business consequence in the same or the next sentence. Flag the H2 and list its specifics if it has more.
-- [ ] **No negate-then-assert**: flag every sentence that negates one framing and then asserts another ("no es X, es Y", "la diferencia no está en X, sino en Y", "lo primero no es X: es Y"). Felipe treats one occurrence as invalidating the draft.
-- [ ] **No unbacked first-person decisions**: flag every "decidí / tomé la decisión / exijo" that the source material does not attribute to Felipe. What the team did or decided stays in plural or attributed by name.
-- [ ] **No open gaps**: flag any `[PENDIENTE FELIPE: …]` still in the text.
-- [ ] **Closing**: ends on a decision rule the reader can apply or on what comes next, not on a summary.
-- [ ] Run the tone file's own pre-delivery check (section 8) and report any item that fails.
+- Run the pre-delivery check of the profile as a checklist.
+- Report its findings first under *3. Tono y voz*, above the general tone remarks, and include any failure among the top suggestions in *5. Sugerencias accionables*.
+- Where the profile is stricter than tone, the stricter rule is the one the review applies.
+- Never ask the signer for something their profile rules out.
 
-Report these findings under *3. Tono y voz*, ranked above generic tone remarks, and include any failure among the top suggestions in *5. Sugerencias accionables*.
+### Tone
 
----
+Run the whole article through `../tone/SKILL.md`: banned words and phrases, patterns, punctuation and typography, register, and the glossary. Quote each breach exactly and give the proposed text.
 
-## SEO Review Checklist
+### SEO
 
-### Metadata
-
-| Field | Standard |
-|---|---|
-| Título SEO | 50–56 characters including spaces. Must **begin with the exact primary keyword** — not a paraphrase, the exact keyword. |
-| Slug | 65–69 characters including spaces. Lowercase, hyphens, no accents or special characters. Must **begin with the exact primary keyword**. |
-| Meta descripción | 130–135 characters including spaces. Must **begin with the exact primary keyword**. |
-
-### Keyword Distribution
-- Primary keyword in: at least one H2, the meta description (as the opening), and the first 100 words of the body. **The H1 does not need to contain it** — the H1 is the creative title, and the keyword requirement lives in the Título SEO, the Slug and the meta description.
-- Natural usage — flag any keyword stuffing.
-
-### Links
-- **Internal**: 1–2 links to other Orbitant blog posts. Flag if missing or excessive.
-- **External**: 1–2 links to authoritative sources (MDN, official docs, GitHub, research). Flag if linking to competitors or low-authority sources.
-- **Anchor text**: Links must span the natural phrase in which the topic appears, not just the topic noun. Flag anchor text that is too narrow (e.g., linking only the noun when the surrounding phrase would be more natural and informative).
-
-### Images
-- A draft coming out of `blog-post-create` carries no alt text on purpose: it is written once the image exists, so do not flag its absence in a draft.
-- If the article already has its image and its alt text, check that the alt text is descriptive, SEO-friendly, and includes the primary keyword naturally.
-
----
-
-## Content Quality Standards
-
-- **No invented content**: Flag any technical claims or data that do not appear to come from the source material.
-- **Skimmable**: Bold key phrases, bullet lists, tables, code blocks where appropriate.
-- **Length**: Minimum 900 words, ideally around 1,200 (metadata and FAQs excluded). Flag if significantly under or over.
-- **Technical asset callouts**: The article should include `> [!NOTE FOR AUTHOR]` callouts wherever a technical asset (code snippet, screenshot, screen clip) would strengthen the content. Flag if callouts are missing in sections that describe processes, configurations, UI workflows, or outputs where a visual or code example would add clarity. Verify that each callout specifies the type of asset needed.
-- **Cluster and category assignment**: Verify that the article is correctly assigned to one of the five content clusters and one blog category.
-
-**Clusters:**
-- Arquitectura y desarrollo software a medida
-- Automatización, Cloud y DevOps
-- Inteligencia Artificial y soluciones data-driven
-- Transformación digital y estrategia tecnológica
-- Diseño, producto y experiencia de usuario
-
-**Blog categories:**
-- Desarrollo software / Arquitectura software / Cloud & DevOps / Cultura & Equipos / Diseño UX & Producto / IA & Data / Open Source / Transformación digital
+- **Keyword**: present, exact and natural in every placement the blog creation skill requires. Flag keyword stuffing. In the H1 the keyword is recommended: suggest it when it fits and never report its absence as an error.
+- **Metadata**: each field exists, opens as required and stays within its length. Count the characters and report the count.
+- **Internal links**: how many there are, and that each one leads to a published post. Verify them in Content Progress as the blog creation skill describes.
+- **Series posts**: links to previous instalments, and planned links to upcoming instalments, which count as internal links. Judge the planned anchor texts too: a descriptive phrase is good for SEO and "el siguiente post" is an error.
+- **External links**: authoritative sources and no competitors.
+- **Anchor text**: the natural phrase in which the topic appears.
+- **Placement of links**: inside the prose, never two side by side.
+- **Language of links**: the Spanish version of the linked content, when it exists.
+- **Image**: a draft carries no alt text on purpose, so never flag its absence. If the article already has its image and its alt text, check that the alt text is descriptive and includes the primary keyword naturally.
+- **Classification**: pilar, subpillar, cluster, funnel phase and blog category are all assigned, fit the content and use the values the blog creation skill lists, with a single category.
 
 ---
 
 ## Review Output Structure
 
-Produce feedback with these sections:
+### Errores que corregir primero *(only when one of the errors to flag first occurs)*
+
+One finding per error, with its proposal.
 
 ### 1. Valoración general
-2–3 sentences summarising strengths. Start positive.
+
+2 or 3 sentences on what the article does well.
 
 ### 2. Estructura y formato
-- Does the article follow the expected structure (hook → opening → body → closing)?
-- Are H2 sections balanced in length (min. 300 words each)?
-- Is textual variety present across sections?
-- Is the closing thematic and non-generic?
-- If the article originates from a multi-voice source: apply the multi-voice checklist above.
+
+The findings from *Structure and format* and from *Signer and other voices*.
 
 ### 3. Tono y voz
-- If the signer has a tone file: apply the signer tone checklist above and report its findings first.
-- Does it sound like a person, not a consultancy brochure?
-- Is Orbitant referenced naturally and contextually, not promotionally?
-- Flag any generic consultant phrases found (quote them exactly).
-- Flag any banned words or avoidable anglicisms found (quote them exactly).
-- Flag any em-dash misuse (quote the exact sentence).
-- Is the writing reader-first?
+
+The findings of the signer profile first, when there is one. Then the breaches of tone, each quoted with its proposal.
 
 ### 4. Revisión SEO
-Evaluate with checkmarks or crosses:
-- [ ] Título SEO: length (50–56 chars) and begins with exact primary keyword
-- [ ] Slug: length (65–69 chars), format correct, begins with exact keyword
-- [ ] Meta descripción: length (130–135 chars), begins with exact keyword
-- [ ] Keyword in at least one H2 and in the first 100 words (the H1 does not need it)
-- [ ] Internal links (1–2)
-- [ ] External links (1–2, authoritative)
-- [ ] Anchor text spans natural phrase (not just the noun)
-- [ ] Image alt text, only if the image already exists: descriptive and keyword-aware
-- [ ] Cluster and category correctly assigned
+
+A table with one row per element:
+
+| Elemento | Estado | Valor actual | Propuesta |
+|---|---|---|---|
+| Keyword principal | ✓ / ✗ | | |
+| Título SEO | ✓ / ✗ | [value and character count] | |
+| Slug | ✓ / ✗ | [value and character count] | |
+| Meta descripción | ✓ / ✗ | [value and character count] | |
+| Keyword en un H2 | ✓ / ✗ | [the H2 that carries it] | [the H2 that should carry it] |
+| Keyword en las primeras 100 palabras | ✓ / ✗ | | |
+| Keyword en el H1 (recomendada) | ✓ / – | | |
+| Enlaces internos | ✓ / ✗ | [how many] | |
+| Enlaces externos | ✓ / ✗ | [how many] | |
+| Texto ancla | ✓ / ✗ | | |
+| Clasificación | ✓ / ✗ | | |
 
 ### 5. Sugerencias accionables
-Top 3–5 specific improvements, ranked by impact (highest first). Each must be:
-- Concrete and specific (reference the exact heading, sentence, or section)
-- Explain *why* it matters
-- Explain *how* to fix it
 
----
-
-## Important Rules
-
-- **Do NOT rewrite** the article — provide feedback only.
-- **Be encouraging** — highlight strengths before weaknesses.
-- **Be specific** — reference exact headings, sentences, or sections.
-- **Keep reviews under 800 words** — focused and actionable.
-- **Flag missing frontmatter fields** if required fields are absent.
-- **Never suggest adding self-promotional content** about Orbitant — the goal is always reader value first.
+The 3 to 5 improvements with the most impact, highest first. Each one names the exact heading, sentence or field, says why it matters and how to fix it.
