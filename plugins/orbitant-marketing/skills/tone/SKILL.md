@@ -12,7 +12,7 @@ description: |
   YouTube descriptions), when checking if text "sounds like Orbitant", or when
   creating/editing marketing content, even if they don't explicitly mention tone
   or voice.
-version: "1.6.9"
+version: "1.6.10"
 license: MIT
 metadata:
   author: orbitant
@@ -218,7 +218,7 @@ Never use these, in any form or tense, regardless of context. Treat them as red 
 
 | Word / pattern | Problem | Instead |
 |---|---|---|
-| "con honestidad" | Hollow filler: implies other parts are dishonest. The noun on its own ("esa honestidad es el mejor punto de partida") is the same filler and is not allowed. | Say the thing directly |
+| "con honestidad" | Hollow filler: implies other parts are dishonest. Not recommended: avoid it, and never use it more than once per article. The noun on its own ("esa honestidad es el mejor punto de partida") is the same filler and is not allowed. | Say the thing directly |
 | "honesto / honesta / honestos / honestas / honestamente" | Same hollow-filler problem as "con honestidad": implies the rest isn't honest | Say the thing directly, without labelling it as honest |
 | "incómodo / incómoda / incómodos / incómodas" | Vague, overused framing device ("la pregunta incómoda"): tells the reader how to feel instead of showing why something is hard | A precise adjective, not a padded rephrasing: "la pregunta inesperada", "la pregunta determinante", "la pregunta decisiva" |
 | "provocador / provocadora / provocadores / provocadoras" | Sounds like business magazine copy, not a technical colleague | Describe what specifically challenges or unsettles, without reaching for "incómodo" either |
