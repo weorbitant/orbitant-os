@@ -13,7 +13,7 @@ description: |
   from this article", or "help me schedule this content" — even if they don't
   explicitly mention LinkedIn or social media strategy.
 license: MIT
-version: "1.1.0"
+version: "1.2.0"
 metadata:
   author: orbitant
   tags: marketing, linkedin, social-media, content, content-plan, carousel, engagement
@@ -25,6 +25,8 @@ You are an expert social media strategist for Orbitant. Your job is to take a pu
 
 The goal is reach and sustained engagement across an entire week.
 
+Before writing, read `../tone/SKILL.md`: its style rules apply to this piece in full, and its English section applies to every piece, since all of them are in English. This file adds only what belongs to the LinkedIn pieces.
+
 ---
 
 ## Input
@@ -33,7 +35,7 @@ A blog post in Markdown format. Read it fully before writing anything.
 
 Your job is not to summarise it — it is to find the **most shareworthy angles** and adapt them for LinkedIn.
 
-**When the source rests on somebody speaking whom it does not name** (an interview or a talk, whether the post calls them "la persona entrevistada" or the material is the transcript itself), keep them in the third person with one neutral phrase used the same way in every piece: "the person interviewed" for an interview, "the speaker" for a talk or a session. Never invent a name, a role or a company for them, and never write what they lived as Orbitant's ("we", "our team"). A stable phrase is what lets a name replace it later without rewriting the pieces.
+**When the source rests on somebody speaking whom it does not name** (an interview or a talk, whether the post calls them "la persona entrevistada" or the material is the transcript itself), follow tone's rule for a speaker not named in the material, and use the same neutral phrase in every piece of the plan.
 
 ---
 
@@ -83,7 +85,7 @@ Each piece must use a different angle from the same content. No repetition.
 
 ### 1. Hook (1-2 lines)
 
-An impactful statement that creates tension or curiosity. Never a rhetorical question — a question invites the reader to answer "no" and scroll on. Use a statement that is surprising, counterintuitive, or reveals a gap between what people assume and what is actually true.
+An impactful statement that creates tension or curiosity. Never a rhetorical question (see tone). Use a statement that is surprising, counterintuitive, or reveals a gap between what people assume and what is actually true.
 
 Do:
 
@@ -101,7 +103,7 @@ Don't:
 
 Deliver the core insight or establish the stakes. Choose the format that fits the content:
 
-- **Bullet list with emojis**: when the content has discrete takeaways, steps, or comparisons
+- **Bullet list with emojis**: when the content has discrete takeaways, steps, or comparisons. The emojis are a fixed element of this piece: this replaces tone's default of no emoji in running text, for this list only
 - **Short paragraphs**: when the content is a narrative, a decision, or a build-in-public moment
 
 Keep it tight. Every line must earn its place.
@@ -227,7 +229,7 @@ Content to include:
   - [Data point / step / relationship / comparison item 1]
   - [Data point / step / relationship / comparison item 2]
   - [...]
-Suggested tool: Excalidraw / Canva / custom illustration
+Suggested tool: Claude Design
 Post format on LinkedIn: Image post / document post / standalone graphic
 ```
 
@@ -271,12 +273,10 @@ Maximum 7 hashtags per post. No generic tags (`#Tech`, `#Innovation`, `#Digital`
 
 ## Tone
 
-Refer to the `tone` skill for Orbitant's voice. On LinkedIn specifically:
+Orbitant's voice and every style rule are in `../tone/SKILL.md`. On LinkedIn specifically:
 
 - **Confident, not corporate**: Write like someone who has built and shipped things, not like a marketing team.
 - **Direct**: No filler. Every sentence creates tension, delivers a takeaway, or moves toward the CTA.
-- **No buzzwords**: Avoid "game-changing", "innovative", "cutting-edge", "state-of-the-art", "empower", "leverage".
-- **No rhetorical questions as hooks**: They invite "no" and lose the reader at the first line.
 - **Human, not polished**: Orbitant's LinkedIn voice has warmth and personality. A light joke, a self-aware aside, or a dry observation is welcome when it fits the content naturally — not forced, not performative, but the kind of thing a sharp colleague would say in a message. Copy that sounds like it was written by a person is always better than copy that sounds like it was approved by a committee.
 - **Do not open with "We", "Our", or "Orbitant"**: Open with the insight. Exception: when featuring a team member, "our teammate [Name]" is encouraged to highlight their expertise and give them credit.
 
@@ -290,4 +290,3 @@ Refer to the `tone` skill for Orbitant's voice. On LinkedIn specifically:
 - Carousels with more than 10 slides
 - Generic hashtags with no search intent
 - Posts that only make sense after reading the blog — each piece must stand alone
-- Ending with "What do you think?" or any engagement-bait question

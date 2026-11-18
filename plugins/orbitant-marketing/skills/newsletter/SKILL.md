@@ -9,7 +9,7 @@ description: |
   month" or "prepare the MailerLite send". Curates Slack channel links autonomously,
   writes all copy in English, and outputs a complete Markdown draft ready for
   MailerLite layout.
-version: "1.0.0"
+version: "1.1.0"
 license: MIT
 metadata:
   author: orbitant
@@ -22,6 +22,8 @@ metadata:
 
 Generates the complete draft of Orbitant's monthly newsletter from that month's materials. The output is a Markdown document structured by sections, ready for layout in MailerLite, with all copy already written in English.
 
+Before writing, read `../tone/SKILL.md`: its style rules apply to this piece in full, including its English section. This file adds only what belongs to the newsletter.
+
 ---
 
 ## Audience and tone
@@ -29,7 +31,7 @@ Generates the complete draft of Orbitant's monthly newsletter from that month's 
 - **Language**: English exclusively. Never Spanish in the newsletter body.
 - **Audience**: Senior developers, CTOs, engineers, and tech professionals in the Orbitant ecosystem (clients, community, KS and meetup attendees).
 - **Tone**: Direct, technical but accessible, no hype. The same as the blog and LinkedIn: practical, honest, approachable. Never salesy. Orbitant appears contextually, never as explicit promotion.
-- **Style**: Short sentences. Bold for emphasizing key concepts within section copy. No em dashes. No bullet points in narrative section copy (bullet points are used in resource lists and "What you'll get" sections).
+- **Style**: Short sentences. Bold for emphasizing key concepts within section copy. No em dashes (stricter than tone, see Writing rules). No bullet points in narrative section copy (bullet points are used in resource lists and "What you'll get" sections).
 
 ---
 
@@ -157,11 +159,10 @@ Fixed and invariable format:
 
 ## Writing rules
 
-- No em dashes (—). Use comma, semicolon, or period.
+Style rules (banned words, patterns, punctuation, register, the English list) are in `../tone/SKILL.md` and apply here in full. The newsletter adds:
+
+- No em dashes (—). Use comma, semicolon, or period. This is stricter than tone and overrides it here.
 - Bold for key concepts, not for decoration.
-- No exclamation marks except for celebrating a concrete milestone.
-- No filler phrases: "It's no secret that...", "In today's world...", "We're excited to...", etc.
-- Orbitant appears contextually. Never explicit self-promotion.
 - Speakers: name linked to LinkedIn + role. Never open the second paragraph with the speaker's name.
 - CTA buttons: short and direct text. "Register now", "Read more", "Join the meetup".
 
