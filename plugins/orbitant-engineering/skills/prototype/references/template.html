@@ -1,0 +1,127 @@
+<!doctype html>
+<!--
+  DESIGN PROTOTYPE: team table (template example)
+  Purpose: validate a design in a conversation thread. Not production code.
+  Template note: this is a worked example of the shape, not a layout to copy.
+  Keep the head (Tailwind CDN, the import map), the header comment, the DEV
+  comments and the TWD block with its initTWD options; replace the rest.
+  For development bots: the markup below is the visual contract. Data is
+  hardcoded; every `DEV:` comment names what the real app must supply.
+  The TWD scenarios at the bottom are the acceptance criteria, runnable in
+  the sidebar (pace selector: Slow / Slower).
+-->
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prototipo: tabla de equipo</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "twd-js": "https://esm.sh/twd-js@1.12.2",
+        "twd-js/runner": "https://esm.sh/twd-js@1.12.2/runner",
+        "twd-js/bundled": "https://esm.sh/twd-js@1.12.2/bundled"
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-900">
+  <div id="app" class="mx-auto max-w-4xl p-4 sm:p-8">
+    <h1 class="text-2xl font-semibold">Equipo</h1>
+
+    <!-- DEV: filter is client-side here; in the app it maps to a query param `?q=`. -->
+    <label for="filter" class="mt-6 block text-sm font-medium">Filtrar por nombre</label>
+    <input id="filter" type="search" autocomplete="off"
+      class="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-600" />
+
+    <p id="count" class="mt-2 text-sm text-slate-600" aria-live="polite">3 personas</p>
+
+    <!-- DEV: desktop = table (sm and up); mobile = cards. Same data source. -->
+    <table class="mt-4 hidden w-full border-collapse sm:table">
+      <caption class="sr-only">Personas del equipo</caption>
+      <thead>
+        <tr class="border-b border-slate-300 text-left text-sm">
+          <th scope="col" class="py-2">Nombre</th>
+          <th scope="col" class="py-2">Rol</th>
+          <th scope="col" class="py-2">Estado</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <ul id="cards" class="mt-4 space-y-3 sm:hidden" aria-label="Personas del equipo"></ul>
+
+    <p id="empty" class="mt-6 hidden rounded-md bg-white p-4 text-center text-slate-600">
+      Nadie coincide con el filtro.
+    </p>
+  </div>
+
+  <script>
+    // DEV: replace with GET /api/people. Fields: name, role, active.
+    const people = [
+      { name: 'Ana Pérez', role: 'Diseño', active: true },
+      { name: 'Luis Gómez', role: 'Backend', active: false },
+      { name: 'Marta Ruiz', role: 'Frontend', active: true },
+    ];
+    const badge = (active) => active
+      ? '<span class="rounded-full bg-emerald-100 px-2 py-0.5 text-sm text-emerald-800">Activa</span>'
+      : '<span class="rounded-full bg-slate-200 px-2 py-0.5 text-sm text-slate-700">Inactiva</span>';
+
+    function render(q = '') {
+      const list = people.filter((p) => p.name.toLowerCase().includes(q.toLowerCase()));
+      document.getElementById('rows').innerHTML = list.map((p) =>
+        `<tr class="border-b border-slate-200"><td class="py-2">${p.name}</td><td>${p.role}</td><td>${badge(p.active)}</td></tr>`).join('');
+      document.getElementById('cards').innerHTML = list.map((p) =>
+        `<li class="rounded-md bg-white p-4 shadow-sm"><p class="font-medium">${p.name}</p><p class="text-sm text-slate-600">${p.role}</p><div class="mt-2">${badge(p.active)}</div></li>`).join('');
+      document.getElementById('count').textContent = `${list.length} ${list.length === 1 ? 'persona' : 'personas'}`;
+      document.getElementById('empty').classList.toggle('hidden', list.length > 0);
+    }
+    document.getElementById('filter').addEventListener('input', (e) => render(e.target.value));
+    render();
+  </script>
+
+  <!-- ACCEPTANCE SCENARIOS (TWD). Each `it` is one criterion of the design. -->
+  <script type="module">
+    import { initTWD } from 'twd-js/bundled';
+
+    const scenarios = async () => {
+      const { twd, userEvent, screenDom } = await import('twd-js');
+      const { describe, it, beforeEach } = await import('twd-js/runner');
+
+      describe('Tabla de equipo', () => {
+        // Nothing reloads the page between scenarios: undo what each one typed.
+        beforeEach(async () => {
+          await userEvent.clear(await screenDom.findByLabelText('Filtrar por nombre'));
+        });
+
+        it('muestra a todo el equipo al entrar', async () => {
+          twd.should(await screenDom.findByText('3 personas'), 'be.visible');
+        });
+
+        it('filtra por nombre', async () => {
+          const filtro = await screenDom.findByLabelText('Filtrar por nombre');
+          await userEvent.type(filtro, 'mar');
+          twd.should(await screenDom.findByText('1 persona'), 'be.visible');
+        });
+
+        it('avisa cuando nadie coincide', async () => {
+          const filtro = await screenDom.findByLabelText('Filtrar por nombre');
+          await userEvent.type(filtro, 'zzz');
+          twd.should(await screenDom.findByText('Nadie coincide con el filtro.'), 'be.visible');
+        });
+      });
+    };
+
+    // Start at the slowest pace (Slower, 600ms) so people can watch each
+    // scenario; the sidebar's selector still changes it. The sidebar reads its
+    // pace from this key when it mounts, so setting window.__TWD_PACE__ instead
+    // would be overwritten with 0. A choice already made in this tab is kept.
+    if (!sessionStorage.getItem('twd-pace')) sessionStorage.setItem('twd-pace', '600');
+
+    // serviceWorker: false — a prototype has no network calls to mock, and a
+    // file opened on its own has no origin to register one on.
+    initTWD({ 'escenarios': scenarios }, { open: true, position: 'left', serviceWorker: false, pace: true, rootSelector: '#app' });
+  </script>
+</body>
+</html>

@@ -21,8 +21,8 @@
     {
       "name": "orbitant-engineering",
       "source": "./plugins/orbitant-engineering",
-      "description": "Engineering standards audit commands for any repo, any stack, plus learning workflows for engineers",
-      "version": "0.3.0"
+      "description": "Engineering standards audit commands for any repo, any stack, learning workflows for engineers, and single-file HTML prototypes to validate designs",
+      "version": "0.4.0"
     }
   ]
 }
