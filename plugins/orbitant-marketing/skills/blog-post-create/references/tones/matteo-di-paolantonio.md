@@ -1,6 +1,6 @@
 # Author voice profile: Matteo di Paolantonio (CTO, Orbitant)
 
-Load this file whenever the signer of a blog post is Matteo di Paolantonio, both when **creating** the post (`blog-post-create`) and when **reviewing** it (`blog-post-review`). It describes how Matteo thinks and writes, so the draft sounds like him rather than like a generic Orbitant engineer or like Felipe. It sits on top of `SKILL.md` (meaning `blog-post-create/SKILL.md` throughout this file), `references/orbitant-narrative.md` and `../tone/SKILL.md`. It does not replace them.
+Load this file whenever the signer of a blog post is Matteo di Paolantonio, both when **creating** the post (`blog-post-create`) and when **reviewing** it (`blog-post-review`). It describes how Matteo thinks and writes, so the draft sounds like him rather than like a generic Orbitant engineer or like Felipe. It sits on top of `SKILL.md` (meaning `blog-post-create/SKILL.md` throughout this file), `references/orbitant-narrative.md` and `../../../tone/SKILL.md`. It does not replace them.
 
 Matteo signs three kinds of content:
 

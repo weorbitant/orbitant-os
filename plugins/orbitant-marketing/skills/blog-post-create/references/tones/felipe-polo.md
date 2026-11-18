@@ -1,6 +1,6 @@
 # Author voice profile: Felipe Polo (CEO, Orbitant)
 
-Load this file whenever the signer of a blog post is Felipe Polo. It describes how Felipe thinks and writes, so the draft sounds like him rather than like a generic Orbitant engineer. It sits on top of `SKILL.md`, `references/orbitant-narrative.md` and `../tone/SKILL.md`. It does not replace them.
+Load this file whenever the signer of a blog post is Felipe Polo. It describes how Felipe thinks and writes, so the draft sounds like him rather than like a generic Orbitant engineer. It sits on top of `SKILL.md`, `references/orbitant-narrative.md` and `../../../tone/SKILL.md`. It does not replace them.
 
 Built from Felipe's own posts: his original blog (felipepolo.me, migrated to Orbitant) and the posts he signed in Content Progress, among them *The economics behind refactoring*, *Building smart "plug & play" businesses*, *Los principios operacionales que definen Orbitant*, *OPEX vs CAPEX en desarrollo de software* and *Qué es un employent*.
 
