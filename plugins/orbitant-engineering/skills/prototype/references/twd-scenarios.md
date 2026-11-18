@@ -12,7 +12,7 @@ The scenarios are the design's **acceptance criteria**, run by people in the TWD
 
 ## Setup (already in the template, keep it)
 
-- TWD's browser build, `twd-js@1.13.0/dist/twd.global.js` from jsDelivr, is a classic `<script>` in the head that puts the API on `window.TWD`. Never an import map or `<script type="module">`: chat previews block them. The scenarios live in one classic `<script>` at the end of the body, which takes `initTWD`, `twd`, `userEvent`, `screenDom`, `screenDomGlobal`, `expect`, `describe`, `it`, `beforeEach` and `afterEach` from `window.TWD`, inside an async function passed to `initTWD`.
+- TWD's browser build, `twd-js@1.13.0/dist/twd.global.js` from jsDelivr, is a classic `<script>` at the end of the body, right before the scenarios, that puts the API on `window.TWD`. Not in the head: loaded before `<body>` exists, `screenDomGlobal` fails. Never an import map or `<script type="module">`: chat previews block them. The scenarios live in one classic `<script>` at the end of the body, which takes `initTWD`, `twd`, `userEvent`, `screenDom`, `screenDomGlobal`, `expect`, `describe`, `it`, `beforeEach` and `afterEach` from `window.TWD`, inside an async function passed to `initTWD`.
 - `initTWD({ escenarios: fn }, { open: true, position: 'left', serviceWorker: false, pace: true, rootSelector: '#app' })`, preceded by `sessionStorage.setItem('twd-pace', '600')` when the key is unset: the sidebar reads its starting pace from that key (600ms is "Slower"), so the scenarios run slowly by default.
 - **No request mocking**: `serviceWorker: false`, data is hardcoded in the page, so never use `twd.mockRequest`, `twd.waitForRequest` or `twd.visit`.
 

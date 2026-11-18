@@ -3,7 +3,7 @@
   DESIGN PROTOTYPE: team table (template example)
   Purpose: validate a design in a conversation thread. Not production code.
   Template note: this is a worked example of the shape, not a layout to copy.
-  Keep the head (Tailwind CDN, the TWD script), the header comment, the DEV
+  Keep the head (Tailwind CDN), the TWD script before the scenarios, the header comment, the DEV
   comments and the TWD block with its initTWD options; replace the rest.
   For development bots: the markup below is the visual contract. Data is
   hardcoded; every `DEV:` comment names what the real app must supply.
@@ -16,10 +16,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Prototipo: tabla de equipo</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <!-- TWD's browser build: a classic script that puts the API on window.TWD.
-       Not an import map: chat previews (Slack's on mobile) block import maps
-       and module scripts, and run classic ones. -->
-  <script src="https://cdn.jsdelivr.net/npm/twd-js@1.13.0/dist/twd.global.js"></script>
 </head>
 <body class="bg-slate-50 text-slate-900">
   <div id="app" class="mx-auto max-w-4xl p-4 sm:p-8">
@@ -75,6 +71,13 @@
     document.getElementById('filter').addEventListener('input', (e) => render(e.target.value));
     render();
   </script>
+
+  <!-- TWD's browser build: a classic script that puts the API on window.TWD.
+       Not an import map: chat previews (Slack's on mobile) block import maps
+       and module scripts, and run classic ones. At the end of the body, not
+       in the head: loaded before <body> exists, screenDomGlobal fails with
+       "a global document has to be available" (twd-js 1.13.0, 2026-11-18). -->
+  <script src="https://cdn.jsdelivr.net/npm/twd-js@1.13.0/dist/twd.global.js"></script>
 
   <!-- ACCEPTANCE SCENARIOS (TWD). Each `it` is one criterion of the design. -->
   <script>
