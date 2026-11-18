@@ -1,7 +1,7 @@
 {
   "name": "orbitant-engineering",
-  "version": "0.3.0",
-  "description": "Engineering standards audit commands for any repo, any stack, plus learning workflows for engineers",
+  "version": "0.4.0",
+  "description": "Engineering standards audit commands for any repo, any stack, learning workflows for engineers, and single-file HTML prototypes to validate designs",
   "author": {
     "name": "Orbitant"
   },
@@ -18,7 +18,10 @@
     "./skills/new-learning",
     "./skills/learning-report",
     "./skills/learning-status",
-    "./skills/learning-insights"
+    "./skills/learning-insights",
+    "./skills/prototype"
   ],
-  "commands": ["./commands/ground-control.md"]
+  "commands": [
+    "./commands/ground-control.md"
+  ]
 }
