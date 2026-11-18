@@ -28,7 +28,7 @@ A prototype is a **question asked visually**: "is this what you mean?". It exist
 
 ## Before drawing
 
-- **Know which product it is for.** The thread, the issue or a standing instruction usually says which repository. If nothing does, ask which product before drawing.
+- **Know which product it is for.** The thread, the issue or a standing instruction usually says which repository. If nothing does, do not hold the drawing back: draw with the defaults (principle 5) and, when you share it, ask which product it is for, so the next version follows its design system. A request with no product at all (an idea, a new tool) is fine: the defaults are its design system.
 - **Read that repository's `design/DESIGN.md`**. If it does not exist, or you cannot read the repository, say so in one line and draw with the defaults; offer `references/design-md-template.md` as a starting point for its designers.
 
 ## The file
@@ -44,7 +44,9 @@ Code quality, performance and file size do not matter beyond staying readable. V
 
 ## The ping-pong
 
-- Share the file and say in one or two sentences what you decided and what you are unsure about. Ask at most one question.
+- Share the file and say in one or two sentences what you decided and what you are unsure about.
+- List the scenarios you wrote in one line, by their names. You invented them from the request; this is how they become criteria the thread agreed. When someone adds or changes one, it is one more criterion: the next file includes it.
+- Ask at most one question. When you drew without knowing the product, it is which product; otherwise it is whether a scenario is missing.
 - When the thread asks for a variant ("¿y en móvil?", "otra con menos columnas"), share a new file with a name that says what it is (`mobile.html`, `menos-columnas.html`) and keep what was already agreed.
 - When someone gives feedback, change only what they asked about and say what changed.
 - If the request is too vague to draw anything useful, ask what the person needs to do on the screen before drawing.
