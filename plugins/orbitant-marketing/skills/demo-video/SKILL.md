@@ -1,6 +1,6 @@
 ---
 name: orbitant-demo-video
-description: Make a one-to-two-minute product demo video in the project's own brand, narrated with an ElevenLabs voice — from a sprint, a release, merged PRs, one feature, or a short text, plus the product's URL (the agent records the screens; the person only signs in) or their own recordings. Use when someone asks for a demo video, a sprint or release video, a progress video, or "what we shipped" as a video. Works for any project that has (or creates) a brand pack. Not for a cinematic, hand-choreographed film (use /product-launch-video) or captions on existing footage (use /embedded-captions).
+description: Make a one-to-two-minute product demo video in the project's own brand, narrated with an ElevenLabs voice — from a sprint, a release, merged PRs, one feature, or a short text, plus the product's URL (the agent records the screens; the person only signs in) or their own recordings. Use when someone asks for a demo video, a sprint or release video, a progress video, or "what we shipped" as a video. Tightly coupled to the Claude desktop app (Code tab), because it uses the browser pane for the previews, the Artifact tool for the theme and the music library, and the claude.ai ElevenLabs connector for the voice. Works for any project that has (or creates) a brand pack. Not for a cinematic, hand-choreographed film (use /product-launch-video) or captions on existing footage (use /embedded-captions).
 ---
 
 # Demo video
