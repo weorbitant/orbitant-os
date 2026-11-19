@@ -418,8 +418,8 @@ Fix every fault and every `build` warning that does not need the voice, record a
 and build again. Only the cue warnings wait for the voice: their word times are estimated now.
 Never show the person a preview with a fault that you can fix.
 
-Then show the person the preview, with a short list of the faults that remain. `npm run dev` starts the preview in the background and returns at once. It prints the Studio URL, for example
-`http://localhost:3003/#project/<slug>`; open that URL in the browser pane. To stop it:
+Then show the person the preview, with a short list of the faults that remain. `npm run dev` starts the preview in the background and returns at once. It opens the Studio in the person's default browser and prints the URL, for example
+`http://localhost:3003/#project/<slug>`. To stop it:
 `npx --yes hyperframes@0.8.158 preview demo-video/demos/<slug> --stop`.
 
 Ask the person if the pixels are right before the voice step. TTS costs credits, and a new recording
