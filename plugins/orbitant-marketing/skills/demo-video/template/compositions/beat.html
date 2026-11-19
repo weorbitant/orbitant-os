@@ -1,0 +1,209 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <!--
+      BEAT — one feature: label pill + title, the real product media on a lit card,
+      one caption line. Two frames (the FRAME token, demo.mjs FRAMES): `bleed` puts the text
+      top-left and runs the product off the right and bottom edges; `card` centres a floating card. Written by demo.mjs build: every double-brace token is replaced, and
+      the ID token (s01, s02, …) prefixes every id so scenes cannot collide.
+      Colours and fonts are CSS custom properties from brand.json, set on :root in
+      index.html. Never write a literal brand value here.
+    -->
+    <template>
+      <style>
+        #root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          font-family: var(--font-body), sans-serif;
+        }
+        .{{ID}}-stage {
+          position: absolute;
+          inset: 0;
+          background: radial-gradient(ellipse 1500px 950px at 50% 46%, var(--stage-hi) 0%, var(--stage) 55%, var(--stage-lo) 100%);
+        }
+        .{{ID}}-head {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 64px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 24px;
+          opacity: 0; /* start state; the timeline reveals it */
+        }
+        .{{ID}}-label {
+          font-family: var(--font-display), sans-serif;
+          font-weight: var(--font-display-weight);
+          font-size: 26px;
+          letter-spacing: 0.04em;
+          color: var(--accent-ink);
+          background: var(--accent);
+          border-radius: 100px;
+          padding: 8px 22px;
+          white-space: nowrap;
+        }
+        .{{ID}}-title {
+          font-family: var(--font-display), sans-serif;
+          font-weight: var(--font-display-weight);
+          font-size: 56px;
+          line-height: 1.1;
+          letter-spacing: -0.015em;
+          color: var(--ink);
+          white-space: nowrap;
+        }
+        /* An optional field left empty takes no space. */
+        .{{ID}}-label:empty,
+        .{{ID}}-caption:empty {
+          display: none;
+        }
+        .{{ID}}-card {
+          position: absolute;
+          left: 302px;
+          top: 180px;
+          width: 1316px;
+          height: 740px;
+          border-radius: 22px;
+          overflow: hidden;
+          background: var(--card);
+          /* The one cast shadow: it separates the lit product surface from the stage. */
+          box-shadow: 0 40px 90px rgba(0, 0, 0, 0.5);
+        }
+        /* The camera: the media at its fitted size, positioned by build. A beat `focus` moves and
+           scales it; a beat `mask` rides on it, so a mask stays on its pixels through a zoom. */
+        .{{ID}}-cam {
+          position: absolute;
+          transform-origin: 0 0;
+        }
+        .{{ID}}-mask {
+          position: absolute;
+          border-radius: 8px;
+          background: rgba(128, 128, 128, 0.35);
+          backdrop-filter: blur(18px);
+          opacity: 0; /* start state; the timeline shows it from its `from` second */
+        }
+        /* A beat `highlight`: the region stays lit, the rest of the screen goes dark. The shadow
+           spread covers the whole card; the card's overflow clips it. */
+        .{{ID}}-spot {
+          position: absolute;
+          border-radius: 12px;
+          box-shadow: 0 0 0 4px var(--accent), 0 0 0 4000px rgba(0, 0, 0, var(--spot-dim));
+          opacity: 0; /* start state; the timeline fades it in at its `from` second */
+        }
+        /* A lift: the element's own 2× cut-out, exactly over its place. It rises out of the dark
+           screen, floats, and goes back to the same place (never to a place it does not have). */
+        .{{ID}}-lift {
+          position: absolute;
+          border-radius: 8px;
+          transform-origin: 50% 50%;
+          opacity: 0; /* start state; the timeline lifts it at its `from` second */
+        }
+        .{{ID}}-media {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+        .{{ID}}-caption {
+          position: absolute;
+          left: 160px;
+          right: 160px;
+          top: 952px;
+          text-align: center;
+          font-size: 34px;
+          font-weight: var(--font-body-weight);
+          line-height: 1.35;
+          color: var(--ink-muted);
+          opacity: 0; /* start state; the timeline reveals it */
+        }
+        /* bleed: a product shot, not a screenshot in a box. The text sits on one left edge with the
+           product; the product runs off the right and bottom edges, so only one corner is rounded. */
+        .{{ID}}-head.{{ID}}-frame-bleed {
+          left: 140px;
+          right: 140px;
+          top: 66px;
+          justify-content: flex-start;
+        }
+        .{{ID}}-caption.{{ID}}-frame-bleed {
+          left: 140px;
+          right: 140px;
+          top: 150px;
+          text-align: left;
+          font-size: 32px;
+        }
+        .{{ID}}-card.{{ID}}-frame-bleed {
+          left: 140px;
+          top: 250px;
+          width: 1780px;
+          height: 830px;
+          border-radius: 22px 0 0 0;
+          transform-origin: 0 0;
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+        }
+      </style>
+
+      <div id="root" data-composition-id="{{ID}}" data-width="1920" data-height="1080">
+        <div id="{{ID}}-stage" class="clip {{ID}}-stage" data-start="0" data-duration="{{DUR}}" data-track-index="0"></div>
+        <!-- data-layout-allow-overflow: in the bleed frame the push-in grows the card past the right and bottom edges, by design. -->
+        <div id="{{ID}}-card" class="{{ID}}-card {{ID}}-frame-{{FRAME}}" data-layout-allow-overflow>{{MEDIA}}</div>
+        <!-- data-layout-allow-overlap: text meets the next scene's text only during a seam, by design. -->
+        <div id="{{ID}}-head" class="{{ID}}-head {{ID}}-frame-{{FRAME}}" data-layout-allow-overlap>
+          <div class="{{ID}}-label">{{LABEL}}</div>
+          <div class="{{ID}}-title">{{TITLE}}</div>
+        </div>
+        <div id="{{ID}}-caption" class="{{ID}}-caption {{ID}}-frame-{{FRAME}}" data-layout-allow-overlap>{{CAPTION}}</div>
+      </div>
+
+      <script>
+        ;(() => {
+          const D = {{DUR}}
+          {{EASE}}
+          const tl = gsap.timeline({ paused: true })
+
+          // The card is present on the cut, only recessed. Fading it up from zero
+          // drops the seam to near-black for a frame.
+          // card: it grows from 0.955. bleed: the card touches two edges, so it rises into place (a
+          // scale-up would open a gap at the edges). build writes the values for the frame.
+          tl.fromTo('#{{ID}}-card', {{CARD_FROM}}, { ...{{CARD_TO}}, duration: 0.7, ease: EZ }, 0)
+          // Slow push-in for the rest of the scene, so a still screenshot is never a dead frame.
+          tl.to('#{{ID}}-card', { scale: {{PUSH}}, duration: Math.max(D - 0.7, 0.1), ease: 'none' }, 0.7)
+          tl.fromTo('#{{ID}}-head', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.55, ease: EZ, immediateRender: false }, 0.05)
+          tl.fromTo('#{{ID}}-caption', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.55, ease: EZ, immediateRender: false }, 0.5)
+
+          // Camera keyframes from the beat `focus` (build computes x, y, scale), and mask windows.
+          const CAM = {{CAM}}
+          const MASKS = {{MASKS}}
+          const SPOTS = {{SPOTS}}
+          const LIFTS = {{LIFTS}}
+          for (const k of CAM) tl.to('#{{ID}}-cam', { x: k.x, y: k.y, scale: k.scale, duration: 1, ease: EZ }, k.at)
+          for (const h of SPOTS) {
+            tl.fromTo('#' + h.id, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: EZ, immediateRender: false }, h.from)
+            if (h.to < D) tl.to('#' + h.id, { opacity: 0, duration: 0.5, ease: EZ }, Math.max(h.from + 0.5, h.to - 0.5))
+          }
+          // Spotlight, rise, float, return: one action arc. It grows from its own centre (so it always
+          // covers its slot: the text under it never shows twice), floats a little larger, and settles
+          // back; then the cut-out goes and the live screen under it shows again.
+          for (const l of LIFTS) {
+            const up = l.from + 0.3, down = Math.max(up + 1, l.to - 0.6)
+            tl.set('#' + l.id, { opacity: 1 }, up)
+            tl.fromTo('#' + l.id, { scale: 1, boxShadow: '0 0 0 rgba(0,0,0,0)' }, { scale: 1.14, boxShadow: '0 26px 52px rgba(0,0,0,0.5)', duration: 0.5, ease: EZ, immediateRender: false }, up)
+            tl.to('#' + l.id, { scale: 1.17, duration: down - up - 0.5, ease: 'none' }, up + 0.5)
+            tl.to('#' + l.id, { scale: 1, boxShadow: '0 0 0 rgba(0,0,0,0)', duration: 0.5, ease: EZ }, down)
+            tl.set('#' + l.id, { opacity: 0 }, down + 0.5)
+          }
+          for (const m of MASKS) {
+            tl.set('#' + m.id, { opacity: 1 }, m.from)
+            if (m.to < D) tl.set('#' + m.id, { opacity: 0 }, m.to)
+          }
+
+          window.__timelines['{{ID}}'] = tl
+        })()
+      </script>
+    </template>
+  </body>
+</html>
