@@ -1,0 +1,5 @@
+{
+  "name": "product-discovery",
+  "description": "Product discovery suite: interrogate a PM/PO to define a problem well, independently stress-test the resulting brief for gaps, and harvest each session's learnings in a guaranteed retro before handing it to design or engineering. Every deliverable is mirrored to the product's Notion map as a record, written as the PM.",
+  "version": "0.2.0"
+}
