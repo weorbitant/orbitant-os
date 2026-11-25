@@ -114,14 +114,14 @@ Blocks 4–11 and the conditional lenses then cover the base only. Blocks 6 (alt
 For each block, don't settle for the first answer: use follow-ups as leverage to reach the
 bottom.
 
-**1. Current situation (how does it work today?)**
+### 1. Current situation (how does it work today?)
 - How is this handled today, without your proposal? With what tool, process, or manual
   step?
 - Who lives with it today, and how often? What does it cost them (time, errors,
   frustration)?
 - If nothing exists today, why has the need emerged now?
 
-**2. Problem to solve (what's the real pain?)**
+### 2. Problem to solve (what's the real pain?)
 - State the problem in one sentence, in business terms, **without mentioning the
   solution**.
 - Is this the problem or a symptom? (Apply the *5 Whys*: ask "why?" until you reach the
@@ -130,26 +130,26 @@ bottom.
   an assumption?
 - Who does it affect, and at what scale? What happens if it isn't solved?
 
-**3. Impact and priority (why now?)**
+### 3. Impact and priority (why now?)
 - What concrete improvement do you expect? Is it measurable?
 - Why is it worth it over other things? What makes it urgent?
 
-**4. Actors and context**
+### 4. Actors and context
 - Who is involved? (users, internal roles, external systems)
 - What permissions or conditions does each have? Does anyone have a view or capability
   others don't?
 - How often and at what point in the process does it happen?
 
-**5. Proposed resolution (what change do you propose?)**
+### 5. Proposed resolution (what change do you propose?)
 - Describe the solution you have in mind and **how it changes the current situation**.
 - What part of the problem does your proposal NOT solve?
 
-**6. Alternatives considered**
+### 6. Alternatives considered
 - What other ways of solving it have you discarded, and why?
 - (If none were considered, propose 1–2 alternatives and ask the PM to argue why theirs is
   better.)
 
-**7. Scenarios and expected behavior (the heart of the interrogation)**
+### 7. Scenarios and expected behavior (the heart of the interrogation)
 The goal here is NOT for the PM to describe loading/error states, concurrency, or
 technical data limits — those are derived later by UX/UI and engineering from the business
 rules set here. The goal is for them to **describe the scenarios they have in mind and
@@ -187,7 +187,7 @@ Before you consider scenarios closed, **sweep the Conditional lenses** (below, a
 behavior, the level at which an aggregate is validated, lifecycle transitions — are invisible
 from the obvious flow and live only in those lenses.
 
-**8. Business rules and constraints**
+### 8. Business rules and constraints
 - Which state combinations are **impossible** and should never be able to occur?
 - What must **always** hold (invariants)? Are there legal, tax, or compliance limits?
 - For each invariant, pin down **at what level** it holds (the item, the group, the parent)
@@ -201,15 +201,15 @@ from the obvious flow and live only in those lenses.
 - What assumptions are you taking for granted that might not be true? (Name them and
   question them one by one.)
 
-**9. Success / acceptance criteria**
+### 9. Success / acceptance criteria
 - Complete the sentence for each key scenario: *"This is considered correct when…"*.
 - How will we know, once in production, that it has worked?
 
-**10. Out of scope**
+### 10. Out of scope
 - What will this NOT do, even if someone might expect it? Make it explicit to avoid
   misunderstandings with design and engineering.
 
-**11. Risks, assumptions, and dependencies**
+### 11. Risks, assumptions, and dependencies
 - What or who does this depend on (another team, system, piece of data, pending decision)?
 - What could go wrong? What mitigation is there?
 

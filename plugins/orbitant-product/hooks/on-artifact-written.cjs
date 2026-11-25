@@ -1,30 +1,29 @@
 #!/usr/bin/env node
-// PostToolUse hook — sync trigger. Cross-platform (Node, no external deps). When a discovery
-// deliverable is written or edited at <workdir>/discovery/<slug>/<file>, mark it pending in
-// <home>/.discovery/<slug>/sync.json and tell Claude to run the orbitant-sync-deliverable skill. The
-// sync state is store-agnostic: only that skill knows where deliverables are mirrored.
+// PostToolUse hook. Cross-platform (Node, no external deps). When a discovery deliverable is
+// written or edited at <workdir>/discovery/<slug>/<file>, it reads the content and runs the
+// core's checks (lib/deliverable-checks.cjs). A failing check goes back to Claude as feedback
+// and nothing is recorded. A passing deliverable is handed to the sync layer
+// (lib/sync-state.cjs), which marks it pending, and Claude is asked to dispatch the
+// deliverable-sync agent. Store-blind: it never reads store.json and never names a store.
 // Never throws — a hook must not break the session.
 'use strict';
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { checkDeliverable } = require('./lib/deliverable-checks.cjs');
+const { markPending } = require('./lib/sync-state.cjs');
 
 const RETRO_FILE = /^RETRO-\d{4}-\d{2}-\d{2}\.md$/;
 
-function artifactType(fileName) {
+function deliverableType(fileName) {
   if (fileName === 'PROBLEM_BRIEF.md') return 'brief';
   if (fileName === 'STRESS_TEST.md') return 'stress_test';
   if (RETRO_FILE.test(fileName)) return 'retro';
   return null;
 }
 
-function readState(syncPath) {
-  try {
-    const parsed = JSON.parse(fs.readFileSync(syncPath, 'utf8'));
-    return parsed && typeof parsed === 'object' ? parsed : {};
-  } catch (e) {
-    return {}; // missing or corrupt: rebuild rather than drop the sync
-  }
+function emit(output) {
+  process.stdout.write(JSON.stringify(output));
 }
 
 try {
@@ -33,7 +32,8 @@ try {
   if (!filePath) process.exit(0);
 
   const norm = path.normalize(filePath);
-  const type = artifactType(path.basename(norm));
+  const fileName = path.basename(norm);
+  const type = deliverableType(fileName);
   if (!type) process.exit(0);
 
   const slugDir = path.dirname(norm);
@@ -42,36 +42,38 @@ try {
   const slug = path.basename(slugDir);
   const workdir = path.dirname(discoveryDir);
 
-  const stateDir = path.join(os.homedir(), '.discovery', slug);
-  const syncPath = path.join(stateDir, 'sync.json');
-  const previous = readState(syncPath);
-  const artifacts =
-    previous.artifacts && typeof previous.artifacts === 'object' && !Array.isArray(previous.artifacts)
-      ? previous.artifacts
-      : {};
-  const prior = artifacts[type] || {};
-  // A record is only reused for the same file: a new retro date, or the same slug in another
-  // folder, is a different record.
-  const sameRecord = prior.path === norm;
+  let content;
+  try {
+    content = fs.readFileSync(norm, 'utf8');
+  } catch (e) {
+    process.exit(0);
+  }
 
-  artifacts[type] = {
-    path: norm,
-    status: 'pending',
-    ref: sameRecord ? prior.ref || '' : '',
-    synced_at: sameRecord ? prior.synced_at || '' : '',
-  };
+  const failures = checkDeliverable(type, content);
+  if (failures.length) {
+    emit({
+      decision: 'block',
+      reason:
+        `${fileName} is not valid yet: ` +
+        failures.map((f) => `${f.id}: ${f.reason}`).join('; ') +
+        '. Rewrite it to fix this; its card in references/deliverables.md has the full contract.',
+    });
+    process.exit(0);
+  }
 
-  fs.mkdirSync(stateDir, { recursive: true });
-  fs.writeFileSync(syncPath, JSON.stringify({ ...previous, feature: slug, workdir, artifacts }, null, 2) + '\n');
+  markPending({ home: os.homedir(), slug, workdir, type, filePath: norm });
 
-  process.stdout.write(JSON.stringify({
+  const syncSkill = path.join(__dirname, '..', 'skills', 'sync-deliverable', 'SKILL.md');
+  emit({
     hookSpecificOutput: {
       hookEventName: 'PostToolUse',
       additionalContext:
-        `Deliverable \`${type}\` of discovery \`${slug}\` was written. ` +
-        `Run the orbitant-sync-deliverable skill for it now (slug \`${slug}\`, type \`${type}\`).`
-    }
-  }));
+        `Deliverable \`${type}\` of discovery \`${slug}\` is valid and pending. ` +
+        `Dispatch the deliverable-sync agent for it now with slug \`${slug}\`, type \`${type}\` ` +
+        `and the sync skill at \`${syncSkill}\`; ` +
+        `in a runtime without sub-agents, run the orbitant-sync-deliverable skill instead.`,
+    },
+  });
 } catch (e) {
   // Silent by design: never break the session on a hook error.
 }

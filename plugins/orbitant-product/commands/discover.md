@@ -63,10 +63,9 @@ frontmatter goes above it.
 ## Flow
 
 0. **Preflight (persistence).** Before anything else, run the `orbitant-sync-deliverable` skill in
-   **preflight** mode. It makes sure every deliverable of this run can be persisted: the PM
-   is logged in to the discovery store and this folder knows where its deliverables go. It
-   guides the PM in plain language if not. **Do not start step 1 until it reports ready.**
-   This is the only point where persistence may wait on the PM.
+   **preflight** mode. It makes sure this folder knows where its deliverables are kept, asking
+   the PM once per folder if not. **Do not start step 1 until it reports ready.** This is the
+   only point where persistence may wait on the PM.
 
 1. **Interrogate.** Use the `orbitant-problem-interrogator` skill with the user's idea
    (`$ARGUMENTS`). Interactive — hand control to the conversation for the
@@ -170,14 +169,21 @@ frontmatter goes above it.
 
 ## Persistence
 
-Each deliverable — `PROBLEM_BRIEF.md`, `STRESS_TEST.md`, `RETRO-<date>.md` — is mirrored to
-the discovery store as its own record, by the `orbitant-sync-deliverable` skill. The files in
-`discovery/<slug>/` stay the source of truth.
+What each deliverable must contain, when it is valid and what is kept of it is the contract
+in `references/deliverables.md`. The files in `discovery/<slug>/` are the run's working copy;
+each Valid deliverable is also kept as one record in the store the folder picked, by the
+`orbitant-sync-deliverable` skill. Every sync rebuilds the record from the working copy.
 
-- After every write of a deliverable, the `PostToolUse` hook marks it pending and asks you to
-  run `orbitant-sync-deliverable` for it. Do it before continuing to the next step.
-- In a runtime without hooks, run `orbitant-sync-deliverable` yourself after every write of a
-  deliverable: steps 1 and 2, each round of step 3, and step 5.
+- After every write of a deliverable, the `PostToolUse` hook checks it against its card.
+  - **A check fails** → the hook sends you the check id and what is missing. Rewrite the
+    deliverable before continuing; the rewrite is checked again.
+  - **It passes** → the hook marks it pending and asks you to dispatch the `deliverable-sync`
+    agent for it. Dispatch it, and wait for its result before dispatching another sync for the
+    same slug. Give the PM its one line. If it returns `needs-pm`, give the PM that line, or
+    run preflight when the folder has no destination.
+- In a runtime without hooks, check each deliverable against its card yourself after every
+  write (steps 1 and 2, each round of step 3, and step 5), then run
+  `orbitant-sync-deliverable` for it.
 - A sync failure **never** blocks the run: the deliverable stays pending and the
   `SessionStart` hook resurfaces it next session.
 

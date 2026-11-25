@@ -82,6 +82,10 @@ threshold: <copied from the THRESHOLD line of the tail>
   tail. Do **not** hardcode, compute, or second-guess any of them; the command carries no rubric
   knowledge, it only records what the judge reported.
 
+Before writing, check the scorecard against its card in `references/deliverables.md`
+(`frontmatter-generated-at`, `scorecard-score`). If the tail has no `SCORE` line, say so to the PM
+in one line instead of writing a scorecard without one. A scorecard is not kept in any store.
+
 ## 4. Report
 
 Show the PM the artifact's headline (the score + verdict as the agent stated them) and the path

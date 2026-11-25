@@ -57,7 +57,7 @@ rather than an opinion:
 
 ---
 
-# The rubric
+## The rubric
 
 Scoring a **problem definition** before it reaches design and engineering. It measures the
 quality of the content, not org process; changing how definitions are scored means editing this
@@ -494,14 +494,14 @@ defensible measurement, not an oracle.
 - ISO/IEC/IEEE 29148:2018 — quality characteristics of a requirement (*Necessary, Appropriate,
   Unambiguous, Complete, Singular, Feasible, Verifiable, Correct, Conforming*) and of the set
   (*Complete, Consistent, Feasible, Comprehensible, Validatable*); supersedes IEEE 830-1998.
-  https://www.iso.org/standard/72089.html
-- INVEST (Bill Wake, 2003). https://agilealliance.org/glossary/invest/
-- Marty Cagan / SVPG — *The Four Big Risks*. https://www.svpg.com/four-big-risks/
+  <https://www.iso.org/standard/72089.html>
+- INVEST (Bill Wake, 2003). <https://agilealliance.org/glossary/invest/>
+- Marty Cagan / SVPG — *The Four Big Risks*. <https://www.svpg.com/four-big-risks/>
 - Melissa Perri — *Escaping the Build Trap* (outcome > output).
-  https://www.oreilly.com/library/view/escaping-the-build-trap/9781491973783/
-- Gojko Adzic — *Specification by Example*. https://www.manning.com/books/specification-by-example
+  <https://www.oreilly.com/library/view/escaping-the-build-trap/9781491973783/>
+- Gojko Adzic — *Specification by Example*. <https://www.manning.com/books/specification-by-example>
 - "Requirements smells" (subjective/superlative/totality language that fails *Unambiguous* /
-  *Verifiable*): https://en.wikipedia.org/wiki/Software_requirements_specification
+  *Verifiable*): <https://en.wikipedia.org/wiki/Software_requirements_specification>
 
 **Discovery & specification methodology (rationale behind the checks):**
 - Problem vs. solution space; Jobs To Be Done (Clayton Christensen) — framing the problem as
@@ -516,11 +516,11 @@ defensible measurement, not an oracle.
   gaps.
 
 **Entry-gate concept:**
-- Definition of Ready. https://www.scrum.org/resources/blog/walking-through-definition-ready ·
-  caveat (can be misused against people): https://www.mountaingoatsoftware.com/blog/the-dangers-of-a-definition-of-ready
+- Definition of Ready. <https://www.scrum.org/resources/blog/walking-through-definition-ready> ·
+  caveat (can be misused against people): <https://www.mountaingoatsoftware.com/blog/the-dangers-of-a-definition-of-ready>
 
 **Scoring method (LLM-as-judge / eval):**
-- RAGAS — *faithfulness* (Es et al., 2024). https://arxiv.org/abs/2309.15217 ·
-  https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/
-- LLM-as-a-judge: https://montecarlo.ai/blog-llm-as-judge/ ·
-  https://www.confident-ai.com/blog/rag-evaluation-metrics-answer-relevancy-faithfulness-and-more
+- RAGAS — *faithfulness* (Es et al., 2024). <https://arxiv.org/abs/2309.15217> ·
+  <https://docs.ragas.io/en/stable/concepts/metrics/available_metrics/faithfulness/>
+- LLM-as-a-judge: <https://montecarlo.ai/blog-llm-as-judge/> ·
+  <https://www.confident-ai.com/blog/rag-evaluation-metrics-answer-relevancy-faithfulness-and-more>

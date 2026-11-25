@@ -112,9 +112,10 @@ the `SessionStart` backstop from re-flagging the run — do not skip it when the
 present. If there is **no** ledger (standalone claude.ai use), skip this step and just
 produce the file.
 
-**Persist the report.** Writing `RETRO-<date>.md` makes the `PostToolUse` hook ask for the
-`orbitant-sync-deliverable` skill; run it. When you run standalone in a runtime without hooks, run
-`orbitant-sync-deliverable` for this retro yourself after writing the file.
+**Persist the report.** Writing `RETRO-<date>.md` makes the `PostToolUse` hook check it against
+its card and, when it passes, ask for the `deliverable-sync` agent; dispatch it. If the hook
+reports a failed check, fix the report first. When you run standalone in a runtime without
+hooks, run `orbitant-sync-deliverable` for this retro yourself after writing the file.
 
 ## Honest scope
 

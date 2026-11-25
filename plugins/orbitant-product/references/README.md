@@ -25,7 +25,7 @@ background for maintainers; the skill and the agent are operationally self-conta
 | MVP scope challenge / YAGNI | Lean Startup / MVP / YAGNI | [lean-mvp-yagni.md](lean-mvp-yagni.md) |
 | Don't lead the answer; don't accept vagueness | The Mom Test | [the-mom-test.md](the-mom-test.md) |
 | "Nothing enters without a complete brief" | Definition of Ready | [definition-of-ready.md](definition-of-ready.md) |
-| `[TO CLARIFY]` | GitHub Spec Kit convention (`[NEEDS CLARIFICATION]`) — see note below |
+| `[TO CLARIFY]` | GitHub Spec Kit convention (`[NEEDS CLARIFICATION]`) | see note below |
 
 > **`[TO CLARIFY]`** adapts the `[NEEDS CLARIFICATION]` marker from the spec template of
 > [GitHub Spec Kit](https://github.com/github/spec-kit): instead of filling a gap with a
