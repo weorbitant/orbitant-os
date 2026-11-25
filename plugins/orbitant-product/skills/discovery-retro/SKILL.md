@@ -1,6 +1,6 @@
 ---
 name: orbitant-discovery-retro
-description: Use at the end of a product discovery session (after orbitant-problem-interrogator and/or brief-stress-test), run by the PM/PO or by the /discover orchestrator, to harvest feedback and produce a durable hand-off file for the technical team — routing each learning into skill improvement, domain knowledge to capture, or UX friction.
+description: Use at the end of a product discovery session (after orbitant-problem-interrogator and/or brief-stress-test), run by the PM/PO or by the discover command, to harvest feedback and produce a durable hand-off file for the technical team — routing each learning into skill improvement, domain knowledge to capture, or UX friction.
 version: "1.0.0"
 license: MIT
 metadata:
@@ -16,9 +16,12 @@ allowed-tools: Read, Write, Edit, Glob
 Respond in **the user's language** (mirror the session's language). This document is in
 English for maintainability; the report must be in the user's reference language.
 **Translate everything into the user's language — including the section headers** in the
-schema below (`## Session at a glance`, `## Findings (routed)`, etc.). The schema is written
+schema below (`## Session at a glance`, `## What worked (keep)`, etc.). The schema is written
 in English only as a template; never copy the English headers verbatim into the report.
 The routing tags (`[SKILL]`, `[DOMAIN]`, `[UX]`) stay as-is — they are labels for the team.
+**Two lines also stay exactly as written**, because the deliverable checks read them: the
+title's words `# Discovery retro —` before the feature and the date and the
+`## Findings (routed)` heading.
 
 ## Who runs you and when
 

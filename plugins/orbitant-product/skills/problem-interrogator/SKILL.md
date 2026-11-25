@@ -326,7 +326,8 @@ Review it with fresh eyes and fix:
 
 When the interrogation ends, fill in this template. Anything unresolved goes in as
 `[TO CLARIFY: … — owner: …]`, **not** as a silent assumption. Write the brief in the
-user's language.
+user's language, except the title's words `# Problem brief —` before the title, which stay as written because
+the deliverable checks read them.
 
 ```
 # Problem brief — <title>

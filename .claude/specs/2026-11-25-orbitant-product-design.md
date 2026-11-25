@@ -363,7 +363,8 @@ needs the PM.
    - Run the chosen store's *Detect*, *Login message* and *Resolve the destination*.
    - While waiting for a login, the PM can switch to `local-markdown`.
 3. If a store can't resolve its destination because of access, give its no-access line and
-   offer `local-markdown` for this run, without writing `store.json`.
+   offer the other stores. The one the PM picks becomes the folder's store; a per-run choice
+   would need state nothing else keeps.
 
 Never ask for IDs. The question in step 2 is the only point where the run may wait on the PM.
 

@@ -122,6 +122,7 @@ test('the contract never says how or where a deliverable is stored', () => {
 test('every store implements the six parts, and the sync skill names them in order', () => {
   for (const name of stores()) {
     const text = read(`${STORES_DIR}/${name}.md`);
+    assert.match(text, /^\*\*For the PM:\*\* \S/m, `${name}: For the PM line`);
     for (const part of STORE_CONTRACT) assert.ok(text.includes(`\n## ${part}\n`), `${name}: ${part}`);
   }
   const contract = section(read('skills/sync-deliverable/SKILL.md'), '## The store contract');
@@ -169,6 +170,14 @@ test('discover runs the persistence preflight before interrogating, and checks e
   assert.match(persistence, /references\/deliverables\.md/);
   assert.match(persistence, /deliverable-sync/);
   assert.match(persistence, /same slug/);
+});
+
+test('the producers keep literal the headings the checks read, whatever the PM language', () => {
+  const retroLanguage = unwrapped(section(read('skills/discovery-retro/SKILL.md'), '## Language'));
+  assert.match(retroLanguage, /`# Discovery retro —` before the feature and the date/);
+  assert.match(retroLanguage, /`## Findings \(routed\)` heading/);
+  assert.match(retroLanguage, /stay exactly as written/);
+  assert.match(unwrapped(read('skills/problem-interrogator/SKILL.md')), /except the title's words `# Problem brief —` before the title/);
 });
 
 test('the retro and the score command follow the contract', () => {
