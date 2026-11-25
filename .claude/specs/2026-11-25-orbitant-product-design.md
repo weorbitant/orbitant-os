@@ -83,6 +83,39 @@ give a concrete fix line for whatever is missing. It is not taken as the model f
 it names its tools by id and keeps a Notion-only config, so it degrades but is not
 store-agnostic.
 
+## Mapping to Clean Architecture
+
+The layers follow Clean Architecture's dependency rule: inner layers never name outer ones,
+and outer layers implement interfaces the inner ones define.
+
+| Clean Architecture | orbitant-product |
+|---|---|
+| Entities | `references/deliverables.md` and `deliverable-checks.cjs`: what a valid deliverable is, the record, the status rule |
+| Use cases | The `/discover` flow (interview, audits, rounds, retro) and the sync layer's "store a deliverable" |
+| Output port | The store contract, defined by the sync layer and implemented by each store |
+| Data crossing the boundary | The record: a store receives a record, never a path |
+| Interface adapters | `references/stores/<store>.md` (gateways); the hook entry point (controller: turns a Claude Code event into a call); the one-line messages to the PM (presenters) |
+| Frameworks and drivers | Notion through MCP, Claude Code and Cowork, the filesystem, Node |
+| Main (composition root) | The preflight and `store.json`, which pick the store to plug in |
+
+Where it departs, on purpose or not yet resolved:
+
+- **The model is the engine, not a detail.** The entities and use cases are prose that only
+  an LLM can run; the interviewer and the judges need its judgment. The runtime (Claude
+  Code, Cowork, an employent) can be swapped in principle; the model cannot be swapped the
+  way a database can.
+- **The main use case still names outer details.** `commands/discover.md` mentions hooks,
+  the Task tool and `~/.discovery` paths, and the judges read the brief by path. That is a
+  dependency not yet inverted; see *Runtime independence* in *Open items*.
+- **The dependency rule is checked by text, not by a compiler.** The contract tests catch a
+  store's name outside the store layer, not a store's concept (a core file that talks about
+  "pages" or "databases").
+- **One rule, two executors.** Each *Invalid on sight* check is specified once, in
+  `references/deliverables.md`, and runs twice: as JavaScript in the hook and as prose in the
+  sync sub-agent. Their ids and a test keep them aligned.
+- **Weight.** The store port is justified by the stores already in view (Qdrant,
+  Confluence). The separate `sync-state` module and *Accept* add little today and cost little.
+
 ## Identity
 
 | Item | Value |
@@ -136,14 +169,15 @@ store, a store's tools or a store's field names.
 
 | Layer | Decides | Owns | Knows about stores? |
 |---|---|---|---|
-| **Core contract** | What a discovery produces and when each deliverable is valid | `references/deliverables.md`; the producers (`commands/`, `skills/problem-interrogator/`, `skills/discovery-retro/`, `agents/brief-*`) and the methodology in `references/` | No |
-| **Runtime execution** | How this runtime gets a deliverable's content and when it applies the checks | `hooks/lib/deliverable-checks.cjs`, the working copy, the ledger | No, and it does not know the sync layer exists |
+| **Core contract** | What a discovery produces and when each deliverable is valid | `references/deliverables.md` and its executable checks, `hooks/lib/deliverable-checks.cjs` (a pure function: content in, failed checks out); the producers (`commands/`, `skills/problem-interrogator/`, `skills/discovery-retro/`, `agents/brief-*`) and the methodology in `references/` | No |
+| **Runtime execution** | How this runtime gets a deliverable's content and when it applies the core's checks | the hook entry point `hooks/on-artifact-written.cjs`, the working copy, the ledger | No |
 | **Sync** | What still has to be stored; builds the record; picks the store | `skills/sync-deliverable/SKILL.md`, `agents/deliverable-sync.md`, `hooks/lib/sync-state.cjs`, `hooks/on-session-start.cjs`, `sync.json`, `store.json`'s `store` field | Only the store contract |
 | **Stores** | Whether they accept a record, and how and where they keep it | `skills/sync-deliverable/references/stores/<store>.md`, and every `store.json` field other than `store` | Each knows only itself |
 
-`hooks/on-artifact-written.cjs` is the one entry point that composes two layers: it calls
-the runtime's check module and then the sync layer's state module, in that order (see
-*Execution*).
+`hooks/on-artifact-written.cjs` is the one entry point that composes layers: it reads the
+content, calls the core's check module and then the sync layer's state module, in that order
+(see *Execution*). `deliverable-checks.cjs` sits under `hooks/lib/` only because the hook
+loads it; it belongs to the core and does no I/O.
 
 ### Working copy and store
 
@@ -361,8 +395,8 @@ test or Retro under a `discovery/<slug>/` folder, the entry point:
 
 1. Reads the content from disk. With `Edit`, the tool input holds only the changed fragment,
    and in `PostToolUse` the file is already written.
-2. Calls `deliverable-checks.cjs`, a pure function: deliverable type and content in, failed
-   check ids and reasons out. It reads no file and writes nothing.
+2. Calls the core's `deliverable-checks.cjs`, a pure function: deliverable type and content
+   in, failed check ids and reasons out. It reads no file and writes nothing.
 3. **A check fails** → returns `{ "decision": "block", "reason": "<file>: <check id>: <what is
    missing>" }`. In `PostToolUse` that does not undo the write; it sends the reason to
    Claude, which fixes the deliverable. The fix is another write, so the hook runs again.
@@ -464,9 +498,9 @@ Assertions that hold the layers apart:
 - **No store outside the store layer.** For each file in
   `skills/sync-deliverable/references/stores/`, its store name appears in no file outside that
   folder, except the plugin README. Adding a store extends the check by itself.
-- **The runtime layer does not reach into the sync layer.** `deliverable-checks.cjs` requires
-  nothing from the plugin and reads no file; it never names `sync.json`, `store.json` or
-  `sync-state`. Only `on-artifact-written.cjs` requires both modules.
+- **The core's checks reach nothing outward.** `deliverable-checks.cjs` requires no module
+  (not even `fs`), reads no file, and never names `sync.json`, `store.json` or `sync-state`.
+  Only `on-artifact-written.cjs` requires both it and `sync-state.cjs`.
 - **Check ids match.** Every check id in `references/deliverables.md` exists in
   `deliverable-checks.cjs`, and the other way round.
 - **The contracts are complete.** `references/deliverables.md` has a card for each of the four
@@ -579,7 +613,11 @@ On the released version:
   release only.
 - **Runtime independence.** The layers free the core from where the result is kept, not from
   how it runs: the working copy, the hooks and the sub-agents assume Claude Code or Cowork. An
-  employent reading `@orbitant/brain-product` could not run the core as it is. Related:
+  employent reading `@orbitant/brain-product` could not run the core as it is. The way to
+  close it is the same inversion as the stores: a port "get a deliverable's content" (and
+  "write a deliverable") that the core calls instead of reading paths, so the judges and the
+  retro receive content, and each runtime implements the port (files in Claude Code, a
+  message store in an employent). Related:
   orbitant-os#63 ("Skills for people are indistinguishable from skills an agent can run") is
   open, and this vertical's skills are all for a person in Claude Code.
 - **Agent-type hooks.** Claude Code may let a hook start a sub-agent directly, without going
