@@ -52,8 +52,20 @@ two of them: "the Notion contract stays as it is" and "the bundled `.mcp.json` s
 
 ## Relation to other plugins
 
-- **`orbitant-operations` / `orbitant-graceful-degradation`**: the same idea, applied to
-  storage. A missing tool degrades the run; it never blocks it.
+Two plugins in this repo already deal with tools that may be missing. This design takes one
+rule from each.
+
+- **`orbitant-engineering` / `orbitant-12-factor`** (PR #80, "states the evidence it needs,
+  not how to get it"): the skill names what it needs, never the tool that gets it, so a
+  runtime without a shell (the Neptuno employent) can still run it. Missing evidence is an
+  explicit state (*Not observed*), not a failure. Taken here: the store contract names
+  capabilities, not MCP tool ids, and the files-only mode is an explicit state (`local`).
+  Every reference path is relative to the skill's folder, never `@plugins/…`.
+- **`orbitant-operations` / `orbitant-graceful-degradation`**: never hard-fail; probe what is
+  available, give a concrete fix line for whatever is missing, and let the caller decide.
+  Taken here: a missing or unauthenticated store never stops the discovery, and each store's
+  login message is that fix line. Not taken: that skill names its tools by id and keeps one
+  Notion-only config (`business-databases.yaml`), so it degrades but is not store-agnostic.
 - **`orbitant-engineering`**: the closest structural sibling (skills plus commands, explicit
   `skills` array in `plugin.json`).
 - **First plugin with hooks and JavaScript in orbitant-os.** No other vertical ships
@@ -142,6 +154,11 @@ this order:
 4. **Upsert.** How a deliverable (type, properties, body) becomes one record, created or
    updated, and the `ref` it returns.
 5. **Failure messages.** The no-access line and the generic retry line.
+
+Each part is written as capabilities ("search pages by title", "create a record in a
+database"), not as tool ids, because the same store can reach the session through different
+connectors. Today's Notion text already does this ("use whichever Notion toolset is
+authenticated"); the tool ids it gives in brackets stay only as examples.
 
 Adding a store means adding one reference file and one option in the preflight question.
 Nothing else changes.
