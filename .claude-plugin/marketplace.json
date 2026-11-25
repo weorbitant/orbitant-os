@@ -23,6 +23,12 @@
       "source": "./plugins/orbitant-engineering",
       "description": "Engineering standards audit commands for any repo, any stack, plus learning workflows for engineers",
       "version": "0.3.0"
+    },
+    {
+      "name": "orbitant-product",
+      "source": "./plugins/orbitant-product",
+      "description": "Product discovery: interrogate a PM/PO to define a problem, stress-test the brief independently, and guarantee a retro, keeping each deliverable in the store the PM picks",
+      "version": "0.3.0"
     }
   ]
 }
