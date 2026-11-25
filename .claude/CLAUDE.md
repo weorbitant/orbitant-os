@@ -243,7 +243,8 @@ Nothing to do for the npm package version: `build-npm-packages.ts` derives `@orb
 1. Create `plugins/orbitant-{vertical}/` with full structure (`.claude-plugin/plugin.json`, `skills/`, `agents/`, `commands/`)
 2. Add the plugin entry to `.claude-plugin/marketplace.json`
 3. Update `README.md` table
-4. Create a GitHub release when publishing
+4. Add the vertical to the literal lists in `test/build-npm-packages.test.ts` (`VERTICALS`, `PACKAGES`) and `test/parse-plugin.test.ts`; they are literals on purpose, so `npm test` fails until you do
+5. Create a GitHub release when publishing
 
 ### Writing Agents
 ```yaml
