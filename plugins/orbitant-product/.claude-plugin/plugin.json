@@ -1,0 +1,14 @@
+{
+  "name": "orbitant-product",
+  "version": "0.3.0",
+  "description": "Product discovery suite: interrogate a PM/PO to define a problem well, independently stress-test the resulting brief for gaps, and harvest each session's learnings in a guaranteed retro before handing it to design or engineering. Each deliverable is validated and kept in the store the PM picks once per folder.",
+  "author": {
+    "name": "Orbitant"
+  },
+  "license": "MIT",
+  "skills": [
+    "./skills/problem-interrogator",
+    "./skills/discovery-retro",
+    "./skills/sync-deliverable"
+  ]
+}

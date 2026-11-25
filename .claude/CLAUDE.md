@@ -42,11 +42,19 @@ orbitant-os/
 │   │   ├── crm/
 │   │   ├── reports/
 │   │   └── references/
-│   └── orbitant-engineering/       <- v0.3.0 — ai-readiness, git-hygiene, owasp-scan, 12-factor, debrief (+ /ground-control)
+│   ├── orbitant-engineering/       <- v0.3.0 — ai-readiness, git-hygiene, owasp-scan, 12-factor, debrief (+ /ground-control)
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   ├── commands/
+│   │   └── skills/
+│   └── orbitant-product/           <- v0.3.0 — problem-interrogator, discovery-retro, sync-deliverable (+ /discover, /score); store-agnostic core
 │       ├── .claude-plugin/
 │       │   └── plugin.json
+│       ├── agents/                 <- brief-stress-test, brief-scorecard, deliverable-sync
 │       ├── commands/
-│       └── skills/
+│       ├── hooks/                  <- the only plugin with hooks; tests live in test/orbitant-product/
+│       ├── references/             <- methodology + deliverables.md (the core contract)
+│       └── skills/                 <- sync-deliverable/references/stores/ holds one file per store
 ├── website/                        <- Astro + Starlight documentation site
 │   ├── astro.config.mjs
 │   ├── public/
@@ -235,7 +243,8 @@ Nothing to do for the npm package version: `build-npm-packages.ts` derives `@orb
 1. Create `plugins/orbitant-{vertical}/` with full structure (`.claude-plugin/plugin.json`, `skills/`, `agents/`, `commands/`)
 2. Add the plugin entry to `.claude-plugin/marketplace.json`
 3. Update `README.md` table
-4. Create a GitHub release when publishing
+4. Add the vertical to the literal lists in `test/build-npm-packages.test.ts` (`VERTICALS`, `PACKAGES`) and `test/parse-plugin.test.ts`; they are literals on purpose, so `npm test` fails until you do
+5. Create a GitHub release when publishing
 
 ### Writing Agents
 ```yaml
@@ -268,6 +277,7 @@ description: What this command does when invoked via /orbitant-{vertical}:comman
 | orbitant-marketing | 1.14.0 | Active | `orbitant-blog-post-review`, `orbitant-blog-post-create`, `orbitant-blog-post-translate`, `orbitant-tone`, `orbitant-yt-description`, `orbitant-linkedin-post`, `orbitant-image-creation`, `orbitant-newsletter`, `orbitant-x-thread`, `orbitant-x-post` | — |
 | orbitant-operations | 1.0.0 | Active | `orbitant-graceful-degradation`, `orbitant-goal-alignment`, `orbitant-voice-drafting` | `/preflight`, `/status`, `/today`, `/triage`, `/week`, `/prep`, `/crm`, `/challenge`, `/highlight`, `/opportunity`, `/todo`, `/query`, `/report` |
 | orbitant-engineering | 0.3.0 | Active | `orbitant-ai-readiness`, `orbitant-git-hygiene`, `orbitant-owasp-scan`, `orbitant-12-factor`, `orbitant-debrief` | `/ground-control` |
+| orbitant-product | 0.3.0 | Active | `orbitant-problem-interrogator`, `orbitant-discovery-retro`, `orbitant-sync-deliverable` | `/discover`, `/score` |
 
 ## Scripts
 

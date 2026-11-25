@@ -44,10 +44,10 @@ test('parsePlugin reads operations agents and commands', () => {
   assert.ok(cmd.content.length > 0, 'command body captured');
 });
 
-test('parseAllPlugins returns all three verticals', () => {
+test('parseAllPlugins returns every vertical', () => {
   const all = parseAllPlugins(PLUGINS);
   const names = all.map((p) => p.name).sort();
-  assert.deepEqual(names, ['orbitant-engineering', 'orbitant-marketing', 'orbitant-operations']);
+  assert.deepEqual(names, ['orbitant-engineering', 'orbitant-marketing', 'orbitant-operations', 'orbitant-product']);
 });
 
 test('parsePlugin throws when the folder name does not match plugin.json name', () => {

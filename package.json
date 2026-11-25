@@ -13,7 +13,7 @@
     "validate:skills": "node scripts/validate-skills.cjs",
     "validate:forks": "node scripts/validate-forks.cjs",
     "validate:versions": "node scripts/validate-versions.cjs",
-    "test": "node --import tsx --test test/*.test.ts",
+    "test": "node --import tsx --test test/*.test.ts test/orbitant-product/*.test.cjs",
     "build:packages": "node --import tsx scripts/build-npm-packages.ts",
     "check": "npm run lint && npm run validate && npm run test && npm run build:packages",
     "check:upstream": "node scripts/check-upstream.cjs",

@@ -7,13 +7,14 @@ import { execFileSync } from 'node:child_process';
 import { buildAll, shipsVerbatim } from '../scripts/build-npm-packages.ts';
 import { DIST_DIR, SCOPE, npmName } from '../scripts/lib/npm-packages.config.ts';
 
-const VERTICALS = ['marketing', 'operations', 'engineering'];
+const VERTICALS = ['marketing', 'operations', 'engineering', 'product'];
 
 // Literals, so a change to the naming rule has to be made here on purpose.
 const PACKAGES: Array<[source: string, published: string]> = [
   ['orbitant-marketing', 'brain-marketing'],
   ['orbitant-operations', 'brain-operations'],
   ['orbitant-engineering', 'brain-engineering'],
+  ['orbitant-product', 'brain-product'],
   ['orbitant-os', 'brain'],
 ];
 
@@ -178,7 +179,7 @@ test('meta aggregate index.js declares exports, imports, and the brain object fo
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean);
-  assert.deepEqual(brainProps.sort(), [...VERTICALS].sort(), 'brain object must aggregate exactly the three verticals, no more no less');
+  assert.deepEqual(brainProps.sort(), [...VERTICALS].sort(), 'brain object must aggregate exactly the verticals, no more no less');
 
   assert.match(js, /^export default brain;$/m);
 });
