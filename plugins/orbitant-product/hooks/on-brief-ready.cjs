@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // PostToolUse hook — precise trigger. Cross-platform (Node, no external deps: no bash,
 // jq, find or git). When the orchestrator writes a discovery ledger marking the loop ended
-// (READY or BLOCKED) with the retro still pending, tell Claude to run discovery-retro now. Idempotent
+// (READY or BLOCKED) with the retro still pending, tell Claude to run orbitant-discovery-retro now. Idempotent
 // (silent once retro flips to "done"). Never throws — a hook must not break the session.
 'use strict';
 const fs = require('fs');
@@ -27,7 +27,7 @@ try {
         hookEventName: 'PostToolUse',
         additionalContext:
           `The discovery loop for '${slug}' just ended (${led.phase}) and its retro is pending. ` +
-          `Run the discovery-retro skill now on this session to produce the hand-off file, ` +
+          `Run the orbitant-discovery-retro skill now on this session to produce the hand-off file, ` +
           `then set "retro":"done" in ${norm}.`
       }
     }));

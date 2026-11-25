@@ -1,4 +1,5 @@
 ---
+name: score
 description: Score an artifact (a brief, Epic, or PRD) with the independent brief-scorecard judge and persist the result. Standalone; runtime with sub-agents (Claude Code / Cowork).
 argument-hint: <path to a file | pasted artifact text | a free-text reference to an artifact>
 ---

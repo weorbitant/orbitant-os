@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/on-brief-ready.js\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/on-brief-ready.cjs\"",
             "async": false
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/on-artifact-written.js\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/on-artifact-written.cjs\"",
             "async": false
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/on-session-start.js\"",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/on-session-start.cjs\"",
             "async": false
           }
         ]

@@ -1,6 +1,11 @@
 ---
-name: discovery-retro
-description: Use at the end of a product discovery session (after problem-interrogator and/or brief-stress-test), run by the PM/PO or by the /discover orchestrator, to harvest feedback and produce a durable hand-off file for the technical team — routing each learning into skill improvement, domain knowledge to capture, or UX friction.
+name: orbitant-discovery-retro
+description: Use at the end of a product discovery session (after orbitant-problem-interrogator and/or brief-stress-test), run by the PM/PO or by the /discover orchestrator, to harvest feedback and produce a durable hand-off file for the technical team — routing each learning into skill improvement, domain knowledge to capture, or UX friction.
+version: "1.0.0"
+license: MIT
+metadata:
+  author: orbitant
+  tags: product, discovery, retro, feedback, hand-off
 allowed-tools: Read, Write, Edit, Glob
 ---
 
@@ -108,8 +113,8 @@ present. If there is **no** ledger (standalone claude.ai use), skip this step an
 produce the file.
 
 **Persist the report.** Writing `RETRO-<date>.md` makes the `PostToolUse` hook ask for the
-`sync-deliverable` skill; run it. When you run standalone in a runtime without hooks, run
-`sync-deliverable` for this retro yourself after writing the file.
+`orbitant-sync-deliverable` skill; run it. When you run standalone in a runtime without hooks, run
+`orbitant-sync-deliverable` for this retro yourself after writing the file.
 
 ## Honest scope
 

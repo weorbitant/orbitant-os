@@ -41,14 +41,14 @@ try {
   if (pendingRetro.length) {
     messages.push(
       `Unfinished discovery detected — loop(s) ended READY or BLOCKED with a pending retro: ${pendingRetro.join(', ')}. ` +
-      `Before other work, run the discovery-retro skill to produce the hand-off file and set ` +
+      `Before other work, run the orbitant-discovery-retro skill to produce the hand-off file and set ` +
       `"retro":"done" in the corresponding <home>/.discovery/<slug>/state.json.`
     );
   }
   if (pendingSync.length) {
     messages.push(
       `Discovery deliverables not yet synced to the discovery store: ${pendingSync.join('; ')}. ` +
-      `Run the sync-deliverable skill for each listed deliverable (slug and type as shown).`
+      `Run the orbitant-sync-deliverable skill for each listed deliverable (slug and type as shown).`
     );
   }
 

@@ -1,6 +1,11 @@
 ---
-name: problem-interrogator
+name: orbitant-problem-interrogator
 description: Use when a PM/PO wants to define, refine, or lock down a product problem or feature before handing it to design (Figma) or engineering; when the framing still has business-logic gaps, uncovered scenarios, implicit rules, or unvalidated assumptions; or when producing a problem brief ready for handoff.
+version: "1.0.0"
+license: MIT
+metadata:
+  author: orbitant
+  tags: product, discovery, problem-definition, brief, pm, po
 ---
 
 # Problem interrogator — problem-definition for PM/PO

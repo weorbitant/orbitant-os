@@ -1,4 +1,5 @@
 ---
+name: discover
 description: Run the full product discovery flow — interrogate to a Problem brief, stress-test it in isolation, loop until the build can start (READY) or cannot (BLOCKED), then guarantee the retro. Runtime with sub-agents (Claude Code / Cowork).
 argument-hint: <raw product idea>
 ---
@@ -61,13 +62,13 @@ frontmatter goes above it.
 
 ## Flow
 
-0. **Preflight (persistence).** Before anything else, run the `sync-deliverable` skill in
+0. **Preflight (persistence).** Before anything else, run the `orbitant-sync-deliverable` skill in
    **preflight** mode. It makes sure every deliverable of this run can be persisted: the PM
    is logged in to the discovery store and this folder knows where its deliverables go. It
    guides the PM in plain language if not. **Do not start step 1 until it reports ready.**
    This is the only point where persistence may wait on the PM.
 
-1. **Interrogate.** Use the `problem-interrogator` skill with the user's idea
+1. **Interrogate.** Use the `orbitant-problem-interrogator` skill with the user's idea
    (`$ARGUMENTS`). Interactive — hand control to the conversation for the
    interrogation dialogue (the cut into a base and next increments first, then
    deep questions one at a time on the base, low-stakes ones in numbered
@@ -79,7 +80,7 @@ frontmatter goes above it.
    **`brief-stress-test` sub-agent three times in parallel** (via the Task tool, in one
    message — each runs in its own clean context and never sees the others).
    In each dispatch, hand it exactly two things and the framing: *"A discovery run just used
-   the `problem-interrogator` skill (at `<abs path to skills/problem-interrogator/SKILL.md>`),
+   the `orbitant-problem-interrogator` skill (at `<abs path to skills/problem-interrogator/SKILL.md>`),
    which produces a Problem brief per its methodology. It generated this brief:
    `<abs path to discovery/<slug>/PROBLEM_BRIEF.md>`. Read the skill to learn what a complete
    brief must contain, and audit the brief for gaps against it."* Pass **only those two paths
@@ -94,7 +95,7 @@ frontmatter goes above it.
 
    **Write all three reviews (with the deliverable frontmatter — see above) to
    `discovery/<slug>/STRESS_TEST.md`** — one `## Audit 1|2|3` section each, verbatim, so
-   `discovery-retro` can read them; it can't see inside the sub-agents' contexts. Then close
+   `orbitant-discovery-retro` can read them; it can't see inside the sub-agents' contexts. Then close
    the file with a **combined section**: the union of the `blocking` gaps (merge duplicates,
    keep each gap's *To close it* and its `Closed by`), the merged **Start now / Don't build
    yet** partition — a part is *Start now* only if every audit put it there — the merged
@@ -162,7 +163,7 @@ frontmatter goes above it.
 
    This single write is the signal the `PostToolUse` hook watches to trigger the retro.
 
-5. **Retro.** Run the `discovery-retro` skill on this session. It reads the transcript plus
+5. **Retro.** Run the `orbitant-discovery-retro` skill on this session. It reads the transcript plus
    the on-disk artifacts, writes `discovery/<slug>/RETRO-<date>.md`, and — because a ledger
    exists — sets `retro: "done"` and `retro_path` itself. You don't flip the ledger
    manually; verify it ended `done`.
@@ -170,12 +171,12 @@ frontmatter goes above it.
 ## Persistence
 
 Each deliverable — `PROBLEM_BRIEF.md`, `STRESS_TEST.md`, `RETRO-<date>.md` — is mirrored to
-the discovery store as its own record, by the `sync-deliverable` skill. The files in
+the discovery store as its own record, by the `orbitant-sync-deliverable` skill. The files in
 `discovery/<slug>/` stay the source of truth.
 
 - After every write of a deliverable, the `PostToolUse` hook marks it pending and asks you to
-  run `sync-deliverable` for it. Do it before continuing to the next step.
-- In a runtime without hooks, run `sync-deliverable` yourself after every write of a
+  run `orbitant-sync-deliverable` for it. Do it before continuing to the next step.
+- In a runtime without hooks, run `orbitant-sync-deliverable` yourself after every write of a
   deliverable: steps 1 and 2, each round of step 3, and step 5.
 - A sync failure **never** blocks the run: the deliverable stays pending and the
   `SessionStart` hook resurfaces it next session.
@@ -196,7 +197,7 @@ the discovery store as its own record, by the `sync-deliverable` skill. The file
   needed. If the working folder **is** a git repo, add `discovery/` to `.gitignore` only if
   you don't want the deliverables committed (usually you do want them, so leave them).
 - Needs sub-agents and hooks → **Claude Code / Cowork**. The stress-test is a **sub-agent**
-  (`agents/brief-stress-test.md`), and `problem-interrogator` / `discovery-retro` are skills.
+  (`agents/brief-stress-test.md`), and `orbitant-problem-interrogator` / `orbitant-discovery-retro` are skills.
   In claude.ai web (no sub-agents/hooks), run the two skills manually and do the stress-test
   by hand — open the brief in a fresh conversation and review it against the
-  `problem-interrogator` methodology (see the plugin README).
+  `orbitant-problem-interrogator` methodology (see the plugin README).

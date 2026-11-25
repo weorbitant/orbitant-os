@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // PostToolUse hook — sync trigger. Cross-platform (Node, no external deps). When a discovery
 // deliverable is written or edited at <workdir>/discovery/<slug>/<file>, mark it pending in
-// <home>/.discovery/<slug>/sync.json and tell Claude to run the sync-deliverable skill. The
+// <home>/.discovery/<slug>/sync.json and tell Claude to run the orbitant-sync-deliverable skill. The
 // sync state is store-agnostic: only that skill knows where deliverables are mirrored.
 // Never throws — a hook must not break the session.
 'use strict';
@@ -69,7 +69,7 @@ try {
       hookEventName: 'PostToolUse',
       additionalContext:
         `Deliverable \`${type}\` of discovery \`${slug}\` was written. ` +
-        `Run the sync-deliverable skill for it now (slug \`${slug}\`, type \`${type}\`).`
+        `Run the orbitant-sync-deliverable skill for it now (slug \`${slug}\`, type \`${type}\`).`
     }
   }));
 } catch (e) {
